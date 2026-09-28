@@ -2,7 +2,7 @@
 
 多账号 Telegram 定时群发桌面客户端。面向你**已经加入**的群组，支持消息模板、定时计划与发送日志，适合个人社群日常公告与提醒。
 
-> 当前最新版本：**v0.2.13**（Windows）  
+> 当前最新版本：**v0.2.14**（Windows）  
 > 本仓库仅提供安装包与使用说明，便于下载，不包含源代码。
 
 ---
@@ -11,7 +11,8 @@
 
 | 版本 | 文件 | 说明 |
 |---|---|---|
-| **v0.2.13**（最新） | [tg-broadcast-v0.2.13.exe](https://github.com/myhgjb666/telegram-group-tool/releases/download/v0.2.13/tg-broadcast-v0.2.13.exe) | Windows 64 位单文件，解压即用（直接运行） |
+| **v0.2.14**（最新） | [tg-broadcast-v0.2.14.exe](https://github.com/myhgjb666/telegram-group-tool/releases/download/v0.2.14/tg-broadcast-v0.2.14.exe) | Windows 64 位单文件，解压即用（直接运行） |
+| v0.2.13 | [tg-broadcast-v0.2.13.exe](https://github.com/myhgjb666/telegram-group-tool/releases/download/v0.2.13/tg-broadcast-v0.2.13.exe) | 上一版本 |
 
 历史版本请到 [Releases](https://github.com/myhgjb666/telegram-group-tool/releases) 页面选择对应版本下载。
 
@@ -58,7 +59,7 @@
 
 ## 快速上手
 
-1. 下载并运行 `tg-broadcast-v0.2.13.exe`
+1. 下载并运行 `tg-broadcast-v0.2.14.exe`
 2. 注册 / 登录软件账号（新设备通常有试用时长，到期后需续期）
 3. 打开 [my.telegram.org/apps](https://my.telegram.org/apps) 登录，创建应用并拿到 `api_id` / `api_hash`
 4. 在软件 **账号** 页添加 Telegram 账号（填写 api 凭证 + 手机号，完成验证码 / 二级密码）
@@ -69,7 +70,12 @@
 
 ## 版本说明
 
-### v0.2.13（当前）
+### v0.2.14（当前）
+
+- 修复多账号并行发送时数据库连接池耗尽（「停止计划」等操作报连接池超限）
+- 「停止计划」立即生效：立刻注销定时任务、取消进行中的发送并落库停用
+
+### v0.2.13
 
 - 账号页新增「清理发送限制」
 - 「今日已发」按防封号计数规则显示，更贴近真实可发额度
@@ -134,4 +140,4 @@ A: 查看 **参数设置** 与 **发送日志**；默认偏保守（间隔、日
 
 ---
 
-如有问题，请在本仓库 [Issues](https://github.com/myhgjb666/telegram-group-tool/issues) 反馈，并注明版本号（如 v0.2.13）。
+如有问题，请在本仓库 [Issues](https://github.com/myhgjb666/telegram-group-tool/issues) 反馈，并注明版本号（如 v0.2.14）。
