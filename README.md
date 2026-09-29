@@ -2,7 +2,7 @@
 
 多账号 Telegram 定时群发桌面客户端。面向你**已经加入**的群组，支持消息模板、定时计划与发送日志，适合个人社群日常公告与提醒。
 
-> 当前最新版本：**v0.2.15**（Windows）  
+> 当前最新版本：**v0.2.16**（Windows）  
 > 本仓库仅提供安装包与使用说明，便于下载，不包含源代码。
 
 ---
@@ -11,8 +11,8 @@
 
 | 版本 | 文件 | 说明 |
 |---|---|---|
-| **v0.2.15**（最新） | [tg-broadcast-v0.2.15.exe](https://github.com/myhgjb666/telegram-group-tool/releases/download/v0.2.15/tg-broadcast-v0.2.15.exe) | Windows 64 位单文件，解压即用（直接运行） |
-| v0.2.14 | [tg-broadcast-v0.2.14.exe](https://github.com/myhgjb666/telegram-group-tool/releases/download/v0.2.14/tg-broadcast-v0.2.14.exe) | 上一版本 |
+| **v0.2.16**（最新） | [tg-broadcast-v0.2.16.exe](https://github.com/myhgjb666/telegram-group-tool/releases/download/v0.2.16/tg-broadcast-v0.2.16.exe) | Windows 64 位单文件，解压即用（直接运行） |
+| v0.2.15 | [tg-broadcast-v0.2.15.exe](https://github.com/myhgjb666/telegram-group-tool/releases/download/v0.2.15/tg-broadcast-v0.2.15.exe) | 上一版本 |
 
 历史版本请到 [Releases](https://github.com/myhgjb666/telegram-group-tool/releases) 页面选择对应版本下载。
 
@@ -62,7 +62,7 @@
 
 ## 快速上手
 
-1. 下载并运行 `tg-broadcast-v0.2.15.exe`
+1. 下载并运行 `tg-broadcast-v0.2.16.exe`
 2. 注册 / 登录软件账号（新设备通常有试用时长，到期后需续期）
 3. 打开 [my.telegram.org/apps](https://my.telegram.org/apps) 登录，创建应用并拿到 `api_id` / `api_hash`
 4. 在软件 **账号** 页添加 Telegram 账号（填写 api 凭证 + 手机号，完成验证码 / 二级密码）
@@ -73,7 +73,12 @@
 
 ## 版本说明
 
-### v0.2.15（当前）
+### v0.2.16（当前）
+
+- 群组发现的稳定性与提示文案优化
+- 参数设置页精简，去掉一处冗余配置
+
+### v0.2.15
 
 - **私聊自动应答**：监听规则可指定「仅群消息 / 仅私聊消息 / 群+私聊」，并修复了群规则会误回复私聊的问题
 - **公开群采集**：按关键词搜索 Telegram 公开群 / 频道，可少量、限速加入并直接设为发送目标（不采集群成员）
@@ -149,4 +154,4 @@ A: 查看 **参数设置** 与 **发送日志**；默认偏保守（间隔、日
 
 ---
 
-如有问题，请在本仓库 [Issues](https://github.com/myhgjb666/telegram-group-tool/issues) 反馈，并注明版本号（如 v0.2.15）。
+如有问题，请在本仓库 [Issues](https://github.com/myhgjb666/telegram-group-tool/issues) 反馈，并注明版本号（如 v0.2.16）。
