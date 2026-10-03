@@ -2,7 +2,7 @@
 
 多账号 Telegram 定时群发桌面客户端。面向你**已经加入**的群组，支持消息模板、定时计划与发送日志，适合个人社群日常公告与提醒。
 
-> 当前最新版本：**v0.2.18**（Windows）  
+> 当前最新版本：**v0.2.19**（Windows）  
 > 本仓库仅提供安装包与使用说明，便于下载，不包含源代码。
 
 ---
@@ -11,8 +11,8 @@
 
 | 版本 | 文件 | 说明 |
 |---|---|---|
-| **v0.2.18**（最新） | [tg-broadcast-v0.2.18.exe](https://github.com/myhgjb666/telegram-group-tool/releases/download/v0.2.18/tg-broadcast-v0.2.18.exe) | Windows 64 位单文件，解压即用（直接运行） |
-| v0.2.17 | [tg-broadcast-v0.2.17.exe](https://github.com/myhgjb666/telegram-group-tool/releases/download/v0.2.17/tg-broadcast-v0.2.17.exe) | 上一版本 |
+| **v0.2.19**（最新） | [tg-broadcast-v0.2.19.exe](https://github.com/myhgjb666/telegram-group-tool/releases/download/v0.2.19/tg-broadcast-v0.2.19.exe) | Windows 64 位单文件，解压即用（直接运行） |
+| v0.2.18 | [tg-broadcast-v0.2.18.exe](https://github.com/myhgjb666/telegram-group-tool/releases/download/v0.2.18/tg-broadcast-v0.2.18.exe) | 上一版本 |
 
 历史版本请到 [Releases](https://github.com/myhgjb666/telegram-group-tool/releases) 页面选择对应版本下载。
 
@@ -62,7 +62,7 @@
 
 ## 快速上手
 
-1. 下载并运行 `tg-broadcast-v0.2.18.exe`
+1. 下载并运行 `tg-broadcast-v0.2.19.exe`
 2. 注册 / 登录软件账号（新设备通常有试用时长，到期后需续期）
 3. 打开 [my.telegram.org/apps](https://my.telegram.org/apps) 登录，创建应用并拿到 `api_id` / `api_hash`
 4. 在软件 **账号** 页添加 Telegram 账号（填写 api 凭证 + 手机号，完成验证码 / 二级密码）
@@ -73,10 +73,13 @@
 
 ## 版本说明
 
-### v0.2.18（当前）
+### v0.2.19（当前）
 
-- 修复部分账号在重启软件后发送失败、提示找不到目标群的问题：群组身份信息改为本地持久化保存，发送前直接复用，不再依赖临时缓存
-- 发送失败的原因提示更明确，便于自助排查
+- 彻底解决长期使用后群发变慢的问题：数据库自动维护，定期清理过期日志、防止日志表无限膨胀、按需回收磁盘空间
+- 日志正文改为按需精简存储（成功不存正文、异常保留摘要），数据库体积大幅下降
+- 日志页新增「压缩数据库」按钮，老库可一键立即瘦身
+
+### v0.2.18
 
 ### v0.2.17
 
@@ -164,4 +167,4 @@ A: 查看 **参数设置** 与 **发送日志**；默认偏保守（间隔、日
 
 ---
 
-如有问题，请在本仓库 [Issues](https://github.com/myhgjb666/telegram-group-tool/issues) 反馈，并注明版本号（如 v0.2.18）。
+如有问题，请在本仓库 [Issues](https://github.com/myhgjb666/telegram-group-tool/issues) 反馈，并注明版本号（如 v0.2.19）。
