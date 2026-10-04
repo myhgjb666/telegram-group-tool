@@ -2,7 +2,7 @@
 
 多账号 Telegram 定时群发桌面客户端。面向你**已经加入**的群组，支持消息模板、定时计划与发送日志，适合个人社群日常公告与提醒。
 
-> 当前最新版本：**v0.2.23**（Windows）  
+> 当前最新版本：**v0.2.24**（Windows）  
 > 本仓库仅提供安装包与使用说明，便于下载，不包含源代码。
 
 ---
@@ -11,8 +11,8 @@
 
 | 版本 | 文件 | 说明 |
 |---|---|---|
-| **v0.2.23**（最新） | [tg-broadcast-v0.2.23.exe](https://github.com/myhgjb666/telegram-group-tool/releases/download/v0.2.23/tg-broadcast-v0.2.23.exe) | Windows 64 位单文件，解压即用（直接运行） |
-| v0.2.22 | [tg-broadcast-v0.2.22.exe](https://github.com/myhgjb666/telegram-group-tool/releases/download/v0.2.22/tg-broadcast-v0.2.22.exe) | 上一版本 |
+| **v0.2.24**（最新） | [tg-broadcast-v0.2.24.exe](https://github.com/myhgjb666/telegram-group-tool/releases/download/v0.2.24/tg-broadcast-v0.2.24.exe) | Windows 64 位单文件，解压即用（直接运行） |
+| v0.2.23 | [tg-broadcast-v0.2.23.exe](https://github.com/myhgjb666/telegram-group-tool/releases/download/v0.2.23/tg-broadcast-v0.2.23.exe) | 上一版本 |
 
 历史版本请到 [Releases](https://github.com/myhgjb666/telegram-group-tool/releases) 页面选择对应版本下载。
 
@@ -62,7 +62,7 @@
 
 ## 快速上手
 
-1. 下载并运行 `tg-broadcast-v0.2.23.exe`
+1. 下载并运行 `tg-broadcast-v0.2.24.exe`
 2. 注册 / 登录软件账号（新设备通常有试用时长，到期后需续期）
 3. 打开 [my.telegram.org/apps](https://my.telegram.org/apps) 登录，创建应用并拿到 `api_id` / `api_hash`
 4. 在软件 **账号** 页添加 Telegram 账号（填写 api 凭证 + 手机号，完成验证码 / 二级密码）
@@ -73,7 +73,13 @@
 
 ## 版本说明
 
-### v0.2.23（当前）
+### v0.2.24（当前）
+
+- **新增卡密激活**：购买卡密后，在登录窗底部点「已有卡密？激活 / 续期」，输入账号密码与秘钥即可一步完成激活并延长使用时间（已到期账号也能自助续期，无需联系管理员）
+- 登录窗默认只显示「登录 / 注册试用」两个入口，新用户注册试用不受影响
+- 稳定性修复：修复一处可能导致登录窗无法打开的内部错误
+
+### v0.2.23
 
 - 模板变量 `{{random}}` 升级为 **3 位「字母+数字」组合**（如 `k7X`、`1gB`），替代原来位数不定的纯数字，示例写法：`限时福利，进群领取资料 {{random}}`
 - 新增自定义长度写法：`{{random8}}` 生成 8 位、`{{random1}}` 生成 1 位（可用范围 1–64 位）
@@ -197,4 +203,4 @@ A: 先看 **发送日志** 的「状态」列（筛选切到「全部」，别�
 
 ---
 
-如有问题，请在本仓库 [Issues](https://github.com/myhgjb666/telegram-group-tool/issues) 反馈，并注明版本号（如 v0.2.23）。
+如有问题，请在本仓库 [Issues](https://github.com/myhgjb666/telegram-group-tool/issues) 反馈，并注明版本号（如 v0.2.24）。
