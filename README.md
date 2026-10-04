@@ -2,7 +2,7 @@
 
 多账号 Telegram 定时群发桌面客户端。面向你**已经加入**的群组，支持消息模板、定时计划与发送日志，适合个人社群日常公告与提醒。
 
-> 当前最新版本：**v0.2.22**（Windows）  
+> 当前最新版本：**v0.2.23**（Windows）  
 > 本仓库仅提供安装包与使用说明，便于下载，不包含源代码。
 
 ---
@@ -11,8 +11,8 @@
 
 | 版本 | 文件 | 说明 |
 |---|---|---|
-| **v0.2.22**（最新） | [tg-broadcast-v0.2.22.exe](https://github.com/myhgjb666/telegram-group-tool/releases/download/v0.2.22/tg-broadcast-v0.2.22.exe) | Windows 64 位单文件，解压即用（直接运行） |
-| v0.2.21 | [tg-broadcast-v0.2.21.exe](https://github.com/myhgjb666/telegram-group-tool/releases/download/v0.2.21/tg-broadcast-v0.2.21.exe) | 上一版本 |
+| **v0.2.23**（最新） | [tg-broadcast-v0.2.23.exe](https://github.com/myhgjb666/telegram-group-tool/releases/download/v0.2.23/tg-broadcast-v0.2.23.exe) | Windows 64 位单文件，解压即用（直接运行） |
+| v0.2.22 | [tg-broadcast-v0.2.22.exe](https://github.com/myhgjb666/telegram-group-tool/releases/download/v0.2.22/tg-broadcast-v0.2.22.exe) | 上一版本 |
 
 历史版本请到 [Releases](https://github.com/myhgjb666/telegram-group-tool/releases) 页面选择对应版本下载。
 
@@ -62,7 +62,7 @@
 
 ## 快速上手
 
-1. 下载并运行 `tg-broadcast-v0.2.22.exe`
+1. 下载并运行 `tg-broadcast-v0.2.23.exe`
 2. 注册 / 登录软件账号（新设备通常有试用时长，到期后需续期）
 3. 打开 [my.telegram.org/apps](https://my.telegram.org/apps) 登录，创建应用并拿到 `api_id` / `api_hash`
 4. 在软件 **账号** 页添加 Telegram 账号（填写 api 凭证 + 手机号，完成验证码 / 二级密码）
@@ -73,7 +73,14 @@
 
 ## 版本说明
 
-### v0.2.22（当前）
+### v0.2.23（当前）
+
+- 模板变量 `{{random}}` 升级为 **3 位「字母+数字」组合**（如 `k7X`、`1gB`），替代原来位数不定的纯数字，示例写法：`限时福利，进群领取资料 {{random}}`
+- 新增自定义长度写法：`{{random8}}` 生成 8 位、`{{random1}}` 生成 1 位（可用范围 1–64 位）
+- 作用：让同一份文案每次发送都有一处不同，降低被判为「重复内容」的概率，也就是减少「重复内容跳过」的发生
+- 提示：这只是降低完全重复率；要让内容真正有差异，把变量融进正文（如 `{{group_name}}`）比在末尾挂随机串更有效
+
+### v0.2.22
 
 - 修复「刚启动很快、跑半小时左右越来越慢」：这是 Telegram 对重复内容群发的**限流被静默掩盖**导致——底层库默认会把 60 秒以内的限流等待「悄悄睡过去」再重试，不报错、不写日志，于是发送间隔被悄悄拉长而看不出原因。现在这类限流会如实记录到日志（含需要等待的秒数），并把该账号临时停用倒计时
 - 新增发送超时保护：网络 / 代理卡顿时单条发送最多等待 120 秒，超时记为一条失败并继续后续群组，不再出现长时间「卡住不动、日志空白」
@@ -183,11 +190,11 @@ A: 验证码一般发到 Telegram App（不一定是短信）；检查手机号�
 **Q: 发送很慢或经常被跳过？**  
 A: 先看 **发送日志** 的「状态」列（筛选切到「全部」，别只看已发送），再看「耗时」列：  
 ① 大量「重复内容跳过」＝同一份静态文案在「重复内容时间窗」内只能发一个群，到 **参数设置** 把它调小即可提速；  
-② 文案里带 `{{group_name}}`、`{{random}}` 这类变量时，每个群内容都不同，不会被判重复。  
+② 文案里带 `{{group_name}}`、`{{random}}` 这类变量时，每个群内容都不同，不会被判重复（`{{random}}` 每次生成 3 位字母+数字，写成 `{{random8}}` 可加长）。  
 ③ 日志出现「flood_wait Ns」或账号页显示限流倒计时＝被 Telegram 限流，等待倒计时结束即可，同时建议放慢节奏、增加文案变化，避免账号被进一步限制。  
 ④ 「耗时」列出现几十秒甚至 120 秒以上＝网络 / 代理慢，换更稳定的线路比调参数更有效。  
 ⑤ 其他跳过原因（群冷却、日上限、非活跃时段）都在日志与账号页可见。默认值偏保守，可按需微调，但不建议拉满。
 
 ---
 
-如有问题，请在本仓库 [Issues](https://github.com/myhgjb666/telegram-group-tool/issues) 反馈，并注明版本号（如 v0.2.22）。
+如有问题，请在本仓库 [Issues](https://github.com/myhgjb666/telegram-group-tool/issues) 反馈，并注明版本号（如 v0.2.23）。
