@@ -2,7 +2,7 @@
 
 多账号 Telegram 定时群发桌面客户端。面向你**已经加入**的群组，支持消息模板、定时计划与发送日志，适合个人社群日常公告与提醒。
 
-> 当前最新版本：**v0.2.20**（Windows）  
+> 当前最新版本：**v0.2.21**（Windows）  
 > 本仓库仅提供安装包与使用说明，便于下载，不包含源代码。
 
 ---
@@ -11,8 +11,8 @@
 
 | 版本 | 文件 | 说明 |
 |---|---|---|
-| **v0.2.20**（最新） | [tg-broadcast-v0.2.20.exe](https://github.com/myhgjb666/telegram-group-tool/releases/download/v0.2.20/tg-broadcast-v0.2.20.exe) | Windows 64 位单文件，解压即用（直接运行） |
-| v0.2.19 | [tg-broadcast-v0.2.19.exe](https://github.com/myhgjb666/telegram-group-tool/releases/download/v0.2.19/tg-broadcast-v0.2.19.exe) | 上一版本 |
+| **v0.2.21**（最新） | [tg-broadcast-v0.2.21.exe](https://github.com/myhgjb666/telegram-group-tool/releases/download/v0.2.21/tg-broadcast-v0.2.21.exe) | Windows 64 位单文件，解压即用（直接运行） |
+| v0.2.20 | [tg-broadcast-v0.2.20.exe](https://github.com/myhgjb666/telegram-group-tool/releases/download/v0.2.20/tg-broadcast-v0.2.20.exe) | 上一版本 |
 
 历史版本请到 [Releases](https://github.com/myhgjb666/telegram-group-tool/releases) 页面选择对应版本下载。
 
@@ -62,7 +62,7 @@
 
 ## 快速上手
 
-1. 下载并运行 `tg-broadcast-v0.2.20.exe`
+1. 下载并运行 `tg-broadcast-v0.2.21.exe`
 2. 注册 / 登录软件账号（新设备通常有试用时长，到期后需续期）
 3. 打开 [my.telegram.org/apps](https://my.telegram.org/apps) 登录，创建应用并拿到 `api_id` / `api_hash`
 4. 在软件 **账号** 页添加 Telegram 账号（填写 api 凭证 + 手机号，完成验证码 / 二级密码）
@@ -73,7 +73,13 @@
 
 ## 版本说明
 
-### v0.2.20（当前）
+### v0.2.21（当前）
+
+- 修复「改了发送节奏、重启后又变慢」：参数设置页的群冷却、抖动、活跃时段、重复内容开关，之前只在本次运行内生效，重启或更新版本后会静默回到默认的偏保守值（群冷却 60 秒、抖动 10–60 秒），现在会随设置一起保存并在启动时自动恢复
+- 新增「重复内容时间窗」设置项（默认 300 秒）：同一份文案在该时间窗内只发给一个群，防止刷屏被判违规；用静态文案群发时可把它调小来提升发送频率（数值越小越快、被风控风险越高）
+- 状态栏改为显示当前实际生效的冷却与活跃时段，不再固定显示默认值
+
+### v0.2.20
 
 - 修复更新版本后设置丢失的问题：数据（设置、账号、群组、模板等）改为固定保存在系统数据目录（`%LOCALAPPDATA%\tg-broadcast`），不再跟随 exe 位置，换目录运行、更新版本都不会丢
 - 老用户首次启动会自动把旧位置的数据迁移过来（原位置保留作备份），无需任何操作
@@ -168,8 +174,11 @@ A: 确认是 64 位 Windows；可尝试以管理员运行，或把 exe 放到无
 A: 验证码一般发到 Telegram App（不一定是短信）；检查手机号是否国际格式（如 `+86...`）。
 
 **Q: 发送很慢或经常被跳过？**  
-A: 查看 **参数设置** 与 **发送日志**；默认偏保守（间隔、日上限、白天窗口），可按需要微调，但不建议拉满。
+A: 先看 **发送日志** 的「状态」列（筛选切到「全部」，别只看已发送）：  
+① 大量「重复内容跳过」＝同一份静态文案在「重复内容时间窗」内只能发一个群，到 **参数设置** 把它调小即可提速；  
+② 文案里带 `{{group_name}}`、`{{random}}` 这类变量时，每个群内容都不同，不会被判重复。  
+③ 其他跳过原因（群冷却、日上限、非活跃时段、账号被限流）都在日志与账号页可见。默认值偏保守，可按需微调，但不建议拉满。
 
 ---
 
-如有问题，请在本仓库 [Issues](https://github.com/myhgjb666/telegram-group-tool/issues) 反馈，并注明版本号（如 v0.2.20）。
+如有问题，请在本仓库 [Issues](https://github.com/myhgjb666/telegram-group-tool/issues) 反馈，并注明版本号（如 v0.2.21）。
