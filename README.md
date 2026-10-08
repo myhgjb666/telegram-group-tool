@@ -2,7 +2,7 @@
 
 多账号 Telegram 定时群发桌面客户端。面向你**已经加入**的群组，支持消息模板、定时计划与发送日志，适合个人社群日常公告与提醒。
 
-> 当前最新版本：**v0.2.25**（Windows）  
+> 当前最新版本：**v0.2.26**（Windows）  
 > 本仓库仅提供安装包与使用说明，便于下载，不包含源代码。
 
 ---
@@ -11,8 +11,8 @@
 
 | 版本 | 文件 | 说明 |
 |---|---|---|
-| **v0.2.25**（最新） | [tg-broadcast-v0.2.25.exe](https://github.com/myhgjb666/telegram-group-tool/releases/download/v0.2.25/tg-broadcast-v0.2.25.exe) | Windows 64 位单文件，解压即用（直接运行） |
-| v0.2.24 | [tg-broadcast-v0.2.24.exe](https://github.com/myhgjb666/telegram-group-tool/releases/download/v0.2.24/tg-broadcast-v0.2.24.exe) | 上一版本 |
+| **v0.2.26**（最新） | [tg-broadcast-v0.2.26.exe](https://github.com/myhgjb666/telegram-group-tool/releases/download/v0.2.26/tg-broadcast-v0.2.26.exe) | Windows 64 位单文件，解压即用（直接运行） |
+| v0.2.25 | [tg-broadcast-v0.2.25.exe](https://github.com/myhgjb666/telegram-group-tool/releases/download/v0.2.25/tg-broadcast-v0.2.25.exe) | 上一版本 |
 
 历史版本请到 [Releases](https://github.com/myhgjb666/telegram-group-tool/releases) 页面选择对应版本下载。
 
@@ -62,7 +62,7 @@
 
 ## 快速上手
 
-1. 下载并运行 `tg-broadcast-v0.2.25.exe`
+1. 下载并运行 `tg-broadcast-v0.2.26.exe`
 2. 注册 / 登录软件账号（新设备通常有试用时长，到期后需续期）
 3. 打开 [my.telegram.org/apps](https://my.telegram.org/apps) 登录，创建应用并拿到 `api_id` / `api_hash`
 4. 在软件 **账号** 页添加 Telegram 账号（填写 api 凭证 + 手机号，完成验证码 / 二级密码）
@@ -73,7 +73,12 @@
 
 ## 版本说明
 
-### v0.2.25（当前）
+### v0.2.26（当前）
+
+- **发送中重新拉取群 / 改勾选，正在执行的计划现在能实时跟上**：以前一轮发送开始时会把目标群列表「拍快照」，之后无论怎么重新拉取群、改勾选，本轮都不变（显示的总数一直是开跑那一刻的），要等下一轮才生效。现在执行中每 30 秒自动同步一次目标清单——新勾选的群并入本轮、总数实时更新；被取消勾选的群自动跳过
+- **「已选」数量口径更准**：拉黑的群即使还勾着，也不再计入「已选」数（拉黑的群本来就不会发送）。有拉黑群时账号行会显示「已选 X/Y · 拉黑 N 不计」，右上角统计同步显示「N 个拉黑」，不再出现「显示已选 343、实际只发 328」的困惑
+
+### v0.2.25
 
 - **修复长时间运行后变慢**：网络连接（尤其中转线路）在连续使用一段时间后会整体降速，而软件底层库只判断「连接是否活着」，不判断「连接是否变慢」——小数据包照样能通，于是它一直认为连接正常、永远不会自己换连接，只能靠手动重连代理或重启软件来恢复。现在软件会主动给连接做体检：连接用到约 25 分钟自动换一条新连接；连续多次发送明显变慢也自动换连接；单次发送卡死超时后立刻换连接再继续
 - **发送日志的「耗时」列更准了**：现在只统计「这一条发送本身」的耗时，不再把发送间隔（冷却、随机抖动）算进去，所以这一列能直接看出网络/代理是否变慢
@@ -210,4 +215,4 @@ A: 先看 **发送日志** 的「状态」列（筛选切到「全部」，别�
 
 ---
 
-如有问题，请在本仓库 [Issues](https://github.com/myhgjb666/telegram-group-tool/issues) 反馈，并注明版本号（如 v0.2.25）。
+如有问题，请在本仓库 [Issues](https://github.com/myhgjb666/telegram-group-tool/issues) 反馈，并注明版本号（如 v0.2.26）。
