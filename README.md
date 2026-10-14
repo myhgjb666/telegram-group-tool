@@ -1,13 +1,17 @@
-# Telegram 桌面群发工具
+# Telegram 桌面群发工具 · Telegram Bulk Message Sender
 
-多账号 Telegram 定时群发桌面客户端。面向你**已经加入**的群组，支持消息模板、定时计划与发送日志，适合个人社群日常公告与提醒。
+**中文** ｜ [English](README.en.md)
+
+多账号 **Telegram 群发** 桌面客户端（Telegram bulk message / bulk messaging sender）。面向你**已经加入**的群组，支持消息模板、定时计划与发送日志，适合个人社群日常公告与提醒。
+
+关键词：Telegram 群发、TG 群发工具、电报群发、Telegram 批量发送、Telegram 群发软件、Telegram 群发助手、多账号群发、Telegram 自动群发、电报批量私信、TG 定时群发、Telegram bulk message sender、Telegram mass message tool、Telegram mass DM software、Telegram group broadcast tool、Telegram multi-account sender、Telegram marketing tool for Windows。
 
 > 当前最新版本：**v0.2.28**（Windows）  
 > 本仓库仅提供安装包与使用说明，便于下载，不包含源代码。
 
 ---
 
-## 下载
+## 下载（Download）
 
 | 版本 | 文件 | 说明 |
 |---|---|---|
@@ -40,23 +44,23 @@
 
 ### 登录
 
-![登录](screenshots/04-login.png)
+![Telegram 群发工具 登录界面](screenshots/04-login.png)
 
 ### 账号管理
 
-![账号](screenshots/01-accounts.png)
+![Telegram 多账号群发 账号管理界面](screenshots/01-accounts.png)
 
 ### 群组
 
-![群组](screenshots/02-groups.png)
+![Telegram 群发 群组选择界面](screenshots/02-groups.png)
 
 ### 定时计划
 
-![定时计划](screenshots/03-schedules.png)
+![Telegram 定时群发 计划界面](screenshots/03-schedules.png)
 
 ### 添加 Telegram 账号
 
-![添加账号](screenshots/05-add-account.png)
+![添加 Telegram 群发账号](screenshots/05-add-account.png)
 
 ---
 
@@ -236,3 +240,11 @@ A: 检查群列表该行是否标记为「拉黑」（第 5 列显示「是」�
 A: 意思是登录请求的加密连接被中途替换了，跟你的账号无关。按提示里的签发者判断：① 提示「证书由 XXX 签发但不匹配地址 / 不是常见公共证书颁发机构」→ 当前 VPN / 代理 / 公司网络对该连接做了拦截，**换一个节点**，或在代理规则里让授权服务地址直连（`DIRECT`）后重试；② 提示「证书已过期」→ 升级到最新版本；③ 提示「证书正常但本机校验失败」→ 多为**系统时间不对**（右键任务栏时间 → 校准）或本机根证书过期。换 VPN 后出现这个提示，基本都属于第 ① 种。
 
 如有问题，请在本仓库 [Issues](https://github.com/myhgjb666/telegram-group-tool/issues) 反馈，并注明版本号（如 v0.2.28）。
+
+---
+
+## 关键词 / Keywords
+
+Telegram 群发 · TG 群发工具 · 电报群发 · Telegram 批量发送 · Telegram 群发软件 · Telegram 群发助手 · Telegram 多账号群发 · Telegram 自动群发 · 电报批量私信 · TG 定时群发 · TG 群发机器人 · Telegram 社群运营工具 · Telegram 消息群发客户端 · Windows Telegram 群发
+
+Telegram bulk message sender · Telegram bulk messaging · Telegram mass message · Telegram mass DM tool · Telegram mass DM software · Telegram group broadcast · Telegram broadcast tool · Telegram multi-account sender · Telegram auto message sender · Telegram message automation · Telegram marketing tool · Telegram bulk sender for Windows · Telegram group messaging software · send bulk messages to Telegram groups · Telegram desktop broadcast app
