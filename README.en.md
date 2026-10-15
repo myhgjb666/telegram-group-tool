@@ -6,7 +6,7 @@ A multi-account **Telegram bulk message / mass DM** desktop client for Windows. 
 
 **Keywords:** telegram bulk message sender, telegram bulk messaging, telegram mass message tool, telegram mass DM software, telegram group broadcast tool, telegram multi-account sender, telegram auto message sender, telegram message automation, telegram marketing tool, telegram bulk sender for Windows, send bulk messages to telegram groups, telegram group messaging software, telegram broadcast desktop app, TG bulk sender, Telegram 群发 / TG 群发工具 / 电报群发.
 
-> Latest version: **v0.2.29** (Windows)  
+> Latest version: **v0.2.30** (Windows)  
 > This repository hosts the installer and usage documentation for easy download. Source code is not included.
 
 ---
@@ -15,8 +15,8 @@ A multi-account **Telegram bulk message / mass DM** desktop client for Windows. 
 
 | Version | File | Notes |
 |---|---|---|
-| **v0.2.29** (latest) | [tg-broadcast-v0.2.29.exe](https://github.com/myhgjb666/telegram-group-tool/releases/download/v0.2.29/tg-broadcast-v0.2.29.exe) | Windows 64-bit single file, run directly |
-| v0.2.28 | [tg-broadcast-v0.2.28.exe](https://github.com/myhgjb666/telegram-group-tool/releases/download/v0.2.28/tg-broadcast-v0.2.28.exe) | Previous release |
+| **v0.2.30** (latest) | [tg-broadcast-v0.2.30.exe](https://github.com/myhgjb666/telegram-group-tool/releases/download/v0.2.30/tg-broadcast-v0.2.30.exe) | Windows 64-bit single file, run directly |
+| v0.2.29 | [tg-broadcast-v0.2.29.exe](https://github.com/myhgjb666/telegram-group-tool/releases/download/v0.2.29/tg-broadcast-v0.2.29.exe) | Previous release |
 
 Older builds are available on the [Releases](https://github.com/myhgjb666/telegram-group-tool/releases) page.
 
@@ -36,7 +36,7 @@ If your antivirus blocks the first launch, choose "Run anyway" or add an excepti
 - **Delivery log** — success / failure reasons, per-message duration, searchable and paginated
 - **Keyword listener** — auto-reply to group messages or private chats when a keyword matches, with cooldown and daily cap
 - **Public group search** — search public groups / channels by keyword, join at a limited rate and add them as targets
-- **Customer outreach** — import your own customers' phone numbers, detect which of them have Telegram, and send one-to-one follow-ups (own customers only, with permanent opt-out and daily caps)
+- **Customer outreach** — import your own customers' phone numbers, detect which of them have Telegram, and send one-to-one follow-ups (own customers only, with permanent opt-out and daily caps); detected numbers can be cleared from your Telegram contacts afterwards
 - **Restriction center** — Telegram flood-wait countdown and official @SpamBot restriction status
 
 ---
@@ -67,7 +67,7 @@ If your antivirus blocks the first launch, choose "Run anyway" or add an excepti
 
 ## Quick start
 
-1. Download and run `tg-broadcast-v0.2.29.exe`
+1. Download and run `tg-broadcast-v0.2.30.exe`
 2. Sign up / sign in to the app account (new devices usually get a trial period, then a license key is needed)
 3. Open [my.telegram.org/apps](https://my.telegram.org/apps), create an application and copy your `api_id` / `api_hash`
 4. On the **Accounts** page, add a Telegram account (API credentials + phone number, then the login code / 2FA password)
@@ -78,7 +78,15 @@ If your antivirus blocks the first launch, choose "Run anyway" or add an excepti
 
 ## Changelog
 
-### v0.2.29 (current)
+### v0.2.30 (current)
+
+- **New "Remove from TG contacts" action in the Customer outreach tab** — detecting numbers adds them to your Telegram account's contact list (that is how Telegram's lookup works and it cannot be avoided). You can now clear the detected customers out of the address book in one click, keeping the account tidy
+- Cleanup is submitted in batches so Telegram does not reject it outright; when the request fails the app says "retry later" instead of pretending the address book is clean. The status line and the list show how many are still pending
+- **Note**: cleanup invalidates that customer's Telegram addressing info, so re-detection is needed before you can DM them again. Clean up after your messages have gone out
+- Your customer records, delivery logs and opt-out records are all unaffected — customers who opted out stay permanently unsent
+- Fixed an internal bug: the cleanup call read the wrong field from Telegram's reply, so it always reported "0 removed"
+
+### v0.2.29
 
 - **New "Customer outreach" tab** — follow up with customers from your own contact base. Paste or import phone numbers (supports `number,note`, auto-deduplicated) → pick an account to detect which numbers have Telegram → send follow-up messages one by one
 - **Three detection outcomes** — has Telegram (contactable), not registered or the user hides their number from being found (follow up by phone instead), or the lookup itself failed (retryable)
@@ -248,4 +256,4 @@ A: Check whether the row is marked blacklisted (column 5 shows "yes", or the top
 **Q: Sign-in says "cannot securely connect to the licensing service / certificate verification failed"?**  
 A: It means the encrypted connection used for sign-in was replaced in transit — unrelated to your account. Use the issuer shown in the message: ① "certificate issued by XXX but does not match the host / is not a common public CA" → your VPN / proxy / corporate network is intercepting the connection; **switch to another node**, or add a `DIRECT` rule for the licensing host and retry. ② "certificate expired" → update to the latest build. ③ "certificate is valid but local verification failed" → usually a **wrong system clock** (right-click the taskbar clock → sync) or an outdated local root store. Seeing this right after changing VPN is almost always case ①.
 
-For questions or bug reports, please open an [issue](https://github.com/myhgjb666/telegram-group-tool/issues) and include the version number (e.g. v0.2.29).
+For questions or bug reports, please open an [issue](https://github.com/myhgjb666/telegram-group-tool/issues) and include the version number (e.g. v0.2.30).
