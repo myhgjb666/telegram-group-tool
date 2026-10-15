@@ -6,7 +6,7 @@ A multi-account **Telegram bulk message / mass DM** desktop client for Windows. 
 
 **Keywords:** telegram bulk message sender, telegram bulk messaging, telegram mass message tool, telegram mass DM software, telegram group broadcast tool, telegram multi-account sender, telegram auto message sender, telegram message automation, telegram marketing tool, telegram bulk sender for Windows, send bulk messages to telegram groups, telegram group messaging software, telegram broadcast desktop app, TG bulk sender, Telegram 群发 / TG 群发工具 / 电报群发.
 
-> Latest version: **v0.2.28** (Windows)  
+> Latest version: **v0.2.29** (Windows)  
 > This repository hosts the installer and usage documentation for easy download. Source code is not included.
 
 ---
@@ -15,8 +15,8 @@ A multi-account **Telegram bulk message / mass DM** desktop client for Windows. 
 
 | Version | File | Notes |
 |---|---|---|
-| **v0.2.28** (latest) | [tg-broadcast-v0.2.28.exe](https://github.com/myhgjb666/telegram-group-tool/releases/download/v0.2.28/tg-broadcast-v0.2.28.exe) | Windows 64-bit single file, run directly |
-| v0.2.27 | [tg-broadcast-v0.2.27.exe](https://github.com/myhgjb666/telegram-group-tool/releases/download/v0.2.27/tg-broadcast-v0.2.27.exe) | Previous release |
+| **v0.2.29** (latest) | [tg-broadcast-v0.2.29.exe](https://github.com/myhgjb666/telegram-group-tool/releases/download/v0.2.29/tg-broadcast-v0.2.29.exe) | Windows 64-bit single file, run directly |
+| v0.2.28 | [tg-broadcast-v0.2.28.exe](https://github.com/myhgjb666/telegram-group-tool/releases/download/v0.2.28/tg-broadcast-v0.2.28.exe) | Previous release |
 
 Older builds are available on the [Releases](https://github.com/myhgjb666/telegram-group-tool/releases) page.
 
@@ -36,6 +36,7 @@ If your antivirus blocks the first launch, choose "Run anyway" or add an excepti
 - **Delivery log** — success / failure reasons, per-message duration, searchable and paginated
 - **Keyword listener** — auto-reply to group messages or private chats when a keyword matches, with cooldown and daily cap
 - **Public group search** — search public groups / channels by keyword, join at a limited rate and add them as targets
+- **Customer outreach** — import your own customers' phone numbers, detect which of them have Telegram, and send one-to-one follow-ups (own customers only, with permanent opt-out and daily caps)
 - **Restriction center** — Telegram flood-wait countdown and official @SpamBot restriction status
 
 ---
@@ -66,7 +67,7 @@ If your antivirus blocks the first launch, choose "Run anyway" or add an excepti
 
 ## Quick start
 
-1. Download and run `tg-broadcast-v0.2.28.exe`
+1. Download and run `tg-broadcast-v0.2.29.exe`
 2. Sign up / sign in to the app account (new devices usually get a trial period, then a license key is needed)
 3. Open [my.telegram.org/apps](https://my.telegram.org/apps), create an application and copy your `api_id` / `api_hash`
 4. On the **Accounts** page, add a Telegram account (API credentials + phone number, then the login code / 2FA password)
@@ -77,7 +78,17 @@ If your antivirus blocks the first launch, choose "Run anyway" or add an excepti
 
 ## Changelog
 
-### v0.2.28 (current)
+### v0.2.29 (current)
+
+- **New "Customer outreach" tab** — follow up with customers from your own contact base. Paste or import phone numbers (supports `number,note`, auto-deduplicated) → pick an account to detect which numbers have Telegram → send follow-up messages one by one
+- **Three detection outcomes** — has Telegram (contactable), not registered or the user hides their number from being found (follow up by phone instead), or the lookup itself failed (retryable)
+- **A reply of "opt out" stops everything permanently** — if the customer replies with "退订 / T / TD / UNSUBSCRIBE", the lead is permanently marked, a single confirmation is sent back, and no task will ever message them again. Opt-out takes priority over every other rule
+- **Hard caps to keep it from drifting** — at most 1000 numbers per import, a per-account daily detection cap, and no export of detection results; direct messages consume the *same* daily quota as group broadcasts; DM tasks are one-shot with no recurring schedule option
+- **Fixed duplicate execution of monitor rules** — repeatedly editing a monitor rule used to leave the old handler registered, so a single incoming message could be processed several times (duplicate auto-replies, inflated match counts). Saving a rule now correctly replaces the old one
+- **Scope** — this feature is for your own customers, i.e. people who left their number expecting to be contacted. Do not use it on numbers collected elsewhere; that is cold outreach, which risks bans and may violate personal-data protection laws
+- Note: detecting numbers adds them to your Telegram account's contact list (that is how Telegram's lookup works and it cannot be avoided). You can delete those contacts in the Telegram app afterwards
+
+### v0.2.28
 
 - **A failed "cannot securely connect to the licensing service" sign-in now tells you why.** Previously it only said "certificate verification failed", which did not distinguish an expired certificate from a hijacked connection. The app now inspects the certificate actually presented, and reports one of three cases: ① unknown issuer or hostname mismatch → the encrypted connection was replaced by a VPN / proxy / corporate gateway; switch nodes or let the licensing host bypass the proxy; ② certificate expired → update to the latest build; ③ certificate is valid but local verification still fails → usually a **wrong system clock** or an outdated local root store; sync your time first
 - **Error messages no longer reveal the licensing service domain**, to avoid exposing the backend address
@@ -237,4 +248,4 @@ A: Check whether the row is marked blacklisted (column 5 shows "yes", or the top
 **Q: Sign-in says "cannot securely connect to the licensing service / certificate verification failed"?**  
 A: It means the encrypted connection used for sign-in was replaced in transit — unrelated to your account. Use the issuer shown in the message: ① "certificate issued by XXX but does not match the host / is not a common public CA" → your VPN / proxy / corporate network is intercepting the connection; **switch to another node**, or add a `DIRECT` rule for the licensing host and retry. ② "certificate expired" → update to the latest build. ③ "certificate is valid but local verification failed" → usually a **wrong system clock** (right-click the taskbar clock → sync) or an outdated local root store. Seeing this right after changing VPN is almost always case ①.
 
-For questions or bug reports, please open an [issue](https://github.com/myhgjb666/telegram-group-tool/issues) and include the version number (e.g. v0.2.28).
+For questions or bug reports, please open an [issue](https://github.com/myhgjb666/telegram-group-tool/issues) and include the version number (e.g. v0.2.29).
