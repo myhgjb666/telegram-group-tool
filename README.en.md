@@ -6,7 +6,7 @@ A multi-account **Telegram bulk message / mass DM** desktop client for Windows. 
 
 **Keywords:** telegram bulk message sender, telegram bulk messaging, telegram mass message tool, telegram mass DM software, telegram group broadcast tool, telegram multi-account sender, telegram auto message sender, telegram message automation, telegram marketing tool, telegram bulk sender for Windows, send bulk messages to telegram groups, telegram group messaging software, telegram broadcast desktop app, TG bulk sender, Telegram 群发 / TG 群发工具 / 电报群发.
 
-> Latest version: **v0.2.30** (Windows)  
+> Latest version: **v0.2.31** (Windows)  
 > This repository hosts the installer and usage documentation for easy download. Source code is not included.
 
 ---
@@ -15,8 +15,8 @@ A multi-account **Telegram bulk message / mass DM** desktop client for Windows. 
 
 | Version | File | Notes |
 |---|---|---|
-| **v0.2.30** (latest) | [tg-broadcast-v0.2.30.exe](https://github.com/myhgjb666/telegram-group-tool/releases/download/v0.2.30/tg-broadcast-v0.2.30.exe) | Windows 64-bit single file, run directly |
-| v0.2.29 | [tg-broadcast-v0.2.29.exe](https://github.com/myhgjb666/telegram-group-tool/releases/download/v0.2.29/tg-broadcast-v0.2.29.exe) | Previous release |
+| **v0.2.31** (latest) | [tg-broadcast-v0.2.31.exe](https://github.com/myhgjb666/telegram-group-tool/releases/download/v0.2.31/tg-broadcast-v0.2.31.exe) | Windows 64-bit single file, run directly |
+| v0.2.30 | [tg-broadcast-v0.2.30.exe](https://github.com/myhgjb666/telegram-group-tool/releases/download/v0.2.30/tg-broadcast-v0.2.30.exe) | Previous release |
 
 Older builds are available on the [Releases](https://github.com/myhgjb666/telegram-group-tool/releases) page.
 
@@ -67,7 +67,7 @@ If your antivirus blocks the first launch, choose "Run anyway" or add an excepti
 
 ## Quick start
 
-1. Download and run `tg-broadcast-v0.2.30.exe`
+1. Download and run `tg-broadcast-v0.2.31.exe`
 2. Sign up / sign in to the app account (new devices usually get a trial period, then a license key is needed)
 3. Open [my.telegram.org/apps](https://my.telegram.org/apps), create an application and copy your `api_id` / `api_hash`
 4. On the **Accounts** page, add a Telegram account (API credentials + phone number, then the login code / 2FA password)
@@ -78,7 +78,13 @@ If your antivirus blocks the first launch, choose "Run anyway" or add an excepti
 
 ## Changelog
 
-### v0.2.30 (current)
+### v0.2.31 (current)
+
+- **Device info is now detected from your real system** — the device name and OS version reported when signing in to Telegram are no longer a single hard-coded app name; they are detected from the machine you run on (Windows / macOS report their own values). Settings → "Device info" shows exactly what is reported
+- Previously every account showed the same device name in Telegram's *Active Sessions*, which made the third-party client obvious and added a correlation link between accounts on one machine. Now it looks like an ordinary computer
+- Already signed-in accounts stay logged in; the new device name shows from the next connection
+
+### v0.2.30
 
 - **New "Remove from TG contacts" action in the Customer outreach tab** — detecting numbers adds them to your Telegram account's contact list (that is how Telegram's lookup works and it cannot be avoided). You can now clear the detected customers out of the address book in one click, keeping the account tidy
 - Cleanup is submitted in batches so Telegram does not reject it outright; when the request fails the app says "retry later" instead of pretending the address book is clean. The status line and the list show how many are still pending
@@ -256,4 +262,4 @@ A: Check whether the row is marked blacklisted (column 5 shows "yes", or the top
 **Q: Sign-in says "cannot securely connect to the licensing service / certificate verification failed"?**  
 A: It means the encrypted connection used for sign-in was replaced in transit — unrelated to your account. Use the issuer shown in the message: ① "certificate issued by XXX but does not match the host / is not a common public CA" → your VPN / proxy / corporate network is intercepting the connection; **switch to another node**, or add a `DIRECT` rule for the licensing host and retry. ② "certificate expired" → update to the latest build. ③ "certificate is valid but local verification failed" → usually a **wrong system clock** (right-click the taskbar clock → sync) or an outdated local root store. Seeing this right after changing VPN is almost always case ①.
 
-For questions or bug reports, please open an [issue](https://github.com/myhgjb666/telegram-group-tool/issues) and include the version number (e.g. v0.2.30).
+For questions or bug reports, please open an [issue](https://github.com/myhgjb666/telegram-group-tool/issues) and include the version number (e.g. v0.2.31).

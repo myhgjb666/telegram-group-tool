@@ -6,7 +6,7 @@
 
 关键词：Telegram 群发、TG 群发工具、电报群发、Telegram 批量发送、Telegram 群发软件、Telegram 群发助手、多账号群发、Telegram 自动群发、电报批量私信、TG 定时群发、Telegram bulk message sender、Telegram mass message tool、Telegram mass DM software、Telegram group broadcast tool、Telegram multi-account sender、Telegram marketing tool for Windows。
 
-> 当前最新版本：**v0.2.30**（Windows）  
+> 当前最新版本：**v0.2.31**（Windows）  
 > 本仓库仅提供安装包与使用说明，便于下载，不包含源代码。
 
 ---
@@ -15,8 +15,8 @@
 
 | 版本 | 文件 | 说明 |
 |---|---|---|
-| **v0.2.30**（最新） | [tg-broadcast-v0.2.30.exe](https://github.com/myhgjb666/telegram-group-tool/releases/download/v0.2.30/tg-broadcast-v0.2.30.exe) | Windows 64 位单文件，解压即用（直接运行） |
-| v0.2.29 | [tg-broadcast-v0.2.29.exe](https://github.com/myhgjb666/telegram-group-tool/releases/download/v0.2.29/tg-broadcast-v0.2.29.exe) | 上一版本 |
+| **v0.2.31**（最新） | [tg-broadcast-v0.2.31.exe](https://github.com/myhgjb666/telegram-group-tool/releases/download/v0.2.31/tg-broadcast-v0.2.31.exe) | Windows 64 位单文件，解压即用（直接运行） |
+| v0.2.30 | [tg-broadcast-v0.2.30.exe](https://github.com/myhgjb666/telegram-group-tool/releases/download/v0.2.30/tg-broadcast-v0.2.30.exe) | 上一版本 |
 
 历史版本请到 [Releases](https://github.com/myhgjb666/telegram-group-tool/releases) 页面选择对应版本下载。
 
@@ -67,7 +67,7 @@
 
 ## 快速上手
 
-1. 下载并运行 `tg-broadcast-v0.2.30.exe`
+1. 下载并运行 `tg-broadcast-v0.2.31.exe`
 2. 注册 / 登录软件账号（新设备通常有试用时长，到期后需续期）
 3. 打开 [my.telegram.org/apps](https://my.telegram.org/apps) 登录，创建应用并拿到 `api_id` / `api_hash`
 4. 在软件 **账号** 页添加 Telegram 账号（填写 api 凭证 + 手机号，完成验证码 / 二级密码）
@@ -78,7 +78,13 @@
 
 ## 版本说明
 
-### v0.2.30（当前）
+### v0.2.31（当前）
+
+- **设备信息改为按本机真实系统识别**：登录 Telegram 时上报的设备名称、系统版本不再是一个统一的软件名，而是按你电脑的实际情况自动识别（Windows / macOS 各自对应），设置页「本机设备信息」可查看当前上报的内容
+- 以前所有账号在 Telegram「活跃会话」里显示同一个设备名，既容易一眼看出是第三方工具，也让同机账号之间多了一条关联线索；现在看起来就是一台普通电脑
+- 已登录的账号不会掉线，下次连接起显示新设备名
+
+### v0.2.30
 
 - **「客户联系」新增「移除 TG 通讯录」**：识别号码时，这些号码会被加入你 Telegram 账号的通讯录（这是 Telegram 提供的查询方式，无法避免）。现在可以一键把已识别出 TG 的客户从通讯录里清掉，让账号保持干净
 - 清理分批提交，不会被 Telegram 一次性拒绝；请求失败时如实提示「稍后重试」，不会谎报已清理。状态栏与列表会显示还有多少位待清理
@@ -258,7 +264,7 @@ A: 检查群列表该行是否标记为「拉黑」（第 5 列显示「是」�
 **Q: 登录时提示「无法安全连接授权服务 / 证书校验失败」？**  
 A: 意思是登录请求的加密连接被中途替换了，跟你的账号无关。按提示里的签发者判断：① 提示「证书由 XXX 签发但不匹配地址 / 不是常见公共证书颁发机构」→ 当前 VPN / 代理 / 公司网络对该连接做了拦截，**换一个节点**，或在代理规则里让授权服务地址直连（`DIRECT`）后重试；② 提示「证书已过期」→ 升级到最新版本；③ 提示「证书正常但本机校验失败」→ 多为**系统时间不对**（右键任务栏时间 → 校准）或本机根证书过期。换 VPN 后出现这个提示，基本都属于第 ① 种。
 
-如有问题，请在本仓库 [Issues](https://github.com/myhgjb666/telegram-group-tool/issues) 反馈，并注明版本号（如 v0.2.30）。
+如有问题，请在本仓库 [Issues](https://github.com/myhgjb666/telegram-group-tool/issues) 反馈，并注明版本号（如 v0.2.31）。
 
 ---
 
