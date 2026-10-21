@@ -6,7 +6,7 @@
 
 关键词：Telegram 群发、TG 群发工具、电报群发、Telegram 批量发送、Telegram 群发软件、Telegram 群发助手、多账号群发、Telegram 自动群发、电报批量私信、TG 定时群发、Telegram bulk message sender、Telegram mass message tool、Telegram mass DM software、Telegram group broadcast tool、Telegram multi-account sender、Telegram marketing tool for Windows。
 
-> 当前最新版本：**v0.2.31**（Windows）  
+> 当前最新版本：**v0.2.32**（Windows）  
 > 本仓库仅提供安装包与使用说明，便于下载，不包含源代码。
 
 ---
@@ -15,8 +15,8 @@
 
 | 版本 | 文件 | 说明 |
 |---|---|---|
-| **v0.2.31**（最新） | [tg-broadcast-v0.2.31.exe](https://github.com/myhgjb666/telegram-group-tool/releases/download/v0.2.31/tg-broadcast-v0.2.31.exe) | Windows 64 位单文件，解压即用（直接运行） |
-| v0.2.30 | [tg-broadcast-v0.2.30.exe](https://github.com/myhgjb666/telegram-group-tool/releases/download/v0.2.30/tg-broadcast-v0.2.30.exe) | 上一版本 |
+| **v0.2.32**（最新） | [tg-broadcast-v0.2.32.exe](https://github.com/myhgjb666/telegram-group-tool/releases/download/v0.2.32/tg-broadcast-v0.2.32.exe) | Windows 64 位单文件，解压即用（直接运行） |
+| v0.2.31 | [tg-broadcast-v0.2.31.exe](https://github.com/myhgjb666/telegram-group-tool/releases/download/v0.2.31/tg-broadcast-v0.2.31.exe) | 上一版本 |
 
 历史版本请到 [Releases](https://github.com/myhgjb666/telegram-group-tool/releases) 页面选择对应版本下载。
 
@@ -29,6 +29,7 @@
 ## 功能亮点
 
 - **多账号管理**：添加多个 Telegram 账号，查看状态与今日已发 / 日上限
+- **协议号批量登录**：直接把已经登录好的 `.session` 文件导进来，**不发验证码、不走二步验证**；支持一次多选文件或选中整个目录批量导入，逐个验证并显示成功 / 跳过 / 失败清单
 - **群组选择**：同步已加入群组，按任务勾选发送目标
 - **消息模板**：支持多文案轮换与变量（日期、时间、群名等）
 - **定时计划**：Cron 或固定间隔，可立即执行 / 暂停
@@ -67,18 +68,70 @@
 
 ## 快速上手
 
-1. 下载并运行 `tg-broadcast-v0.2.31.exe`
+1. 下载并运行 `tg-broadcast-v0.2.32.exe`
 2. 注册 / 登录软件账号（新设备通常有试用时长，到期后需续期）
 3. 打开 [my.telegram.org/apps](https://my.telegram.org/apps) 登录，创建应用并拿到 `api_id` / `api_hash`
 4. 在软件 **账号** 页添加 Telegram 账号（填写 api 凭证 + 手机号，完成验证码 / 二级密码）
+   - 如果手上是**已经登录好的 `.session` 协议号**，点「导入 .session…」即可跳过验证码，见下一节
 5. 在 **群组** 页发现并勾选目标群
 6. 在 **消息模板**、**定时计划** 中创建内容与计划，开始发送
 
 ---
 
+## 用 session 协议号批量登录
+
+手上已经有一批登录好的协议号（`.session` 文件）时，不需要一个个走短信验证码，直接在 **账号** 页点 **「导入 .session…」**。
+
+### 步骤
+
+1. **选文件**：点「选择文件…」可一次多选，点「选择目录…」可整个文件夹导入（勾「包含子目录」会连同子文件夹一起扫）。
+   选完立即在本地解析，列表里逐行显示结果，例如 `Telethon · DC 2`；坏文件在联网之前就标红。
+2. **填一套自己的 api 凭证**：`api_id` / `api_hash`。会话文件里**不存 api_hash**，Telegram 建连时又必须带一对，所以这一步绕不开（Pyrogram 文件里带 `api_id` 时会自动回填）。勾「记住」后，以后导入只需选文件。
+3. **点「导入并验证」**：程序连上 Telegram 取到账号信息后才写库。列表按 **绿色成功 / 黄色跳过（该账号已在列表）/ 红色失败** 显示，鼠标悬停看完整原因。
+
+### 支持的格式
+
+| 格式 | 是否支持 | 说明 |
+|---|---|---|
+| Telethon `.session` | ✅ | 最常见 |
+| Pyrogram `.session` | ✅ | 无服务器地址，按 DC 表补齐 |
+| 纯文本 StringSession | ✅ | `.session.txt` / `.txt`，有些渠道给的是文本 |
+| Telegram Desktop 的 `tdata` 文件夹 | ❌ | 结构完全不同，不是同一种会话文件 |
+
+**不会改动你的原文件**：程序只读取里面的 auth_key，用的是临时副本，读完即删，原文件字节与修改时间都不变。
+
+### 批量导入的节奏
+
+- 顺序执行，**每个文件之间停 1～2 秒**（含随机抖动），不会让几十个账号在同一秒接连上线。
+- 单个文件失败只记一行，**继续下一个**，不会因为一个坏号中断整批。
+- 只有 api 凭证本身填错时才会整体中止，避免把同一个错误重复几十遍。
+- 中途可点「停止」；跑完后窗口不会自动关闭，方便查看哪些失败了。
+
+### 三个必须知道的限制
+
+1. **`.session` 等于这个账号的完整控制权**。别人给的号，对方手里留着同一份密钥，随时能登回去把你挤下线。导入后建议到手机端 **设置 → 设备** 把不认识的会话全部下线。
+2. **一条会话的「设备」显示不会因为导入而改变**。那里显示的是当初授权时的设备（可能是手机或某个库），本地改设备信息只影响之后新建的授权。
+3. **两步验证密码不会保存在文件里**。会话活着时用不到；一旦失效要重新登录，需要你自己记得那个密码。
+
+导入后的账号和手动登录的账号**完全一样**：断线重连、群发、定时计划、关键词监听、客户联系、日配额全部通用，没有区别对待。
+
+---
+
 ## 版本说明
 
-### v0.2.31（当前）
+### v0.2.32（当前）
+
+- **新增协议号批量登录**：账号页新增「导入 .session…」，把已经登录好的 `.session` 文件直接导进来，**不需要短信验证码、不需要二步验证**
+- **支持一次导入一批**：可多选文件，也可以直接选整个目录（可含子目录）。扫描时自动跳过 `-wal / -shm / -journal` 等附属文件、隐藏文件和非会话文件
+- **导入前先在本地解析**：列表逐行显示格式与 DC，坏文件在联网之前就标出来，不浪费一次连接
+- **结果按颜色分清**：绿色成功、黄色跳过（该账号已在列表）、红色失败；悬停可看完整原因，批量跑完窗口不会自动关闭
+- **只读原文件**：程序用临时副本读取 auth_key，读完即删，原文件字节与修改时间都不变
+- **兼容三种格式**：Telethon `.session`、Pyrogram `.session`（按 DC 表补齐服务器地址）、纯文本 StringSession；Telegram Desktop 的 `tdata` 文件夹不支持
+- **失败不拖累整批**：单个文件失败只记一行、继续下一个；只有 api 凭证填错时才整体中止；中途可停止
+- **导入后与手动登录完全一致**：断线重连、群发、定时计划、关键词监听、客户联系、日配额全部通用
+- 详细步骤、格式对照与使用限制见上文 [用 session 协议号批量登录](#用-session-协议号批量登录)
+
+### v0.2.31
 
 - **设备信息改为按本机真实系统识别**：登录 Telegram 时上报的设备名称、系统版本不再是一个统一的软件名，而是按你电脑的实际情况自动识别（Windows / macOS 各自对应），设置页「本机设备信息」可查看当前上报的内容
 - 以前所有账号在 Telegram「活跃会话」里显示同一个设备名，既容易一眼看出是第三方工具，也让同机账号之间多了一条关联线索；现在看起来就是一台普通电脑
@@ -237,6 +290,7 @@
 - 仅向你已加入、正常参与的群组发送；请遵守 [Telegram 服务条款](https://telegram.org/tos) 与当地法律法规
 - 不建议高频刷屏或向陌生人冷触达
 - 账号 Session 加密保存在本机，请勿把程序目录随意拷给他人
+- 导入的 `.session` 文件等于账号的完整控制权，请只导入你自己的号；导入他人提供的会话后，建议到手机端「设备」里把其它会话下线
 
 ---
 
@@ -261,15 +315,23 @@ A: 检查群列表该行是否标记为「拉黑」（第 5 列显示「是」�
 
 ---
 
+**Q: 我有已经登录好的 `.session` 协议号，还要收验证码吗？**  
+A: 不用。账号页点「导入 .session…」，选文件（可多选，也可选整个目录）→ 填一套自己的 `api_id` / `api_hash` → 「导入并验证」，全程不发验证码、不走二步验证。注意会话文件里不存 `api_hash`，这一步必须有；导入不会修改原文件。详见上文 [用 session 协议号批量登录](#用-session-协议号批量登录)。
+
+**Q: 导入时提示「auth_key 已注销 / 会话已作废」？**  
+A: 说明这个会话已经失效：可能是账号被登出、改过密码，或者同一份文件在别处同时使用（Telegram 会把先前的会话作废）。这类文件只能重新走一次短信登录，救不回来；同一个账号也不需要重复导入，程序会直接提示「已在列表」。
+
+---
+
 **Q: 登录时提示「无法安全连接授权服务 / 证书校验失败」？**  
 A: 意思是登录请求的加密连接被中途替换了，跟你的账号无关。按提示里的签发者判断：① 提示「证书由 XXX 签发但不匹配地址 / 不是常见公共证书颁发机构」→ 当前 VPN / 代理 / 公司网络对该连接做了拦截，**换一个节点**，或在代理规则里让授权服务地址直连（`DIRECT`）后重试；② 提示「证书已过期」→ 升级到最新版本；③ 提示「证书正常但本机校验失败」→ 多为**系统时间不对**（右键任务栏时间 → 校准）或本机根证书过期。换 VPN 后出现这个提示，基本都属于第 ① 种。
 
-如有问题，请在本仓库 [Issues](https://github.com/myhgjb666/telegram-group-tool/issues) 反馈，并注明版本号（如 v0.2.31）。
+如有问题，请在本仓库 [Issues](https://github.com/myhgjb666/telegram-group-tool/issues) 反馈，并注明版本号（如 v0.2.32）。
 
 ---
 
 ## 关键词 / Keywords
 
-Telegram 群发 · TG 群发工具 · 电报群发 · Telegram 批量发送 · Telegram 群发软件 · Telegram 群发助手 · Telegram 多账号群发 · Telegram 自动群发 · 电报批量私信 · TG 定时群发 · TG 群发机器人 · Telegram 社群运营工具 · Telegram 消息群发客户端 · Windows Telegram 群发
+Telegram 群发 · TG 群发工具 · 电报群发 · Telegram 批量发送 · Telegram 群发软件 · Telegram 群发助手 · Telegram 多账号群发 · Telegram 自动群发 · 电报批量私信 · TG 定时群发 · TG 群发机器人 · Telegram 社群运营工具 · Telegram 消息群发客户端 · Windows Telegram 群发 · Telegram 协议号登录 · Telegram session 导入 · TG 批量登录 · 电报协议号
 
-Telegram bulk message sender · Telegram bulk messaging · Telegram mass message · Telegram mass DM tool · Telegram mass DM software · Telegram group broadcast · Telegram broadcast tool · Telegram multi-account sender · Telegram auto message sender · Telegram message automation · Telegram marketing tool · Telegram bulk sender for Windows · Telegram group messaging software · send bulk messages to Telegram groups · Telegram desktop broadcast app
+Telegram bulk message sender · Telegram bulk messaging · Telegram mass message · Telegram mass DM tool · Telegram mass DM software · Telegram group broadcast · Telegram broadcast tool · Telegram multi-account sender · Telegram auto message sender · Telegram message automation · Telegram marketing tool · Telegram bulk sender for Windows · Telegram group messaging software · send bulk messages to Telegram groups · Telegram desktop broadcast app · Telegram session import · Telegram bulk account login

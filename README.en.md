@@ -4,9 +4,9 @@
 
 A multi-account **Telegram bulk message / mass DM** desktop client for Windows. It sends to groups you have **already joined**, with message templates, scheduled plans and delivery logs — built for community announcements and routine reminders.
 
-**Keywords:** telegram bulk message sender, telegram bulk messaging, telegram mass message tool, telegram mass DM software, telegram group broadcast tool, telegram multi-account sender, telegram auto message sender, telegram message automation, telegram marketing tool, telegram bulk sender for Windows, send bulk messages to telegram groups, telegram group messaging software, telegram broadcast desktop app, TG bulk sender, Telegram 群发 / TG 群发工具 / 电报群发.
+**Keywords:** telegram bulk message sender, telegram bulk messaging, telegram mass message tool, telegram mass DM software, telegram group broadcast tool, telegram multi-account sender, telegram auto message sender, telegram message automation, telegram marketing tool, telegram bulk sender for Windows, send bulk messages to telegram groups, telegram group messaging software, telegram broadcast desktop app, telegram session import, telegram bulk account login, telegram .session login, import telegram session file, TG bulk sender, Telegram 群发 / TG 群发工具 / 电报群发.
 
-> Latest version: **v0.2.31** (Windows)  
+> Latest version: **v0.2.32** (Windows)  
 > This repository hosts the installer and usage documentation for easy download. Source code is not included.
 
 ---
@@ -15,8 +15,8 @@ A multi-account **Telegram bulk message / mass DM** desktop client for Windows. 
 
 | Version | File | Notes |
 |---|---|---|
-| **v0.2.31** (latest) | [tg-broadcast-v0.2.31.exe](https://github.com/myhgjb666/telegram-group-tool/releases/download/v0.2.31/tg-broadcast-v0.2.31.exe) | Windows 64-bit single file, run directly |
-| v0.2.30 | [tg-broadcast-v0.2.30.exe](https://github.com/myhgjb666/telegram-group-tool/releases/download/v0.2.30/tg-broadcast-v0.2.30.exe) | Previous release |
+| **v0.2.32** (latest) | [tg-broadcast-v0.2.32.exe](https://github.com/myhgjb666/telegram-group-tool/releases/download/v0.2.32/tg-broadcast-v0.2.32.exe) | Windows 64-bit single file, run directly |
+| v0.2.31 | [tg-broadcast-v0.2.31.exe](https://github.com/myhgjb666/telegram-group-tool/releases/download/v0.2.31/tg-broadcast-v0.2.31.exe) | Previous release |
 
 Older builds are available on the [Releases](https://github.com/myhgjb666/telegram-group-tool/releases) page.
 
@@ -29,6 +29,7 @@ If your antivirus blocks the first launch, choose "Run anyway" or add an excepti
 ## Features
 
 - **Multi-account management** — add several Telegram accounts, check status, daily sent count and daily quota
+- **Bulk `.session` login** — import already-authorized `.session` files directly, with **no login code and no 2FA prompt**; pick several files at once or point it at a whole folder, and it verifies each one and lists success / skipped / failed
 - **Group picker** — sync your joined groups and tick the ones you want to send to
 - **Message templates** — multiple variants with rotation and variables (date, time, group name, random string)
 - **Scheduled plans** — cron or fixed interval, run now / pause anytime
@@ -67,18 +68,69 @@ If your antivirus blocks the first launch, choose "Run anyway" or add an excepti
 
 ## Quick start
 
-1. Download and run `tg-broadcast-v0.2.31.exe`
+1. Download and run `tg-broadcast-v0.2.32.exe`
 2. Sign up / sign in to the app account (new devices usually get a trial period, then a license key is needed)
 3. Open [my.telegram.org/apps](https://my.telegram.org/apps), create an application and copy your `api_id` / `api_hash`
 4. On the **Accounts** page, add a Telegram account (API credentials + phone number, then the login code / 2FA password)
+   - If you already have authorized **`.session`** files, use "Import .session…" to skip the login code entirely — see the next section
 5. On the **Groups** page, discover your groups and tick the targets
 6. Create content and a plan under **Templates** / **Schedules**, then start sending
 
 ---
 
+## Bulk login with `.session` files
+
+If you already have a batch of authorized accounts (`.session` files), you do not have to walk each one through the SMS code. On the **Accounts** page, click **"Import .session…"**.
+
+### Steps
+
+1. **Pick files** — "Choose files…" accepts multi-select; "Choose folder…" imports a whole directory (tick "include subfolders" to scan nested ones). Each file is parsed locally right away and its row shows the result, e.g. `Telethon · DC 2`; broken files are marked red before any network call is made.
+2. **Enter one set of API credentials** — `api_id` / `api_hash`. Session files **never contain the api_hash**, and Telegram requires a pair when the client connects, so this step cannot be skipped (Pyrogram files carry `api_id` and it is filled in automatically). Tick "Remember" and later imports only need a file.
+3. **Click "Import and verify"** — the app connects to Telegram and reads the account info before writing anything to the database. Rows turn **green (success) / amber (skipped — already in the list) / red (failed)**; hover for the full reason.
+
+### Supported formats
+
+| Format | Supported | Notes |
+|---|---|---|
+| Telethon `.session` | ✅ | The most common one |
+| Pyrogram `.session` | ✅ | Has no server address; filled in from the DC table |
+| Plain-text StringSession | ✅ | `.session.txt` / `.txt` — some sellers hand out text |
+| Telegram Desktop `tdata` folder | ❌ | A completely different structure, not the same kind of session file |
+
+**Your original files are never modified** — the app reads only the auth key, works on a temporary copy and deletes it immediately, so bytes and mtime stay untouched.
+
+### Batch pacing
+
+- Runs sequentially, pausing **1–2 seconds between files** (with jitter) so dozens of accounts do not come online in the same second.
+- A single failure only records one row and **continues with the next file**, so one broken account cannot kill the batch.
+- The batch only aborts early when the API credentials themselves are wrong — otherwise the same error would repeat dozens of times.
+- You can press "Stop" at any time; the window does not close automatically when the run ends, so you can see which files failed.
+
+### Three limits you should know
+
+1. **A `.session` file is full control of that account.** If someone else handed you the account, they still hold the same key and can sign back in and kick you offline. After importing, open **Settings → Devices** on your phone and terminate any session you do not recognize.
+2. **The device shown for that session will not change.** It reflects whatever device originally authorized it (a phone, or some library). Changing device info locally only affects authorizations created afterwards.
+3. **The 2FA password is not stored in the file.** It is not needed while the session is alive, but if the session dies and you must sign in again, only you know that password.
+
+Imported accounts are **identical** to manually added ones: reconnect, broadcasts, scheduled plans, keyword listening, customer outreach and daily quotas all work the same way.
+
+---
+
 ## Changelog
 
-### v0.2.31 (current)
+### v0.2.32 (current)
+
+- **Bulk `.session` login** — a new "Import .session…" action on the Accounts page brings already-authorized `.session` files straight in, with **no SMS code and no 2FA prompt**
+- **Import a whole batch at once** — multi-select files, or point it at a directory (optionally including subfolders). `-wal / -shm / -journal` sidecars, hidden files and non-session files are skipped automatically
+- **Parsed locally before anything is sent** — each row shows format and DC, so a broken file is flagged before it costs a network round-trip
+- **Colour-coded results** — green success, amber skipped (account already in the list), red failure; hover for the full reason, and the window stays open when a batch finishes
+- **Read-only** — the auth key is read from a temporary copy that is deleted immediately; original files keep their bytes and mtime
+- **Three formats supported** — Telethon `.session`, Pyrogram `.session` (server address filled from the DC table) and plain-text StringSession; Telegram Desktop `tdata` folders are not supported
+- **One failure does not sink the batch** — it records one row and moves on; only wrong API credentials abort the run; you can stop at any time
+- **Imported accounts behave exactly like manually added ones** — reconnect, broadcasts, schedules, keyword listening, customer outreach and quotas are all shared
+- Full steps, format table and caveats: [Bulk login with `.session` files](#bulk-login-with-session-files)
+
+### v0.2.31
 
 - **Device info is now detected from your real system** — the device name and OS version reported when signing in to Telegram are no longer a single hard-coded app name; they are detected from the machine you run on (Windows / macOS report their own values). Settings → "Device info" shows exactly what is reported
 - Previously every account showed the same device name in Telegram's *Active Sessions*, which made the third-party client obvious and added a correlation link between accounts on one machine. Now it looks like an ordinary computer
@@ -237,6 +289,7 @@ See [Releases](https://github.com/myhgjb666/telegram-group-tool/releases) for th
 - Only send to groups you have joined and actively take part in; comply with the [Telegram Terms of Service](https://telegram.org/tos) and your local laws
 - High-frequency flooding and cold outreach to strangers are not recommended
 - Account sessions are encrypted and stored locally — do not copy the program folder to others
+- An imported `.session` file is full control of that account: only import accounts that are yours. After importing a session someone gave you, terminate the other sessions under **Settings → Devices** on your phone
 
 ---
 
@@ -247,6 +300,12 @@ A: Make sure you are on 64-bit Windows. Try running as administrator, or move th
 
 **Q: I don't receive the Telegram login code?**  
 A: The code is normally delivered inside the Telegram app (not always by SMS). Check that the phone number is in international format (e.g. `+86...`).
+
+**Q: I already have authorized `.session` files — do I still need the login code?**  
+A: No. On the Accounts page click "Import .session…", pick the files (multi-select, or a whole folder) → enter one set of `api_id` / `api_hash` → "Import and verify". No code, no 2FA prompt. Note that session files never contain the api_hash, so that part is required; your original files are not modified. See [Bulk login with `.session` files](#bulk-login-with-session-files).
+
+**Q: The import says "auth key unregistered / session revoked"?**  
+A: That session is dead — the account was logged out, the password changed, or the same file is in use somewhere else (Telegram invalidates the earlier session). Such a file can only be fixed by signing in with the SMS flow again. Importing the same account twice is unnecessary: the app tells you it is already in the list.
 
 **Q: Sending is very slow or messages are frequently skipped?**  
 A: Check the **Status** column of the delivery log (set the filter to "All", not just sent), then the **Duration** column:  
@@ -262,4 +321,4 @@ A: Check whether the row is marked blacklisted (column 5 shows "yes", or the top
 **Q: Sign-in says "cannot securely connect to the licensing service / certificate verification failed"?**  
 A: It means the encrypted connection used for sign-in was replaced in transit — unrelated to your account. Use the issuer shown in the message: ① "certificate issued by XXX but does not match the host / is not a common public CA" → your VPN / proxy / corporate network is intercepting the connection; **switch to another node**, or add a `DIRECT` rule for the licensing host and retry. ② "certificate expired" → update to the latest build. ③ "certificate is valid but local verification failed" → usually a **wrong system clock** (right-click the taskbar clock → sync) or an outdated local root store. Seeing this right after changing VPN is almost always case ①.
 
-For questions or bug reports, please open an [issue](https://github.com/myhgjb666/telegram-group-tool/issues) and include the version number (e.g. v0.2.31).
+For questions or bug reports, please open an [issue](https://github.com/myhgjb666/telegram-group-tool/issues) and include the version number (e.g. v0.2.32).
