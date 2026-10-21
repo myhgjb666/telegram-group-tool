@@ -6,7 +6,7 @@
 
 关键词：Telegram 群发、TG 群发工具、电报群发、Telegram 批量发送、Telegram 群发软件、Telegram 群发助手、多账号群发、Telegram 自动群发、电报批量私信、TG 定时群发、Telegram bulk message sender、Telegram mass message tool、Telegram mass DM software、Telegram group broadcast tool、Telegram multi-account sender、Telegram marketing tool for Windows。
 
-> 当前最新版本：**v0.2.34**（Windows）  
+> 当前最新版本：**v0.2.35**（Windows）  
 > 本仓库仅提供安装包与使用说明，便于下载，不包含源代码。
 
 ---
@@ -15,8 +15,8 @@
 
 | 版本 | 文件 | 说明 |
 |---|---|---|
-| **v0.2.34**（最新） | [tg-broadcast-v0.2.34.exe](https://github.com/myhgjb666/telegram-group-tool/releases/download/v0.2.34/tg-broadcast-v0.2.34.exe) | Windows 64 位单文件，解压即用（直接运行） |
-| v0.2.33 | [tg-broadcast-v0.2.33.exe](https://github.com/myhgjb666/telegram-group-tool/releases/download/v0.2.33/tg-broadcast-v0.2.33.exe) | 上一版本 |
+| **v0.2.35**（最新） | [tg-broadcast-v0.2.35.exe](https://github.com/myhgjb666/telegram-group-tool/releases/download/v0.2.35/tg-broadcast-v0.2.35.exe) | Windows 64 位单文件，解压即用（直接运行） |
+| v0.2.34 | [tg-broadcast-v0.2.34.exe](https://github.com/myhgjb666/telegram-group-tool/releases/download/v0.2.34/tg-broadcast-v0.2.34.exe) | 上一版本 |
 
 历史版本请到 [Releases](https://github.com/myhgjb666/telegram-group-tool/releases) 页面选择对应版本下载。
 
@@ -39,7 +39,7 @@
 - **关键词监听**：群消息或私聊命中关键字后自动私聊回复模板，带冷却与日上限
 - **监听命中（手动确认）**：监听规则可切成「只记录不发送」——命中的用户进「监听命中」页，勾选要联系的人、选一套模板、确认后才真正发出，避免机器人式误回
 - **公开群搜索**：按关键词搜索公开群 / 频道，可限速加入并设为发送目标
-- **客户联系**：导入自己客户的手机号，识别其中哪些开通了 Telegram，逐个发送跟进消息（仅限自有客户，带永久退订与每日上限），识别后可一键把号码从 TG 通讯录清掉
+- **客户联系**：导入自己客户的手机号，识别其中哪些开通了 Telegram，逐个发送跟进消息（仅限自有客户，带永久退订与每日上限），识别后可一键把号码从 TG 通讯录清掉；导入时可按国别自动补区号（港澳台、东南亚、欧美等 30+ 常用国家/地区），号码支持多选批量删除与一键清空
 - **限制中心**：显示 Telegram 限流倒计时，可查询官方 @SpamBot 的限制状态
 
 ---
@@ -70,7 +70,7 @@
 
 ## 快速上手
 
-1. 下载并运行 `tg-broadcast-v0.2.34.exe`
+1. 下载并运行 `tg-broadcast-v0.2.35.exe`
 2. 注册 / 登录软件账号（新设备通常有试用时长，到期后需续期）
 3. 打开 [my.telegram.org/apps](https://my.telegram.org/apps) 登录，创建应用并拿到 `api_id` / `api_hash`
 4. 在软件 **账号** 页添加 Telegram 账号（填写 api 凭证 + 手机号，完成验证码 / 二级密码）
@@ -167,7 +167,14 @@
 
 ## 版本说明
 
-### v0.2.34（当前）
+### v0.2.35（当前）
+
+- **导入号码可选国别**：「客户联系」导入区新增「国别」下拉，内置中国大陆（默认）、港澳台、新马泰日韩、欧美等 30+ 常用国家/地区。粘贴的号码不带 `+` 区号时按所选国别自动补全，不用再手动一个个加；号码自带 `+` 区号时以号码本身为准
+- **删除支持批量与清空**：号码列表可按住 Ctrl / Shift 多选，「移除选中号码」一次删一批；新增「清空全部」按钮（双重确认），一次性清掉整页号码
+- **删除只动号码记录**：两种删除都会保留已发送的历史日志；「清空全部」会连退订记录一起删（弹窗里明确提示），已退订客户重新导入后可再次被发送，请谨慎使用
+- **识别流程不变**：依然是先导入、再识别、后发送，本次改动不影响原有识别节奏与额度
+
+### v0.2.34
 
 - **代理「测试」改成真实握手**：以前只验端口能不能连上，端口一应答就显示「可达」；实际很多线路 443 活着但代理服务已死，导入后全是绿色、一分配就失败。现在会按协议打招呼（SOCKS5 用户名密码、SOCKS4、HTTP CONNECT），并让代理把隧道**建到 Telegram 的服务器**，成功才叫「可用」
 - **状态更直白**：`未测试 / 可用 / 不可用`，不可用的原因写在「连通状态」列（鼠标悬停看），例如「端口能连上，但代理握手时被对端直接断开（端口假活 / 服务失效 / 需要 IP 白名单）」
@@ -380,6 +387,9 @@ A: 先看 **发送日志** 的「状态」列（筛选切到「全部」，别�
 ④ 「耗时」列（v0.2.25 起只统计这一条发送本身，不含发送间隔）出现几十秒甚至 120 秒以上＝网络 / 代理慢，换更稳定的线路比调参数更有效；软件现在会自动换掉变慢的连接，状态栏会显示「已重建 N 次」。  
 ⑤ 其他跳过原因（群冷却、日上限、非活跃时段）都在日志与账号页可见。默认值偏保守，可按需微调，但不建议拉满。  
 
+**Q: 客户号码没有 +86 前缀，能直接导入吗？**  
+A: 能。「客户联系」导入时选好「国别」（默认中国大陆），不带 `+` 区号的号码会按所选国别自动补全；号码自带 `+` 区号的以号码为准，不受国别选择影响。清单里删错了也没关系：可按住 Ctrl / Shift 多选后批量移除，或用「清空全部」重头再来（会弹两次确认，已发送的日志不受影响）。
+
 **Q: 有些群明明能手动发，软件却一直不发？**  
 A: 检查群列表该行是否标记为「拉黑」（第 5 列显示「是」，或右上角统计里的「N 个拉黑」）。旧版本会把 Telegram 的临时限制误判成永久封禁并拉黑，这类群被拦住了。右键该群选「解除拉黑（恢复可选）」；数量多时直接右键账号行，选「解除全部拉黑（N 个群）」一次清理，然后重新勾选即可。v0.2.27 起临时限制不会再被拉黑。
 
@@ -410,12 +420,12 @@ A: v0.2.34 起「可用」= 已经和代理握手成功、并让代理把隧道�
 **Q: 登录时提示「无法安全连接授权服务 / 证书校验失败」？**  
 A: 意思是登录请求的加密连接被中途替换了，跟你的账号无关。按提示里的签发者判断：① 提示「证书由 XXX 签发但不匹配地址 / 不是常见公共证书颁发机构」→ 当前 VPN / 代理 / 公司网络对该连接做了拦截，**换一个节点**，或在代理规则里让授权服务地址直连（`DIRECT`）后重试；② 提示「证书已过期」→ 升级到最新版本；③ 提示「证书正常但本机校验失败」→ 多为**系统时间不对**（右键任务栏时间 → 校准）或本机根证书过期。换 VPN 后出现这个提示，基本都属于第 ① 种。
 
-如有问题，请在本仓库 [Issues](https://github.com/myhgjb666/telegram-group-tool/issues) 反馈，并注明版本号（如 v0.2.34）。
+如有问题，请在本仓库 [Issues](https://github.com/myhgjb666/telegram-group-tool/issues) 反馈，并注明版本号（如 v0.2.35）。
 
 ---
 
 ## 关键词 / Keywords
 
-Telegram 群发 · TG 群发工具 · 电报群发 · Telegram 批量发送 · Telegram 群发软件 · Telegram 群发助手 · Telegram 多账号群发 · Telegram 自动群发 · 电报批量私信 · TG 定时群发 · TG 群发机器人 · Telegram 社群运营工具 · Telegram 消息群发客户端 · Windows Telegram 群发 · Telegram 协议号登录 · Telegram session 导入 · TG 批量登录 · 电报协议号 · Telegram 代理设置 · Telegram 一号一代理 · TG 多代理轮换 · socks5 代理群发 · Telegram 代理测速 · 代理可用性检测 · Telegram 关键词监听 · 监听命中手动发送
+Telegram 群发 · TG 群发工具 · 电报群发 · Telegram 批量发送 · Telegram 群发软件 · Telegram 群发助手 · Telegram 多账号群发 · Telegram 自动群发 · 电报批量私信 · TG 定时群发 · TG 群发机器人 · Telegram 社群运营工具 · Telegram 消息群发客户端 · Windows Telegram 群发 · Telegram 协议号登录 · Telegram session 导入 · TG 批量登录 · 电报协议号 · Telegram 代理设置 · Telegram 一号一代理 · TG 多代理轮换 · socks5 代理群发 · Telegram 代理测速 · 代理可用性检测 · Telegram 关键词监听 · 监听命中手动发送 · TG 客户号码导入 · 手机号批量识别 Telegram · 客户私信群发 · 电报号码批量删除
 
 Telegram bulk message sender · Telegram bulk messaging · Telegram mass message · Telegram mass DM tool · Telegram mass DM software · Telegram group broadcast · Telegram broadcast tool · Telegram multi-account sender · Telegram auto message sender · Telegram message automation · Telegram marketing tool · Telegram bulk sender for Windows · Telegram group messaging software · send bulk messages to Telegram groups · Telegram desktop broadcast app · Telegram session import · Telegram bulk account login · Telegram proxy support · Telegram socks5 proxy · Telegram one proxy per account · Telegram proxy pool

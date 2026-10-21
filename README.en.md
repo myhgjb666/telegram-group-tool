@@ -4,9 +4,9 @@
 
 A multi-account **Telegram bulk message / mass DM** desktop client for Windows. It sends to groups you have **already joined**, with message templates, scheduled plans and delivery logs — built for community announcements and routine reminders.
 
-**Keywords:** telegram bulk message sender, telegram bulk messaging, telegram mass message tool, telegram mass DM software, telegram group broadcast tool, telegram multi-account sender, telegram auto message sender, telegram message automation, telegram marketing tool, telegram bulk sender for Windows, send bulk messages to telegram groups, telegram group messaging software, telegram broadcast desktop app, telegram session import, telegram bulk account login, telegram .session login, import telegram session file, telegram proxy support, telegram socks5 proxy, telegram one proxy per account, telegram proxy pool, rotate telegram proxies, telegram proxy checker, telegram proxy availability test, telegram keyword listener, telegram listener manual approval, TG bulk sender, Telegram 群发 / TG 群发工具 / 电报群发.
+**Keywords:** telegram bulk message sender, telegram bulk messaging, telegram mass message tool, telegram mass DM software, telegram group broadcast tool, telegram multi-account sender, telegram auto message sender, telegram message automation, telegram marketing tool, telegram bulk sender for Windows, send bulk messages to telegram groups, telegram group messaging software, telegram broadcast desktop app, telegram session import, telegram bulk account login, telegram .session login, import telegram session file, telegram proxy support, telegram socks5 proxy, telegram one proxy per account, telegram proxy pool, rotate telegram proxies, telegram proxy checker, telegram proxy availability test, telegram keyword listener, telegram listener manual approval, telegram customer phone number import, detect telegram by phone number, bulk delete telegram contacts, TG bulk sender, Telegram 群发 / TG 群发工具 / 电报群发.
 
-> Latest version: **v0.2.34** (Windows)  
+> Latest version: **v0.2.35** (Windows)  
 > This repository hosts the installer and usage documentation for easy download. Source code is not included.
 
 ---
@@ -15,8 +15,8 @@ A multi-account **Telegram bulk message / mass DM** desktop client for Windows. 
 
 | Version | File | Notes |
 |---|---|---|
-| **v0.2.34** (latest) | [tg-broadcast-v0.2.34.exe](https://github.com/myhgjb666/telegram-group-tool/releases/download/v0.2.34/tg-broadcast-v0.2.34.exe) | Windows 64-bit single file, run directly |
-| v0.2.33 | [tg-broadcast-v0.2.33.exe](https://github.com/myhgjb666/telegram-group-tool/releases/download/v0.2.33/tg-broadcast-v0.2.33.exe) | Previous release |
+| **v0.2.35** (latest) | [tg-broadcast-v0.2.35.exe](https://github.com/myhgjb666/telegram-group-tool/releases/download/v0.2.35/tg-broadcast-v0.2.35.exe) | Windows 64-bit single file, run directly |
+| v0.2.34 | [tg-broadcast-v0.2.34.exe](https://github.com/myhgjb666/telegram-group-tool/releases/download/v0.2.34/tg-broadcast-v0.2.34.exe) | Previous release |
 
 Older builds are available on the [Releases](https://github.com/myhgjb666/telegram-group-tool/releases) page.
 
@@ -39,7 +39,7 @@ If your antivirus blocks the first launch, choose "Run anyway" or add an excepti
 - **Keyword listener** — auto-reply to group messages or private chats when a keyword matches, with cooldown and daily cap
 - **Listener hits (manual confirm)** — switch a rule to "record only": matches land on the new **Listener hits** page, you tick the people to contact, pick a template and confirm, and only then are the messages sent
 - **Public group search** — search public groups / channels by keyword, join at a limited rate and add them as targets
-- **Customer outreach** — import your own customers' phone numbers, detect which of them have Telegram, and send one-to-one follow-ups (own customers only, with permanent opt-out and daily caps); detected numbers can be cleared from your Telegram contacts afterwards
+- **Customer outreach** — import your own customers' phone numbers, detect which of them have Telegram, and send one-to-one follow-ups (own customers only, with permanent opt-out and daily caps); detected numbers can be cleared from your Telegram contacts afterwards; import picks a country so bare numbers get the right prefix automatically (30+ countries/regions incl. mainland China, HK/Macao/Taiwan, Southeast Asia, Europe & US), and numbers support multi-select batch delete plus one-click clear-all
 - **Restriction center** — Telegram flood-wait countdown and official @SpamBot restriction status
 
 ---
@@ -70,7 +70,7 @@ If your antivirus blocks the first launch, choose "Run anyway" or add an excepti
 
 ## Quick start
 
-1. Download and run `tg-broadcast-v0.2.34.exe`
+1. Download and run `tg-broadcast-v0.2.35.exe`
 2. Sign up / sign in to the app account (new devices usually get a trial period, then a license key is needed)
 3. Open [my.telegram.org/apps](https://my.telegram.org/apps), create an application and copy your `api_id` / `api_hash`
 4. On the **Accounts** page, add a Telegram account (API credentials + phone number, then the login code / 2FA password)
@@ -166,7 +166,14 @@ The most common one you will see is "**the port answers, but the proxy dropped t
 
 ## Changelog
 
-### v0.2.34 (current)
+### v0.2.35 (current)
+
+- **Country picker on import** — the Customer outreach import form now has a **Country** dropdown with 30+ common countries/regions (mainland China by default, HK/Macao/Taiwan, Southeast Asia, Japan/Korea, Europe & US). Numbers pasted without a `+` prefix get the selected code prepended automatically; numbers that already carry `+` are used as-is
+- **Batch delete & clear all** — the number list supports Ctrl / Shift multi-select, and "Remove selected" deletes the whole selection at once; a new "Clear all" button (with double confirmation) wipes the entire list in one go
+- **Deletion only touches number records** — both deletion paths keep your delivery logs; "Clear all" also removes opt-out records (stated clearly in the dialog), so re-imported numbers can be contacted again — use with care
+- **Detection flow unchanged** — import first, then detect, then send, exactly as before; this release does not touch detection pacing or quotas
+
+### v0.2.34
 
 - **Proxy testing now performs a real handshake** — previously it only checked whether the port answered, so a line with a live 443 port but a dead proxy service showed as "reachable" and every assignment failed afterwards. Now the app speaks the actual protocol (SOCKS5 with credentials, SOCKS4, HTTP CONNECT) and asks the proxy to tunnel **to Telegram's servers**; only that counts as "available"
 - **Clearer status** — `Untested / Available / Unavailable`, with the reason on the Status cell (hover): e.g. "the port answers but the proxy dropped the handshake (port alive, service dead, or IP allow-list required)"
@@ -391,6 +398,9 @@ A: Check the **Status** column of the delivery log (set the filter to "All", not
 ④ If **Duration** (since v0.2.25 it measures the send only, excluding pacing) shows tens of seconds or even 120+ seconds, the network / proxy is slow — a more stable route helps more than tuning parameters. The app now rotates degraded connections automatically; the status bar shows "N rebuilds".  
 ⑤ Other skip reasons (group cooldown, daily quota, inactive hours) are visible in the log and on the accounts page. Defaults are conservative; tune them as needed, but do not max everything out.  
 
+**Q: My customer numbers have no +86 prefix — can I import them directly?**  
+A: Yes. Pick the **Country** on the Customer outreach import form (mainland China by default) and bare numbers get that code prepended automatically; numbers that already start with `+` are kept as-is regardless of the country choice. If something goes wrong in the list, hold Ctrl / Shift to multi-select and remove them in bulk, or use "Clear all" to start over (it asks twice; delivery logs are never touched).
+
 **Q: Some groups can be messaged manually, but the tool never sends to them?**  
 A: Check whether the row is marked blacklisted (column 5 shows "yes", or the top-right counter shows "N blacklisted"). Older versions misread Telegram's temporary restriction as a permanent ban and blacklisted those groups. Right-click the group and choose "Unblacklist", or right-click the account row and choose "Unblacklist all (N groups)" to fix them in bulk, then tick them again. Since v0.2.27 temporary restrictions are no longer blacklisted.
 
@@ -405,4 +415,4 @@ A: No. When a bound proxy is broken or deleted, the account falls back to the gl
 **Q: Sign-in says "cannot securely connect to the licensing service / certificate verification failed"?**  
 A: It means the encrypted connection used for sign-in was replaced in transit — unrelated to your account. Use the issuer shown in the message: ① "certificate issued by XXX but does not match the host / is not a common public CA" → your VPN / proxy / corporate network is intercepting the connection; **switch to another node**, or add a `DIRECT` rule for the licensing host and retry. ② "certificate expired" → update to the latest build. ③ "certificate is valid but local verification failed" → usually a **wrong system clock** (right-click the taskbar clock → sync) or an outdated local root store. Seeing this right after changing VPN is almost always case ①.
 
-For questions or bug reports, please open an [issue](https://github.com/myhgjb666/telegram-group-tool/issues) and include the version number (e.g. v0.2.34).
+For questions or bug reports, please open an [issue](https://github.com/myhgjb666/telegram-group-tool/issues) and include the version number (e.g. v0.2.35).
