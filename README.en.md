@@ -4,9 +4,9 @@
 
 A multi-account **Telegram bulk message / mass DM** desktop client for Windows. It sends to groups you have **already joined**, with message templates, scheduled plans and delivery logs — built for community announcements and routine reminders.
 
-**Keywords:** telegram bulk message sender, telegram bulk messaging, telegram mass message tool, telegram mass DM software, telegram group broadcast tool, telegram multi-account sender, telegram auto message sender, telegram message automation, telegram marketing tool, telegram bulk sender for Windows, send bulk messages to telegram groups, telegram group messaging software, telegram broadcast desktop app, telegram session import, telegram bulk account login, telegram .session login, import telegram session file, telegram proxy support, telegram socks5 proxy, telegram one proxy per account, telegram proxy pool, rotate telegram proxies, TG bulk sender, Telegram 群发 / TG 群发工具 / 电报群发.
+**Keywords:** telegram bulk message sender, telegram bulk messaging, telegram mass message tool, telegram mass DM software, telegram group broadcast tool, telegram multi-account sender, telegram auto message sender, telegram message automation, telegram marketing tool, telegram bulk sender for Windows, send bulk messages to telegram groups, telegram group messaging software, telegram broadcast desktop app, telegram session import, telegram bulk account login, telegram .session login, import telegram session file, telegram proxy support, telegram socks5 proxy, telegram one proxy per account, telegram proxy pool, rotate telegram proxies, telegram proxy checker, telegram proxy availability test, telegram keyword listener, telegram listener manual approval, TG bulk sender, Telegram 群发 / TG 群发工具 / 电报群发.
 
-> Latest version: **v0.2.33** (Windows)  
+> Latest version: **v0.2.34** (Windows)  
 > This repository hosts the installer and usage documentation for easy download. Source code is not included.
 
 ---
@@ -15,8 +15,8 @@ A multi-account **Telegram bulk message / mass DM** desktop client for Windows. 
 
 | Version | File | Notes |
 |---|---|---|
-| **v0.2.33** (latest) | [tg-broadcast-v0.2.33.exe](https://github.com/myhgjb666/telegram-group-tool/releases/download/v0.2.33/tg-broadcast-v0.2.33.exe) | Windows 64-bit single file, run directly |
-| v0.2.32 | [tg-broadcast-v0.2.32.exe](https://github.com/myhgjb666/telegram-group-tool/releases/download/v0.2.32/tg-broadcast-v0.2.32.exe) | Previous release |
+| **v0.2.34** (latest) | [tg-broadcast-v0.2.34.exe](https://github.com/myhgjb666/telegram-group-tool/releases/download/v0.2.34/tg-broadcast-v0.2.34.exe) | Windows 64-bit single file, run directly |
+| v0.2.33 | [tg-broadcast-v0.2.33.exe](https://github.com/myhgjb666/telegram-group-tool/releases/download/v0.2.33/tg-broadcast-v0.2.33.exe) | Previous release |
 
 Older builds are available on the [Releases](https://github.com/myhgjb666/telegram-group-tool/releases) page.
 
@@ -29,14 +29,15 @@ If your antivirus blocks the first launch, choose "Run anyway" or add an excepti
 ## Features
 
 - **Multi-account management** — add several Telegram accounts, check status, daily sent count and daily quota
-- **Proxy pool (one proxy per account / shared proxies)** — import http / https / socks5 proxies in bulk, auto-assign one line per account or let several accounts share one; the account list shows which line each account is on
-- **Bulk `.session` login** — import already-authorized `.session` files directly, with **no login code and no 2FA prompt**; pick several files at once or point it at a whole folder, and it verifies each one and lists success / skipped / failed
+- **Proxy pool (one proxy per account / shared proxies)** — import http / https / socks5 proxies in bulk, auto-assign one line per account or let several accounts share one; the account list shows which line each account is on, and the built-in test performs a **real proxy handshake** into Telegram instead of only checking whether the port answers
+- **Bulk `.session` login** — import already-authorized `.session` files directly, with **no login code and no 2FA prompt**; pick several files at once or point it at a whole folder, and it verifies each one and lists success / skipped / failed; if the same folder holds a sidecar json (`16803619008.json` etc.) the `api_id` / `api_hash` and device info are read from it automatically
 - **Group picker** — sync your joined groups and tick the ones you want to send to
 - **Message templates** — multiple variants with rotation and variables (date, time, group name, random string)
 - **Scheduled plans** — cron or fixed interval, run now / pause anytime
 - **Anti-ban pacing** — configurable cooldown, daily quota, daytime window and jitter
 - **Delivery log** — success / failure reasons, per-message duration, searchable and paginated
 - **Keyword listener** — auto-reply to group messages or private chats when a keyword matches, with cooldown and daily cap
+- **Listener hits (manual confirm)** — switch a rule to "record only": matches land on the new **Listener hits** page, you tick the people to contact, pick a template and confirm, and only then are the messages sent
 - **Public group search** — search public groups / channels by keyword, join at a limited rate and add them as targets
 - **Customer outreach** — import your own customers' phone numbers, detect which of them have Telegram, and send one-to-one follow-ups (own customers only, with permanent opt-out and daily caps); detected numbers can be cleared from your Telegram contacts afterwards
 - **Restriction center** — Telegram flood-wait countdown and official @SpamBot restriction status
@@ -69,7 +70,7 @@ If your antivirus blocks the first launch, choose "Run anyway" or add an excepti
 
 ## Quick start
 
-1. Download and run `tg-broadcast-v0.2.33.exe`
+1. Download and run `tg-broadcast-v0.2.34.exe`
 2. Sign up / sign in to the app account (new devices usually get a trial period, then a license key is needed)
 3. Open [my.telegram.org/apps](https://my.telegram.org/apps), create an application and copy your `api_id` / `api_hash`
 4. On the **Accounts** page, add a Telegram account (API credentials + phone number, then the login code / 2FA password)
@@ -86,7 +87,7 @@ If you already have a batch of authorized accounts (`.session` files), you do no
 ### Steps
 
 1. **Pick files** — "Choose files…" accepts multi-select; "Choose folder…" imports a whole directory (tick "include subfolders" to scan nested ones). Each file is parsed locally right away and its row shows the result, e.g. `Telethon · DC 2`; broken files are marked red before any network call is made.
-2. **Enter one set of API credentials** — `api_id` / `api_hash`. Session files **never contain the api_hash**, and Telegram requires a pair when the client connects, so this step cannot be skipped (Pyrogram files carry `api_id` and it is filled in automatically). Tick "Remember" and later imports only need a file.
+2. **API credentials: usually read for you** — since v0.2.34 the app first looks for a **sidecar json in the same folder** (e.g. `16803619008.json`, `session.json`; sellers usually ship it next to the `.session`). If it contains `app_id` / `app_hash` (or `api_id` / `api_hash`), those are filled in and the row is marked "自带 api (xxx.json)". You only type a pair when no such file exists; tick "Remember" and later imports need nothing but the file. Session files themselves never contain the `api_hash`, so with neither source this step cannot be skipped.
 3. **Click "Import and verify"** — the app connects to Telegram and reads the account info before writing anything to the database. Rows turn **green (success) / amber (skipped — already in the list) / red (failed)**; hover for the full reason.
 
 ### Supported formats
@@ -126,8 +127,9 @@ Previously every account had to share a single global proxy, so several accounts
 1. **Import proxies** — open the **Proxy pool** tab, paste a list or use "Import from file". Two notations are accepted and can be mixed:
    - Full URL: `socks5://user:pass@1.2.3.4:1080`, `http://user:pass@1.2.3.4:8080`
    - Colon form: `1.2.3.4:1080:user:pass` (port required, credentials optional)
-2. **Assign** — click "Auto assign" and the app hands one proxy to every account that has **no binding yet** (already bound accounts are left alone). You can also pick a proxy per account in the account editor.
-3. **Check** — the account list has a new **Proxy** column showing the line each account currently uses; the proxy list shows how many accounts use each proxy (more than 1 means it is shared).
+2. **Test the batch** — click "Test all". Each proxy goes through a **real handshake**: SOCKS5 greeting (with credentials when required) → ask the proxy to open a tunnel to Telegram's servers. Only a successful tunnel counts as "available". Checking the port alone is not enough: plenty of lines keep port 443 open (a CDN sits in front) while the proxy itself is long dead, and the handshake is dropped immediately.
+3. **Assign** — click "Auto assign" and the app hands one proxy to every account that has **no binding yet** (already bound accounts are left alone). You can also pick a proxy per account in the account editor. The binding is saved immediately and reconnecting happens separately, so a failed reconnect never changes what was saved.
+4. **Check** — the account list has a new **Proxy** column showing the line each account currently uses; the proxy list shows how many accounts use each proxy (more than 1 means it is shared).
 
 ### Supported protocols
 
@@ -136,6 +138,22 @@ Previously every account had to share a single global proxy, so several accounts
 | HTTP | `http://...` | Common low-cost proxies |
 | HTTPS | `https://...` | Handled as an HTTP tunnel |
 | SOCKS5 | `socks5://...` | Recommended for Telegram, supports username / password |
+
+### How to read "available / unavailable"
+
+The **Status** column has exactly three values:
+
+| Status | Meaning |
+|---|---|
+| Untested | Just imported, or the verdict was produced by an older build and has been invalidated |
+| Available | The handshake succeeded — this proxy really carries traffic to Telegram |
+| Unavailable | Hover for the reason: port alive but proxy dead / IP allow-list / bad credentials / proxy refuses Telegram / HTTP 407 … |
+
+The most common one you will see is "**the port answers, but the proxy dropped the handshake**" — that line is dead, replace it instead of tuning settings.
+
+- **Test before assigning**: run "Test all" first (6 concurrent, ~20 s worst case per proxy), delete or replace the unavailable ones, then assign.
+- **After switching to a new batch**: bindings still point at the old proxies — assign again (or bind manually). If you only want the existing bindings reconnected, press "Reconnect bound accounts".
+- The global proxy test in Settings uses the same logic, so the verdicts agree.
 
 ### Things to know
 
@@ -148,7 +166,18 @@ Previously every account had to share a single global proxy, so several accounts
 
 ## Changelog
 
-### v0.2.33 (current)
+### v0.2.34 (current)
+
+- **Proxy testing now performs a real handshake** — previously it only checked whether the port answered, so a line with a live 443 port but a dead proxy service showed as "reachable" and every assignment failed afterwards. Now the app speaks the actual protocol (SOCKS5 with credentials, SOCKS4, HTTP CONNECT) and asks the proxy to tunnel **to Telegram's servers**; only that counts as "available"
+- **Clearer status** — `Untested / Available / Unavailable`, with the reason on the Status cell (hover): e.g. "the port answers but the proxy dropped the handshake (port alive, service dead, or IP allow-list required)"
+- **Faster and honest** — 6 concurrent tests, dozens of proxies in seconds; verdicts from the old logic are invalidated on upgrade so stale green marks cannot mislead you
+- **Fixed "assignment failed"** — assignment now only writes the binding and reports immediately; reconnecting is a separate stage (20 s per account, 4 concurrent) that reports "reconnected x / failed y" without ever contradicting the saved binding. A proxy failure no longer marks a healthy account as banned, and a new "Reconnect bound accounts" button retries in one click
+- **Listener: manual confirmation** — a rule can be set to "manual": matches are only recorded, never sent. On the new **Listener hits** page you tick the people to contact, pick a template and confirm (it reuses the DM pacing and daily quota and shows head-count and estimated duration before sending)
+- **`.session` import reads API credentials automatically** — a sidecar `xxx.json` in the same folder (`app_id` / `app_hash` or `api_id` / `api_hash`) is used to fill them in; batch imports use each account's own credentials and mark rows with "自带 api"
+- **More robust startup** — the tab area is disabled until initialization finishes (no more "tab used before bind()"), and a failing page no longer breaks the others
+- **Consistent data across pages** — tabs refresh when you switch to them, account changes are broadcast everywhere, and deleting an account lists its related data (proxy binding, schedules, listener rules) instead of silently cascading
+
+### v0.2.33
 
 - **New proxy pool** — a **Proxy pool** tab lets you import http / https / socks5 proxies in bulk, accepting both full URLs (`socks5://user:pass@1.2.3.4:1080`) and the colon form (`1.2.3.4:1080:user:pass`), or importing a whole file at once
 - **One proxy per account** — "Auto assign" gives every unbound account its own line in order, so accounts stop piling onto the same exit IP; accounts that already have a binding are never reshuffled
@@ -342,8 +371,14 @@ A: Make sure you are on 64-bit Windows. Try running as administrator, or move th
 **Q: I don't receive the Telegram login code?**  
 A: The code is normally delivered inside the Telegram app (not always by SMS). Check that the phone number is in international format (e.g. `+86...`).
 
-**Q: I already have authorized `.session` files — do I still need the login code?**  
-A: No. On the Accounts page click "Import .session…", pick the files (multi-select, or a whole folder) → enter one set of `api_id` / `api_hash` → "Import and verify". No code, no 2FA prompt. Note that session files never contain the api_hash, so that part is required; your original files are not modified. See [Bulk login with `.session` files](#bulk-login-with-session-files).
+**Q: I already have authorized `.session` files — do I still need the login code or the API credentials?**  
+A: Neither, in most cases. On the Accounts page click "Import .session…", pick the files (multi-select, or a whole folder). If the folder holds a sidecar `xxx.json` with the app credentials, `api_id` / `api_hash` are filled in automatically and the row is marked "自带 api". Then "Import and verify" — no code, no 2FA prompt, and your original files are not modified. You only type a pair manually when no such json exists. See [Bulk login with `.session` files](#bulk-login-with-session-files).
+
+**Q: Can the keyword listener hold replies for my approval instead of sending automatically?**  
+A: Yes. Set the rule's **Response mode** to **manual**: a match is only recorded, nothing is sent. Then open the **Listener hits** page, filter by rule / status, tick the people you want to contact, choose a message template and confirm — only then are the messages sent. Repeat hits from the same user are merged into one row (with a hit count), and the confirmation shows the head-count and estimated duration; you can stop mid-run.
+
+**Q: The proxy shows "available", but accounts still fail to connect?**  
+A: Since v0.2.34 "available" means the proxy completed a handshake and tunnelled to Telegram — much stricter than the old "port reachable". If it still fails: ① press "Reconnect bound accounts" and read the reason on the accounts page (status / note column); ② make sure the proxy allows your current exit IP (some require an allow-list); ③ IP-whitelisted proxies die as soon as your network changes; ④ one proxy shared by many accounts is easy to rate limit — use one line per account. If the status says "unavailable", hover it: the tooltip tells you which step failed (port alive but dead / auth rejected / refuses Telegram / 407).
 
 **Q: The import says "auth key unregistered / session revoked"?**  
 A: That session is dead — the account was logged out, the password changed, or the same file is in use somewhere else (Telegram invalidates the earlier session). Such a file can only be fixed by signing in with the SMS flow again. Importing the same account twice is unnecessary: the app tells you it is already in the list.
@@ -370,4 +405,4 @@ A: No. When a bound proxy is broken or deleted, the account falls back to the gl
 **Q: Sign-in says "cannot securely connect to the licensing service / certificate verification failed"?**  
 A: It means the encrypted connection used for sign-in was replaced in transit — unrelated to your account. Use the issuer shown in the message: ① "certificate issued by XXX but does not match the host / is not a common public CA" → your VPN / proxy / corporate network is intercepting the connection; **switch to another node**, or add a `DIRECT` rule for the licensing host and retry. ② "certificate expired" → update to the latest build. ③ "certificate is valid but local verification failed" → usually a **wrong system clock** (right-click the taskbar clock → sync) or an outdated local root store. Seeing this right after changing VPN is almost always case ①.
 
-For questions or bug reports, please open an [issue](https://github.com/myhgjb666/telegram-group-tool/issues) and include the version number (e.g. v0.2.33).
+For questions or bug reports, please open an [issue](https://github.com/myhgjb666/telegram-group-tool/issues) and include the version number (e.g. v0.2.34).
