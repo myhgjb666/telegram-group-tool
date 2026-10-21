@@ -4,9 +4,9 @@
 
 A multi-account **Telegram bulk message / mass DM** desktop client for Windows. It sends to groups you have **already joined**, with message templates, scheduled plans and delivery logs — built for community announcements and routine reminders.
 
-**Keywords:** telegram bulk message sender, telegram bulk messaging, telegram mass message tool, telegram mass DM software, telegram group broadcast tool, telegram multi-account sender, telegram auto message sender, telegram message automation, telegram marketing tool, telegram bulk sender for Windows, send bulk messages to telegram groups, telegram group messaging software, telegram broadcast desktop app, telegram session import, telegram bulk account login, telegram .session login, import telegram session file, TG bulk sender, Telegram 群发 / TG 群发工具 / 电报群发.
+**Keywords:** telegram bulk message sender, telegram bulk messaging, telegram mass message tool, telegram mass DM software, telegram group broadcast tool, telegram multi-account sender, telegram auto message sender, telegram message automation, telegram marketing tool, telegram bulk sender for Windows, send bulk messages to telegram groups, telegram group messaging software, telegram broadcast desktop app, telegram session import, telegram bulk account login, telegram .session login, import telegram session file, telegram proxy support, telegram socks5 proxy, telegram one proxy per account, telegram proxy pool, rotate telegram proxies, TG bulk sender, Telegram 群发 / TG 群发工具 / 电报群发.
 
-> Latest version: **v0.2.32** (Windows)  
+> Latest version: **v0.2.33** (Windows)  
 > This repository hosts the installer and usage documentation for easy download. Source code is not included.
 
 ---
@@ -15,8 +15,8 @@ A multi-account **Telegram bulk message / mass DM** desktop client for Windows. 
 
 | Version | File | Notes |
 |---|---|---|
-| **v0.2.32** (latest) | [tg-broadcast-v0.2.32.exe](https://github.com/myhgjb666/telegram-group-tool/releases/download/v0.2.32/tg-broadcast-v0.2.32.exe) | Windows 64-bit single file, run directly |
-| v0.2.31 | [tg-broadcast-v0.2.31.exe](https://github.com/myhgjb666/telegram-group-tool/releases/download/v0.2.31/tg-broadcast-v0.2.31.exe) | Previous release |
+| **v0.2.33** (latest) | [tg-broadcast-v0.2.33.exe](https://github.com/myhgjb666/telegram-group-tool/releases/download/v0.2.33/tg-broadcast-v0.2.33.exe) | Windows 64-bit single file, run directly |
+| v0.2.32 | [tg-broadcast-v0.2.32.exe](https://github.com/myhgjb666/telegram-group-tool/releases/download/v0.2.32/tg-broadcast-v0.2.32.exe) | Previous release |
 
 Older builds are available on the [Releases](https://github.com/myhgjb666/telegram-group-tool/releases) page.
 
@@ -29,6 +29,7 @@ If your antivirus blocks the first launch, choose "Run anyway" or add an excepti
 ## Features
 
 - **Multi-account management** — add several Telegram accounts, check status, daily sent count and daily quota
+- **Proxy pool (one proxy per account / shared proxies)** — import http / https / socks5 proxies in bulk, auto-assign one line per account or let several accounts share one; the account list shows which line each account is on
 - **Bulk `.session` login** — import already-authorized `.session` files directly, with **no login code and no 2FA prompt**; pick several files at once or point it at a whole folder, and it verifies each one and lists success / skipped / failed
 - **Group picker** — sync your joined groups and tick the ones you want to send to
 - **Message templates** — multiple variants with rotation and variables (date, time, group name, random string)
@@ -68,7 +69,7 @@ If your antivirus blocks the first launch, choose "Run anyway" or add an excepti
 
 ## Quick start
 
-1. Download and run `tg-broadcast-v0.2.32.exe`
+1. Download and run `tg-broadcast-v0.2.33.exe`
 2. Sign up / sign in to the app account (new devices usually get a trial period, then a license key is needed)
 3. Open [my.telegram.org/apps](https://my.telegram.org/apps), create an application and copy your `api_id` / `api_hash`
 4. On the **Accounts** page, add a Telegram account (API credentials + phone number, then the login code / 2FA password)
@@ -116,9 +117,49 @@ Imported accounts are **identical** to manually added ones: reconnect, broadcast
 
 ---
 
+## Proxy pool — one proxy per account or shared
+
+Previously every account had to share a single global proxy, so several accounts coming online from the same IP was easy to spot. From v0.2.33 there is a **Proxy pool** page: import a batch of proxies and either give each account its own line, or let a few accounts share one.
+
+### Steps
+
+1. **Import proxies** — open the **Proxy pool** tab, paste a list or use "Import from file". Two notations are accepted and can be mixed:
+   - Full URL: `socks5://user:pass@1.2.3.4:1080`, `http://user:pass@1.2.3.4:8080`
+   - Colon form: `1.2.3.4:1080:user:pass` (port required, credentials optional)
+2. **Assign** — click "Auto assign" and the app hands one proxy to every account that has **no binding yet** (already bound accounts are left alone). You can also pick a proxy per account in the account editor.
+3. **Check** — the account list has a new **Proxy** column showing the line each account currently uses; the proxy list shows how many accounts use each proxy (more than 1 means it is shared).
+
+### Supported protocols
+
+| Protocol | Notation | Notes |
+|---|---|---|
+| HTTP | `http://...` | Common low-cost proxies |
+| HTTPS | `https://...` | Handled as an HTTP tunnel |
+| SOCKS5 | `socks5://...` | Recommended for Telegram, supports username / password |
+
+### Things to know
+
+- **Takes effect immediately** — changing an account's proxy reconnects that account automatically; no need to restart the app.
+- **A broken binding never falls back to a direct connection** — if a proxy is deleted, broken or misconfigured, the account falls back to the **global proxy** instead of connecting bare and exposing your real IP.
+- **Credentials are stored encrypted** — proxy usernames and passwords are encrypted locally and never shown in plain text; importing the same proxy (address + credentials) twice is de-duplicated.
+- **The global proxy still works** — accounts without a dedicated proxy keep using the global proxy from Settings.
+
+---
+
 ## Changelog
 
-### v0.2.32 (current)
+### v0.2.33 (current)
+
+- **New proxy pool** — a **Proxy pool** tab lets you import http / https / socks5 proxies in bulk, accepting both full URLs (`socks5://user:pass@1.2.3.4:1080`) and the colon form (`1.2.3.4:1080:user:pass`), or importing a whole file at once
+- **One proxy per account** — "Auto assign" gives every unbound account its own line in order, so accounts stop piling onto the same exit IP; accounts that already have a binding are never reshuffled
+- **Shared proxies supported too** — assign any proxy to as many accounts as you like; the list shows "used by N accounts" so you can see which lines are shared
+- **New Proxy column in the account list** — see at a glance which line each account is on
+- **Reconnects automatically** — changing an account's proxy drops and re-establishes that connection; no app restart needed
+- **Never falls back to a direct connection** — if a bound proxy is deleted, broken or misconfigured, the account falls back to the global proxy rather than exposing your real IP
+- **Encrypted, de-duplicated credentials** — proxy credentials are encrypted at rest and never displayed; the same address + credentials imported twice is de-duplicated, and comment lines are not counted as failures
+- Full steps, protocol table and caveats: [Proxy pool — one proxy per account or shared](#proxy-pool--one-proxy-per-account-or-shared)
+
+### v0.2.32
 
 - **Bulk `.session` login** — a new "Import .session…" action on the Accounts page brings already-authorized `.session` files straight in, with **no SMS code and no 2FA prompt**
 - **Import a whole batch at once** — multi-select files, or point it at a directory (optionally including subfolders). `-wal / -shm / -journal` sidecars, hidden files and non-session files are skipped automatically
@@ -318,7 +359,15 @@ A: Check the **Status** column of the delivery log (set the filter to "All", not
 **Q: Some groups can be messaged manually, but the tool never sends to them?**  
 A: Check whether the row is marked blacklisted (column 5 shows "yes", or the top-right counter shows "N blacklisted"). Older versions misread Telegram's temporary restriction as a permanent ban and blacklisted those groups. Right-click the group and choose "Unblacklist", or right-click the account row and choose "Unblacklist all (N groups)" to fix them in bulk, then tick them again. Since v0.2.27 temporary restrictions are no longer blacklisted.
 
+**Q: Can I give each account its own proxy?**  
+A: Yes. Open the **Proxy pool** tab and import your proxies (`socks5://user:pass@ip:port`, `http://...` and `ip:port:user:pass` all work, and you can import from a file), then click "Auto assign" — the app hands one proxy to every account that has no binding yet. Sharing one proxy across several accounts works too; the list shows how many accounts use each line. Bound accounts reconnect automatically and the account list shows the current proxy.
+
+**Q: If a proxy dies or I delete it, will the account connect directly and expose my real IP?**  
+A: No. When a bound proxy is broken or deleted, the account falls back to the global proxy configured in Settings. It only connects directly when no global proxy is configured either — the same behaviour as before.
+
+---
+
 **Q: Sign-in says "cannot securely connect to the licensing service / certificate verification failed"?**  
 A: It means the encrypted connection used for sign-in was replaced in transit — unrelated to your account. Use the issuer shown in the message: ① "certificate issued by XXX but does not match the host / is not a common public CA" → your VPN / proxy / corporate network is intercepting the connection; **switch to another node**, or add a `DIRECT` rule for the licensing host and retry. ② "certificate expired" → update to the latest build. ③ "certificate is valid but local verification failed" → usually a **wrong system clock** (right-click the taskbar clock → sync) or an outdated local root store. Seeing this right after changing VPN is almost always case ①.
 
-For questions or bug reports, please open an [issue](https://github.com/myhgjb666/telegram-group-tool/issues) and include the version number (e.g. v0.2.32).
+For questions or bug reports, please open an [issue](https://github.com/myhgjb666/telegram-group-tool/issues) and include the version number (e.g. v0.2.33).

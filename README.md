@@ -6,7 +6,7 @@
 
 关键词：Telegram 群发、TG 群发工具、电报群发、Telegram 批量发送、Telegram 群发软件、Telegram 群发助手、多账号群发、Telegram 自动群发、电报批量私信、TG 定时群发、Telegram bulk message sender、Telegram mass message tool、Telegram mass DM software、Telegram group broadcast tool、Telegram multi-account sender、Telegram marketing tool for Windows。
 
-> 当前最新版本：**v0.2.32**（Windows）  
+> 当前最新版本：**v0.2.33**（Windows）  
 > 本仓库仅提供安装包与使用说明，便于下载，不包含源代码。
 
 ---
@@ -15,8 +15,8 @@
 
 | 版本 | 文件 | 说明 |
 |---|---|---|
-| **v0.2.32**（最新） | [tg-broadcast-v0.2.32.exe](https://github.com/myhgjb666/telegram-group-tool/releases/download/v0.2.32/tg-broadcast-v0.2.32.exe) | Windows 64 位单文件，解压即用（直接运行） |
-| v0.2.31 | [tg-broadcast-v0.2.31.exe](https://github.com/myhgjb666/telegram-group-tool/releases/download/v0.2.31/tg-broadcast-v0.2.31.exe) | 上一版本 |
+| **v0.2.33**（最新） | [tg-broadcast-v0.2.33.exe](https://github.com/myhgjb666/telegram-group-tool/releases/download/v0.2.33/tg-broadcast-v0.2.33.exe) | Windows 64 位单文件，解压即用（直接运行） |
+| v0.2.32 | [tg-broadcast-v0.2.32.exe](https://github.com/myhgjb666/telegram-group-tool/releases/download/v0.2.32/tg-broadcast-v0.2.32.exe) | 上一版本 |
 
 历史版本请到 [Releases](https://github.com/myhgjb666/telegram-group-tool/releases) 页面选择对应版本下载。
 
@@ -29,6 +29,7 @@
 ## 功能亮点
 
 - **多账号管理**：添加多个 Telegram 账号，查看状态与今日已发 / 日上限
+- **代理池（一号一代理 / 共用代理）**：批量导入 http / https / socks5 代理，可一键给每个账号自动分一个，也可以多个账号共用一个；账号列表直接显示每个号当前走哪条线路
 - **协议号批量登录**：直接把已经登录好的 `.session` 文件导进来，**不发验证码、不走二步验证**；支持一次多选文件或选中整个目录批量导入，逐个验证并显示成功 / 跳过 / 失败清单
 - **群组选择**：同步已加入群组，按任务勾选发送目标
 - **消息模板**：支持多文案轮换与变量（日期、时间、群名等）
@@ -68,7 +69,7 @@
 
 ## 快速上手
 
-1. 下载并运行 `tg-broadcast-v0.2.32.exe`
+1. 下载并运行 `tg-broadcast-v0.2.33.exe`
 2. 注册 / 登录软件账号（新设备通常有试用时长，到期后需续期）
 3. 打开 [my.telegram.org/apps](https://my.telegram.org/apps) 登录，创建应用并拿到 `api_id` / `api_hash`
 4. 在软件 **账号** 页添加 Telegram 账号（填写 api 凭证 + 手机号，完成验证码 / 二级密码）
@@ -117,9 +118,49 @@
 
 ---
 
+## 代理池：一号一代理 / 共用代理
+
+以前所有账号只能共用一个全局代理入口，多号同 IP 上线容易被一起盯上。v0.2.33 起新增 **代理池** 页面：批量导入代理后，可让每个账号各走一条线路，也可以指定几个号共用一条。
+
+### 步骤
+
+1. **导入代理**：顶部「代理池」页 → 粘贴代理列表，或「从文件导入」。支持两种写法，可以混着写：
+   - 完整 URL：`socks5://user:pass@1.2.3.4:1080`、`http://user:pass@1.2.3.4:8080`
+   - 冒号格式：`1.2.3.4:1080:user:pass`（端口必填，账号密码可省）
+2. **分配**：点「自动分配」，程序按顺序给**还没绑定代理**的账号各分一条（已绑定的不动）；也可以在账号编辑里逐个指定。
+3. **查看**：账号列表新增「代理」列，实时显示每个号走的是哪一条；代理池列表会显示每条代理被几个账号用着（大于 1 就是共用了）。
+
+### 支持的协议
+
+| 协议 | 写法 | 说明 |
+|---|---|---|
+| HTTP | `http://...` | 常见低成本代理 |
+| HTTPS | `https://...` | 按 HTTP 隧道方式处理 |
+| SOCKS5 | `socks5://...` | Telegram 场景推荐，支持带用户名密码 |
+
+### 几个要注意的地方
+
+- **导入后马上生效**：改动某个账号的代理后，该账号会自动断开重连一次，不需要手动重启软件。
+- **绑定失效不会退化成直连**：如果某条代理被删了、坏了或者填错，账号会**自动回落到全局代理**，而不是直接裸连暴露你的真实 IP。
+- **凭据加密存储**：代理的用户名密码加密后存本地，列表里不显示明文；同一条代理（地址 + 凭据）重复导入会自动去重。
+- **改全局代理仍然有效**：没绑定专属代理的账号，继续走「设置」里的全局代理。
+
+---
+
 ## 版本说明
 
-### v0.2.32（当前）
+### v0.2.33（当前）
+
+- **新增代理池**：顶部新增「代理池」页，可批量导入 http / https / socks5 代理，支持完整 URL（`socks5://user:pass@1.2.3.4:1080`）与冒号格式（`1.2.3.4:1080:user:pass`）两种写法，也可以从文件整批导入
+- **一号一代理**：点「自动分配」按顺序给未绑定的账号各分一条线路，避免多号挤在同一个出口 IP 上；已绑定的账号不会被打乱
+- **也支持共用代理**：多条代理可以按需分给不同账号，一个代理被多个账号使用时列表会显示「被 N 个账号使用」，方便你看清哪些是共用的
+- **账号列表新增「代理」列**：一眼看出每个号当前走哪条线路
+- **改完自动重连**：调整某个账号的代理后，该账号自动断开重连，不用重启软件
+- **失效回落全局，绝不裸连**：绑定的代理被删除 / 损坏 / 填错时自动回落到全局代理，不会因为一条代理坏了就暴露真实 IP
+- **凭据加密去重**：代理用户名密码加密存本地、列表不显示明文；同一地址 + 凭据重复导入自动去重，注释行不会算作导入失败
+- 详细步骤、协议对照与注意事项见上文 [代理池：一号一代理 / 共用代理](#代理池一号一代理--共用代理)
+
+### v0.2.32
 
 - **新增协议号批量登录**：账号页新增「导入 .session…」，把已经登录好的 `.session` 文件直接导进来，**不需要短信验证码、不需要二步验证**
 - **支持一次导入一批**：可多选文件，也可以直接选整个目录（可含子目录）。扫描时自动跳过 `-wal / -shm / -journal` 等附属文件、隐藏文件和非会话文件
@@ -323,15 +364,23 @@ A: 说明这个会话已经失效：可能是账号被登出、改过密码，�
 
 ---
 
+**Q: 我想让每个账号走不同的代理，能做到吗？**  
+A: 可以。到「代理池」页导入代理（支持 `socks5://user:pass@ip:port`、`http://...` 和 `ip:port:user:pass` 三种写法，也能从文件整批导入），再点「自动分配」，程序会给还没绑定的账号按顺序各分一条。想让几个号共用一条也行，列表会显示每条代理被几个账号用着。绑定后该账号自动重连，账号列表的「代理」列能看到当前线路。
+
+**Q: 某条代理挂了 / 被我删了，账号会不会直连暴露真实 IP？**  
+A: 不会。绑定的代理失效或被删除时，账号会自动回落到「设置」里的全局代理；只有全局代理也没配时才会直连，跟以前的行为一致。
+
+---
+
 **Q: 登录时提示「无法安全连接授权服务 / 证书校验失败」？**  
 A: 意思是登录请求的加密连接被中途替换了，跟你的账号无关。按提示里的签发者判断：① 提示「证书由 XXX 签发但不匹配地址 / 不是常见公共证书颁发机构」→ 当前 VPN / 代理 / 公司网络对该连接做了拦截，**换一个节点**，或在代理规则里让授权服务地址直连（`DIRECT`）后重试；② 提示「证书已过期」→ 升级到最新版本；③ 提示「证书正常但本机校验失败」→ 多为**系统时间不对**（右键任务栏时间 → 校准）或本机根证书过期。换 VPN 后出现这个提示，基本都属于第 ① 种。
 
-如有问题，请在本仓库 [Issues](https://github.com/myhgjb666/telegram-group-tool/issues) 反馈，并注明版本号（如 v0.2.32）。
+如有问题，请在本仓库 [Issues](https://github.com/myhgjb666/telegram-group-tool/issues) 反馈，并注明版本号（如 v0.2.33）。
 
 ---
 
 ## 关键词 / Keywords
 
-Telegram 群发 · TG 群发工具 · 电报群发 · Telegram 批量发送 · Telegram 群发软件 · Telegram 群发助手 · Telegram 多账号群发 · Telegram 自动群发 · 电报批量私信 · TG 定时群发 · TG 群发机器人 · Telegram 社群运营工具 · Telegram 消息群发客户端 · Windows Telegram 群发 · Telegram 协议号登录 · Telegram session 导入 · TG 批量登录 · 电报协议号
+Telegram 群发 · TG 群发工具 · 电报群发 · Telegram 批量发送 · Telegram 群发软件 · Telegram 群发助手 · Telegram 多账号群发 · Telegram 自动群发 · 电报批量私信 · TG 定时群发 · TG 群发机器人 · Telegram 社群运营工具 · Telegram 消息群发客户端 · Windows Telegram 群发 · Telegram 协议号登录 · Telegram session 导入 · TG 批量登录 · 电报协议号 · Telegram 代理设置 · Telegram 一号一代理 · TG 多代理轮换 · socks5 代理群发
 
-Telegram bulk message sender · Telegram bulk messaging · Telegram mass message · Telegram mass DM tool · Telegram mass DM software · Telegram group broadcast · Telegram broadcast tool · Telegram multi-account sender · Telegram auto message sender · Telegram message automation · Telegram marketing tool · Telegram bulk sender for Windows · Telegram group messaging software · send bulk messages to Telegram groups · Telegram desktop broadcast app · Telegram session import · Telegram bulk account login
+Telegram bulk message sender · Telegram bulk messaging · Telegram mass message · Telegram mass DM tool · Telegram mass DM software · Telegram group broadcast · Telegram broadcast tool · Telegram multi-account sender · Telegram auto message sender · Telegram message automation · Telegram marketing tool · Telegram bulk sender for Windows · Telegram group messaging software · send bulk messages to Telegram groups · Telegram desktop broadcast app · Telegram session import · Telegram bulk account login · Telegram proxy support · Telegram socks5 proxy · Telegram one proxy per account · Telegram proxy pool
