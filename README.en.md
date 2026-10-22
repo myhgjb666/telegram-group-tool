@@ -6,7 +6,7 @@ A multi-account **Telegram bulk message / mass DM** desktop client for Windows. 
 
 **Keywords:** telegram bulk message sender, telegram bulk messaging, telegram mass message tool, telegram mass DM software, telegram group broadcast tool, telegram multi-account sender, telegram auto message sender, telegram message automation, telegram marketing tool, telegram bulk sender for Windows, send bulk messages to telegram groups, telegram group messaging software, telegram broadcast desktop app, telegram session import, telegram bulk account login, telegram .session login, import telegram session file, telegram proxy support, telegram socks5 proxy, telegram one proxy per account, telegram proxy pool, rotate telegram proxies, telegram proxy checker, telegram proxy availability test, telegram keyword listener, telegram listener manual approval, telegram customer phone number import, detect telegram by phone number, bulk delete telegram contacts, TG bulk sender, Telegram 群发 / TG 群发工具 / 电报群发.
 
-> Latest version: **v0.2.39** (Windows)  
+> Latest version: **v0.2.40** (Windows)  
 > This repository hosts the installer and usage documentation for easy download. Source code is not included.
 
 ---
@@ -15,8 +15,8 @@ A multi-account **Telegram bulk message / mass DM** desktop client for Windows. 
 
 | Version | File | Notes |
 |---|---|---|
-| **v0.2.39** (latest) | [tg-broadcast-v0.2.39.exe](https://github.com/myhgjb666/telegram-group-tool/releases/download/v0.2.39/tg-broadcast-v0.2.39.exe) | Windows 64-bit single file, run directly |
-| v0.2.38 | [tg-broadcast-v0.2.38.exe](https://github.com/myhgjb666/telegram-group-tool/releases/download/v0.2.38/tg-broadcast-v0.2.38.exe) | Previous release |
+| **v0.2.40** (latest) | [tg-broadcast-v0.2.40.exe](https://github.com/myhgjb666/telegram-group-tool/releases/download/v0.2.40/tg-broadcast-v0.2.40.exe) | Windows 64-bit single file, run directly |
+| v0.2.39 | [tg-broadcast-v0.2.39.exe](https://github.com/myhgjb666/telegram-group-tool/releases/download/v0.2.39/tg-broadcast-v0.2.39.exe) | Previous release |
 
 Older builds are available on the [Releases](https://github.com/myhgjb666/telegram-group-tool/releases) page.
 
@@ -70,7 +70,7 @@ If your antivirus blocks the first launch, choose "Run anyway" or add an excepti
 
 ## Quick start
 
-1. Download and run `tg-broadcast-v0.2.39.exe`
+1. Download and run `tg-broadcast-v0.2.40.exe`
 2. Sign up / sign in to the app account (new devices usually get a trial period, then a license key is needed)
 3. Open [my.telegram.org/apps](https://my.telegram.org/apps), create an application and copy your `api_id` / `api_hash`
 4. On the **Accounts** page, add a Telegram account (API credentials + phone number, then the login code / 2FA password)
@@ -166,7 +166,13 @@ The most common one you will see is "**the port answers, but the proxy dropped t
 
 ## Changelog
 
-### v0.2.39 (current)
+### v0.2.40 (current)
+
+- **Removed the per-account daily detection cap**: previously each account could detect at most 2000 numbers per day and then showed "daily quota exhausted". There is no cap anymore — detection now runs until the list is done or Telegram rate-limiting pauses it
+- The "today's remaining quota" hint now reads "no daily limit"; usage is still recorded and visible in the app
+- The 1000-numbers-per-import limit, detection pacing, and the auto pause/resume on rate limits are unchanged — removing the app-side cap doesn't remove Telegram's own rate limits, so large lists are still best split across accounts
+
+### v0.2.39
 
 - **Fixed: false "no Telegram / privacy-restricted" results appearing in batches**. Telegram has a second rate-limit shape for phone-number lookups: **no error, but results are silently suppressed** (the response comes back empty). The app used to mark every number in such a chunk as "not registered", and that status is never retried — a large list could be burned into false "not registered" wholesale. "20 numbers work fine, more all show no-TG" is exactly this
 - **Auto-recovery**: when a chunk comes back with zero hits, the app now immediately checks the account's address book — suppressed imports have usually already written the numbers into it, so they can be matched by phone number and correctly marked "has Telegram"
@@ -254,7 +260,7 @@ The most common one you will see is "**the port answers, but the proxy dropped t
 - **New "Customer outreach" tab** — follow up with customers from your own contact base. Paste or import phone numbers (supports `number,note`, auto-deduplicated) → pick an account to detect which numbers have Telegram → send follow-up messages one by one
 - **Three detection outcomes** — has Telegram (contactable), not registered or the user hides their number from being found (follow up by phone instead), or the lookup itself failed (retryable)
 - **A reply of "opt out" stops everything permanently** — if the customer replies with "退订 / T / TD / UNSUBSCRIBE", the lead is permanently marked, a single confirmation is sent back, and no task will ever message them again. Opt-out takes priority over every other rule
-- **Hard caps to keep it from drifting** — at most 1000 numbers per import, a per-account daily detection cap, and no export of detection results; direct messages consume the *same* daily quota as group broadcasts; DM tasks are one-shot with no recurring schedule option
+- **Hard caps to keep it from drifting** — at most 1000 numbers per import, and no export of detection results; direct messages consume the *same* daily quota as group broadcasts; DM tasks are one-shot with no recurring schedule option
 - **Fixed duplicate execution of monitor rules** — repeatedly editing a monitor rule used to leave the old handler registered, so a single incoming message could be processed several times (duplicate auto-replies, inflated match counts). Saving a rule now correctly replaces the old one
 - **Scope** — this feature is for your own customers, i.e. people who left their number expecting to be contacted. Do not use it on numbers collected elsewhere; that is cold outreach, which risks bans and may violate personal-data protection laws
 - Note: detecting numbers adds them to your Telegram account's contact list (that is how Telegram's lookup works and it cannot be avoided). You can delete those contacts in the Telegram app afterwards
@@ -446,4 +452,4 @@ A: No. When a bound proxy is broken or deleted, the account falls back to the gl
 **Q: Sign-in says "cannot securely connect to the licensing service / certificate verification failed"?**  
 A: It means the encrypted connection used for sign-in was replaced in transit — unrelated to your account. Use the issuer shown in the message: ① "certificate issued by XXX but does not match the host / is not a common public CA" → your VPN / proxy / corporate network is intercepting the connection; **switch to another node**, or add a `DIRECT` rule for the licensing host and retry. ② "certificate expired" → update to the latest build. ③ "certificate is valid but local verification failed" → usually a **wrong system clock** (right-click the taskbar clock → sync) or an outdated local root store. Seeing this right after changing VPN is almost always case ①.
 
-For questions or bug reports, please open an [issue](https://github.com/myhgjb666/telegram-group-tool/issues) and include the version number (e.g. v0.2.39).
+For questions or bug reports, please open an [issue](https://github.com/myhgjb666/telegram-group-tool/issues) and include the version number (e.g. v0.2.40).

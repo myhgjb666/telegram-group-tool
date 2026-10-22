@@ -6,7 +6,7 @@
 
 关键词：Telegram 群发、TG 群发工具、电报群发、Telegram 批量发送、Telegram 群发软件、Telegram 群发助手、多账号群发、Telegram 自动群发、电报批量私信、TG 定时群发、Telegram bulk message sender、Telegram mass message tool、Telegram mass DM software、Telegram group broadcast tool、Telegram multi-account sender、Telegram marketing tool for Windows。
 
-> 当前最新版本：**v0.2.39**（Windows）  
+> 当前最新版本：**v0.2.40**（Windows）  
 > 本仓库仅提供安装包与使用说明，便于下载，不包含源代码。
 
 ---
@@ -15,8 +15,8 @@
 
 | 版本 | 文件 | 说明 |
 |---|---|---|
-| **v0.2.39**（最新） | [tg-broadcast-v0.2.39.exe](https://github.com/myhgjb666/telegram-group-tool/releases/download/v0.2.39/tg-broadcast-v0.2.39.exe) | Windows 64 位单文件，解压即用（直接运行） |
-| v0.2.38 | [tg-broadcast-v0.2.38.exe](https://github.com/myhgjb666/telegram-group-tool/releases/download/v0.2.38/tg-broadcast-v0.2.38.exe) | 上一版本 |
+| **v0.2.40**（最新） | [tg-broadcast-v0.2.40.exe](https://github.com/myhgjb666/telegram-group-tool/releases/download/v0.2.40/tg-broadcast-v0.2.40.exe) | Windows 64 位单文件，解压即用（直接运行） |
+| v0.2.39 | [tg-broadcast-v0.2.39.exe](https://github.com/myhgjb666/telegram-group-tool/releases/download/v0.2.39/tg-broadcast-v0.2.39.exe) | 上一版本 |
 
 历史版本请到 [Releases](https://github.com/myhgjb666/telegram-group-tool/releases) 页面选择对应版本下载。
 
@@ -70,7 +70,7 @@
 
 ## 快速上手
 
-1. 下载并运行 `tg-broadcast-v0.2.39.exe`
+1. 下载并运行 `tg-broadcast-v0.2.40.exe`
 2. 注册 / 登录软件账号（新设备通常有试用时长，到期后需续期）
 3. 打开 [my.telegram.org/apps](https://my.telegram.org/apps) 登录，创建应用并拿到 `api_id` / `api_hash`
 4. 在软件 **账号** 页添加 Telegram 账号（填写 api 凭证 + 手机号，完成验证码 / 二级密码）
@@ -167,7 +167,13 @@
 
 ## 版本说明
 
-### v0.2.39（当前）
+### v0.2.40（当前）
+
+- **取消每账号每日识别上限**：以前每个账号每天最多识别 2000 个号码，超了就提示「今日识别额度已用完」。现在不再设上限，识别会一直跑到名单跑完或被 Telegram 限流自动暂停
+- 「今日剩余额度」提示相应改为「今日额度不限」；识别量仍会正常记录（可在软件内查看当日已识别数量）
+- 单批导入 1000 个的上限、识别节奏与限流自动暂停/续跑机制不变——取消的是软件侧额度，Telegram 侧的限流依然存在，大名单仍建议多账号分批识别
+
+### v0.2.39
 
 - **修复：识别中批量出现假的「无 TG / 隐私限制」**。Telegram 对按手机号找人还有第二种限流：**不报错、但悄悄不返回结果**（静默抑制）。以前碰到这种情况，整批号码会被误判成「未注册或隐私限制」，而且这个状态不会参与重试——一份大名单会被整份烧成假的「未注册」。实测「20 来个正常、多了全变无 TG」就是它
 - **自动找回**：现在识别到一批「一个都没找到」时，会立即核对账号通讯录——被抑制的导入其实已经把号码写进了通讯录，能按手机号找回并正确标记为「有 TG」
@@ -255,7 +261,7 @@
 - **新增「客户联系」**：用于跟进你自己私域里留过手机号的客户。粘贴或导入号码（支持「号码,备注」，自动去重）→ 选一个账号批量识别其中哪些开通了 Telegram → 逐个发送跟进消息
 - **识别结果分三种**：有 Telegram（可直接联系）、未注册或对方隐私设置不允许被找到（联系不上，建议改用电话跟进）、识别失败（可重试）
 - **对方回复「退订」即永久停止**：客户回复「退订 / T / TD / UNSUBSCRIBE」等指令后，会自动永久标记、回一条确认，之后任何任务都不会再发给他；退订优先于所有其他规则
-- **有硬性上限，防止跑偏**：单批最多导入 1000 个号码，每个账号每日识别量有上限，识别结果不支持导出；私信消耗的是与群发同一份日配额；私信任务是一次性的，没有定时循环选项
+- **有硬性上限，防止跑偏**：单批最多导入 1000 个号码，识别结果不支持导出；私信消耗的是与群发同一份日配额；私信任务是一次性的，没有定时循环选项
 - **修复监听规则重复执行**：以前反复编辑监听规则，会让同一条消息被重复处理（自动回复可能发多条、命中次数虚高），现在每次保存都会正确替换旧规则
 - **使用边界**：本功能只用于你自己的客户——对方留号时预期会有人联系他。请勿用于联系从别处收集来的陌生号码，那属于冷触达，既容易被封号，也可能违反个人信息保护相关法规
 - 一点说明：识别号码时，这些号码会加入你 Telegram 账号的通讯录（这是 Telegram 提供的查询方式，无法避免），不需要时可在 Telegram 客户端里删除
@@ -451,7 +457,7 @@ A: v0.2.34 起「可用」= 已经和代理握手成功、并让代理把隧道�
 **Q: 登录时提示「无法安全连接授权服务 / 证书校验失败」？**  
 A: 意思是登录请求的加密连接被中途替换了，跟你的账号无关。按提示里的签发者判断：① 提示「证书由 XXX 签发但不匹配地址 / 不是常见公共证书颁发机构」→ 当前 VPN / 代理 / 公司网络对该连接做了拦截，**换一个节点**，或在代理规则里让授权服务地址直连（`DIRECT`）后重试；② 提示「证书已过期」→ 升级到最新版本；③ 提示「证书正常但本机校验失败」→ 多为**系统时间不对**（右键任务栏时间 → 校准）或本机根证书过期。换 VPN 后出现这个提示，基本都属于第 ① 种。
 
-如有问题，请在本仓库 [Issues](https://github.com/myhgjb666/telegram-group-tool/issues) 反馈，并注明版本号（如 v0.2.39）。
+如有问题，请在本仓库 [Issues](https://github.com/myhgjb666/telegram-group-tool/issues) 反馈，并注明版本号（如 v0.2.40）。
 
 ---
 
