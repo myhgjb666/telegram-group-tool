@@ -6,7 +6,7 @@ A multi-account **Telegram bulk message / mass DM** desktop client for Windows. 
 
 **Keywords:** telegram bulk message sender, telegram bulk messaging, telegram mass message tool, telegram mass DM software, telegram group broadcast tool, telegram multi-account sender, telegram auto message sender, telegram message automation, telegram marketing tool, telegram bulk sender for Windows, send bulk messages to telegram groups, telegram group messaging software, telegram broadcast desktop app, telegram session import, telegram bulk account login, telegram .session login, import telegram session file, telegram proxy support, telegram socks5 proxy, telegram one proxy per account, telegram proxy pool, rotate telegram proxies, telegram proxy checker, telegram proxy availability test, telegram keyword listener, telegram listener manual approval, telegram customer phone number import, detect telegram by phone number, bulk delete telegram contacts, TG bulk sender, Telegram 群发 / TG 群发工具 / 电报群发.
 
-> Latest version: **v0.2.41** (Windows)  
+> Latest version: **v0.2.42** (Windows)  
 > This repository hosts the installer and usage documentation for easy download. Source code is not included.
 
 ---
@@ -15,7 +15,8 @@ A multi-account **Telegram bulk message / mass DM** desktop client for Windows. 
 
 | Version | File | Notes |
 |---|---|---|
-| **v0.2.41** (latest) | [tg-broadcast-v0.2.41.exe](https://github.com/myhgjb666/telegram-group-tool/releases/download/v0.2.41/tg-broadcast-v0.2.41.exe) | Windows 64-bit single file, run directly |
+| **v0.2.42** (latest) | [tg-broadcast-v0.2.42.exe](https://github.com/myhgjb666/telegram-group-tool/releases/download/v0.2.42/tg-broadcast-v0.2.42.exe) | Windows 64-bit single file, run directly |
+| v0.2.41 | [tg-broadcast-v0.2.41.exe](https://github.com/myhgjb666/telegram-group-tool/releases/download/v0.2.41/tg-broadcast-v0.2.41.exe) | Previous release |
 | v0.2.40 | [tg-broadcast-v0.2.40.exe](https://github.com/myhgjb666/telegram-group-tool/releases/download/v0.2.40/tg-broadcast-v0.2.40.exe) | Previous release |
 
 Older builds are available on the [Releases](https://github.com/myhgjb666/telegram-group-tool/releases) page.
@@ -70,7 +71,7 @@ If your antivirus blocks the first launch, choose "Run anyway" or add an excepti
 
 ## Quick start
 
-1. Download and run `tg-broadcast-v0.2.41.exe`
+1. Download and run `tg-broadcast-v0.2.42.exe`
 2. Sign up / sign in to the app account (new devices usually get a trial period, then a license key is needed)
 3. Open [my.telegram.org/apps](https://my.telegram.org/apps), create an application and copy your `api_id` / `api_hash`
 4. On the **Accounts** page, add a Telegram account (API credentials + phone number, then the login code / 2FA password)
@@ -166,12 +167,17 @@ The most common one you will see is "**the port answers, but the proxy dropped t
 
 ## Changelog
 
-### v0.2.41 (current)
+### v0.2.42 (current)
 
-- **Auto-detect before sending**: tick customers and hit "Start sending" — undetected/failed numbers are **automatically detected first**, and the ones found on Telegram go straight into the send list. Import → pick template → send, one step. If detection is rate-limited mid-way, sending is not blocked: already-detected numbers go out, the rest are auto re-detected on the next send
-- **Estimated finish time**: while sending, the status line live-updates with "estimated to finish around HH:MM", extrapolated from the average time per completed message
+- **One-by-one "detect then send"**: sending no longer batch-detects the whole list first — when the loop reaches a number it **detects that single number**, messages it immediately if found on Telegram, then waits out the send interval before the next one. Two consecutive lookups are naturally a full send interval apart — the gentlest possible pace against Telegram's rate limits
+- **Auto-pause on rate limit**: the task pauses; remaining numbers stay "undetected". Click "Continue sending" later and it resumes with detect-then-send for the undetected ones
+- **Live status line**: "Detecting 138…" / "Sending … (N/M)"; after the first 3 items it extrapolates "estimated to finish around HH:MM"
 - **Freer tick boxes**: undetected/failed numbers can now be ticked too (opted-out still cannot); by default only already-detected sendable ones are ticked
-- The per-number send interval mechanism is unchanged (interval / jitter / daily cap adjustable in the send area)
+- Numbers judged "not registered / privacy-restricted" are not re-detected repeatedly (no wasted rate-limit budget on dead numbers); failed detections retry automatically on the next run
+
+### v0.2.41
+
+- First version with auto-detection before sending and estimated finish time (v0.2.42 improved "batch-detect first" into **one-by-one detect-then-send**, much friendlier to rate limits on big lists — prefer v0.2.42)
 
 ### v0.2.40
 
@@ -459,4 +465,4 @@ A: No. When a bound proxy is broken or deleted, the account falls back to the gl
 **Q: Sign-in says "cannot securely connect to the licensing service / certificate verification failed"?**  
 A: It means the encrypted connection used for sign-in was replaced in transit — unrelated to your account. Use the issuer shown in the message: ① "certificate issued by XXX but does not match the host / is not a common public CA" → your VPN / proxy / corporate network is intercepting the connection; **switch to another node**, or add a `DIRECT` rule for the licensing host and retry. ② "certificate expired" → update to the latest build. ③ "certificate is valid but local verification failed" → usually a **wrong system clock** (right-click the taskbar clock → sync) or an outdated local root store. Seeing this right after changing VPN is almost always case ①.
 
-For questions or bug reports, please open an [issue](https://github.com/myhgjb666/telegram-group-tool/issues) and include the version number (e.g. v0.2.41).
+For questions or bug reports, please open an [issue](https://github.com/myhgjb666/telegram-group-tool/issues) and include the version number (e.g. v0.2.42).

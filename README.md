@@ -6,7 +6,7 @@
 
 关键词：Telegram 群发、TG 群发工具、电报群发、Telegram 批量发送、Telegram 群发软件、Telegram 群发助手、多账号群发、Telegram 自动群发、电报批量私信、TG 定时群发、Telegram bulk message sender、Telegram mass message tool、Telegram mass DM software、Telegram group broadcast tool、Telegram multi-account sender、Telegram marketing tool for Windows。
 
-> 当前最新版本：**v0.2.41**（Windows）  
+> 当前最新版本：**v0.2.42**（Windows）  
 > 本仓库仅提供安装包与使用说明，便于下载，不包含源代码。
 
 ---
@@ -15,7 +15,8 @@
 
 | 版本 | 文件 | 说明 |
 |---|---|---|
-| **v0.2.41**（最新） | [tg-broadcast-v0.2.41.exe](https://github.com/myhgjb666/telegram-group-tool/releases/download/v0.2.41/tg-broadcast-v0.2.41.exe) | Windows 64 位单文件，解压即用（直接运行） |
+| **v0.2.42**（最新） | [tg-broadcast-v0.2.42.exe](https://github.com/myhgjb666/telegram-group-tool/releases/download/v0.2.42/tg-broadcast-v0.2.42.exe) | Windows 64 位单文件，解压即用（直接运行） |
+| v0.2.41 | [tg-broadcast-v0.2.41.exe](https://github.com/myhgjb666/telegram-group-tool/releases/download/v0.2.41/tg-broadcast-v0.2.41.exe) | 上一版本 |
 | v0.2.40 | [tg-broadcast-v0.2.40.exe](https://github.com/myhgjb666/telegram-group-tool/releases/download/v0.2.40/tg-broadcast-v0.2.40.exe) | 上一版本 |
 
 历史版本请到 [Releases](https://github.com/myhgjb666/telegram-group-tool/releases) 页面选择对应版本下载。
@@ -70,7 +71,7 @@
 
 ## 快速上手
 
-1. 下载并运行 `tg-broadcast-v0.2.41.exe`
+1. 下载并运行 `tg-broadcast-v0.2.42.exe`
 2. 注册 / 登录软件账号（新设备通常有试用时长，到期后需续期）
 3. 打开 [my.telegram.org/apps](https://my.telegram.org/apps) 登录，创建应用并拿到 `api_id` / `api_hash`
 4. 在软件 **账号** 页添加 Telegram 账号（填写 api 凭证 + 手机号，完成验证码 / 二级密码）
@@ -167,12 +168,17 @@
 
 ## 版本说明
 
-### v0.2.41（当前）
+### v0.2.42（当前）
 
-- **发送时自动先识别**：现在勾选客户后点「开始发送」，未识别/识别失败的号码会**自动先跑一遍识别**，识别出 TG 的直接进入发送名单——导入号码 → 选模板 → 点发送，一步到位，不用再手动先点识别。识别时若被 Telegram 限流暂停，不耽误发送：已识别到的照常发，剩余的下次发送时自动补识别
-- **预计发完时间**：发送过程中状态栏实时显示「预计 HH:MM 左右发完」，按已发条目的平均耗时自动推算
+- **逐个「先识别再发送」**：发送不再是「先批量识别整份名单、再统一发」——轮到某个号码时才**单独识别它**，识别出 TG 立即发给它，等完发送间隔再处理下一个。两次识别之间天然隔了一整条发送间隔，是 Telegram 限流的最温和节奏，大名单也不容易触发限流
+- **识别被限流自动暂停**：任务转为暂停，剩余号码保持未识别；稍后点「继续发送」会从未识别的号码继续「先识别再发」
+- **状态栏实时显示**：「正在识别 138…」/「正在发送 …（N/M）」，发送开始 3 条后按平均耗时推算「预计 HH:MM 左右发完」
 - **勾选更自由**：未识别/识别失败的号码也可以勾选了（已退订的仍不可）；默认还是只勾选已识别可直接发送的
-- 逐号间隔发送机制不变（间隔/抖动/日上限在发送区可调）
+- 「未注册或隐私限制」的号码不会反复识别（避免对死号重复消耗限流额度）；识别失败的号码下次运行自动重试
+
+### v0.2.41
+
+- 首次引入发送时自动补识别与预计发完时间（v0.2.42 把「先批量识别再发」改进为**逐个先识别再发**，大名单限流表现更好，建议直接用 v0.2.42）
 
 ### v0.2.40
 
@@ -464,7 +470,7 @@ A: v0.2.34 起「可用」= 已经和代理握手成功、并让代理把隧道�
 **Q: 登录时提示「无法安全连接授权服务 / 证书校验失败」？**  
 A: 意思是登录请求的加密连接被中途替换了，跟你的账号无关。按提示里的签发者判断：① 提示「证书由 XXX 签发但不匹配地址 / 不是常见公共证书颁发机构」→ 当前 VPN / 代理 / 公司网络对该连接做了拦截，**换一个节点**，或在代理规则里让授权服务地址直连（`DIRECT`）后重试；② 提示「证书已过期」→ 升级到最新版本；③ 提示「证书正常但本机校验失败」→ 多为**系统时间不对**（右键任务栏时间 → 校准）或本机根证书过期。换 VPN 后出现这个提示，基本都属于第 ① 种。
 
-如有问题，请在本仓库 [Issues](https://github.com/myhgjb666/telegram-group-tool/issues) 反馈，并注明版本号（如 v0.2.41）。
+如有问题，请在本仓库 [Issues](https://github.com/myhgjb666/telegram-group-tool/issues) 反馈，并注明版本号（如 v0.2.42）。
 
 ---
 
