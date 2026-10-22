@@ -6,7 +6,7 @@
 
 关键词：Telegram 群发、TG 群发工具、电报群发、Telegram 批量发送、Telegram 群发软件、Telegram 群发助手、多账号群发、Telegram 自动群发、电报批量私信、TG 定时群发、Telegram bulk message sender、Telegram mass message tool、Telegram mass DM software、Telegram group broadcast tool、Telegram multi-account sender、Telegram marketing tool for Windows。
 
-> 当前最新版本：**v0.2.37**（Windows）  
+> 当前最新版本：**v0.2.38**（Windows）  
 > 本仓库仅提供安装包与使用说明，便于下载，不包含源代码。
 
 ---
@@ -15,8 +15,8 @@
 
 | 版本 | 文件 | 说明 |
 |---|---|---|
-| **v0.2.37**（最新） | [tg-broadcast-v0.2.37.exe](https://github.com/myhgjb666/telegram-group-tool/releases/download/v0.2.37/tg-broadcast-v0.2.37.exe) | Windows 64 位单文件，解压即用（直接运行） |
-| v0.2.36 | [tg-broadcast-v0.2.36.exe](https://github.com/myhgjb666/telegram-group-tool/releases/download/v0.2.36/tg-broadcast-v0.2.36.exe) | 上一版本 |
+| **v0.2.38**（最新） | [tg-broadcast-v0.2.38.exe](https://github.com/myhgjb666/telegram-group-tool/releases/download/v0.2.38/tg-broadcast-v0.2.38.exe) | Windows 64 位单文件，解压即用（直接运行） |
+| v0.2.37 | [tg-broadcast-v0.2.37.exe](https://github.com/myhgjb666/telegram-group-tool/releases/download/v0.2.37/tg-broadcast-v0.2.37.exe) | 上一版本 |
 
 历史版本请到 [Releases](https://github.com/myhgjb666/telegram-group-tool/releases) 页面选择对应版本下载。
 
@@ -70,7 +70,7 @@
 
 ## 快速上手
 
-1. 下载并运行 `tg-broadcast-v0.2.37.exe`
+1. 下载并运行 `tg-broadcast-v0.2.38.exe`
 2. 注册 / 登录软件账号（新设备通常有试用时长，到期后需续期）
 3. 打开 [my.telegram.org/apps](https://my.telegram.org/apps) 登录，创建应用并拿到 `api_id` / `api_hash`
 4. 在软件 **账号** 页添加 Telegram 账号（填写 api 凭证 + 手机号，完成验证码 / 二级密码）
@@ -167,7 +167,14 @@
 
 ## 版本说明
 
-### v0.2.37（当前）
+### v0.2.38（当前）
+
+- **修复：识别几百上千个号码时中途卡住不动**。Telegram 对「按手机号找人」（importContacts）有强限流，名单一大（20 个批次连发）跑到中途必被限流（FloodWait）。以前软件会继续硬砸剩余批次，结果越砸限制越长，表现为「识别到一半就再也不动了」。现在**命中限流立即自动暂停**，已识别的号码正常出结果
+- **暂停后可续跑**：被暂停的剩余号码保持「未识别」状态，稍后（等限流解除，界面会提示大约需要等多久）再点一次「开始识别」，会自动从未识别的号码接着跑，已识别过的不会重复识别
+- **额度不浪费**：限流暂停时剩余号码不消耗今日识别额度，额度按实际识别成功的数量扣减
+- 建议大名单分几天、多账号轮流识别；单账号单日上限不变
+
+### v0.2.37
 
 - **修复：客户联系「开始识别」跑完后状态永远停留在「未识别」**。识别本身在正常执行（识别账号的选择、额度、限流都没问题），但结果写回数据库的环节有一个内部错误——识别跑完拿到的结果被丢弃了，一个都没写进去。识别出的「有 TG」客户现在会正常出现在表格里，可以直接勾选发送
 - **升级提示**：v0.2.36 及更早版本识别过的号码，升级后重新点一次「开始识别」即可补上结果（已识别过的不会重复消耗额度判断，失败的也会自动重试）
@@ -403,6 +410,9 @@ A: 先看 **发送日志** 的「状态」列（筛选切到「全部」，别�
 **Q: 客户号码没有 +86 前缀，能直接导入吗？**  
 A: 能。「客户联系」导入时选好「国别」（默认中国大陆），不带 `+` 区号的号码会按所选国别自动补全；号码自带 `+` 区号的以号码为准，不受国别选择影响。清单里删错了也没关系：可按住 Ctrl / Shift 多选后批量移除，或用「清空全部」重头再来（会弹两次确认，已发送的日志不受影响）。
 
+**Q: 识别号码时提示「识别已暂停：Telegram 限流」，怎么办？**  
+A: 这是 Telegram 对「按手机号找人」的强限流（FloodWait），名单越大越容易触发（几百上千个必中）。v0.2.38 起软件会在命中时**立即自动暂停**并提示大约需要等待多少秒；剩余号码保持「未识别」，等一会儿再点一次「开始识别」就自动接着跑，已识别过的不会重复识别、也不重复扣额度。大名单建议分几天、多账号轮流识别。
+
 **Q: 有些群明明能手动发，软件却一直不发？**  
 A: 检查群列表该行是否标记为「拉黑」（第 5 列显示「是」，或右上角统计里的「N 个拉黑」）。旧版本会把 Telegram 的临时限制误判成永久封禁并拉黑，这类群被拦住了。右键该群选「解除拉黑（恢复可选）」；数量多时直接右键账号行，选「解除全部拉黑（N 个群）」一次清理，然后重新勾选即可。v0.2.27 起临时限制不会再被拉黑。
 
@@ -433,12 +443,12 @@ A: v0.2.34 起「可用」= 已经和代理握手成功、并让代理把隧道�
 **Q: 登录时提示「无法安全连接授权服务 / 证书校验失败」？**  
 A: 意思是登录请求的加密连接被中途替换了，跟你的账号无关。按提示里的签发者判断：① 提示「证书由 XXX 签发但不匹配地址 / 不是常见公共证书颁发机构」→ 当前 VPN / 代理 / 公司网络对该连接做了拦截，**换一个节点**，或在代理规则里让授权服务地址直连（`DIRECT`）后重试；② 提示「证书已过期」→ 升级到最新版本；③ 提示「证书正常但本机校验失败」→ 多为**系统时间不对**（右键任务栏时间 → 校准）或本机根证书过期。换 VPN 后出现这个提示，基本都属于第 ① 种。
 
-如有问题，请在本仓库 [Issues](https://github.com/myhgjb666/telegram-group-tool/issues) 反馈，并注明版本号（如 v0.2.37）。
+如有问题，请在本仓库 [Issues](https://github.com/myhgjb666/telegram-group-tool/issues) 反馈，并注明版本号（如 v0.2.38）。
 
 ---
 
 ## 关键词 / Keywords
 
-Telegram 群发 · TG 群发工具 · 电报群发 · Telegram 批量发送 · Telegram 群发软件 · Telegram 群发助手 · Telegram 多账号群发 · Telegram 自动群发 · 电报批量私信 · TG 定时群发 · TG 群发机器人 · Telegram 社群运营工具 · Telegram 消息群发客户端 · Windows Telegram 群发 · Telegram 协议号登录 · Telegram session 导入 · TG 批量登录 · 电报协议号 · Telegram 代理设置 · Telegram 一号一代理 · TG 多代理轮换 · socks5 代理群发 · Telegram 代理测速 · 代理可用性检测 · Telegram 关键词监听 · 监听命中手动发送 · TG 客户号码导入 · 手机号批量识别 Telegram · 客户私信群发 · 电报号码批量删除
+Telegram 群发 · TG 群发工具 · 电报群发 · Telegram 批量发送 · Telegram 群发软件 · Telegram 群发助手 · Telegram 多账号群发 · Telegram 自动群发 · 电报批量私信 · TG 定时群发 · TG 群发机器人 · Telegram 社群运营工具 · Telegram 消息群发客户端 · Windows Telegram 群发 · Telegram 协议号登录 · Telegram session 导入 · TG 批量登录 · 电报协议号 · Telegram 代理设置 · Telegram 一号一代理 · TG 多代理轮换 · socks5 代理群发 · Telegram 代理测速 · 代理可用性检测 · Telegram 关键词监听 · 监听命中手动发送 · TG 客户号码导入 · 手机号批量识别 Telegram · 客户私信群发 · 电报号码批量删除 · Telegram 识别限流 · TG 识别暂停续跑 · Telegram FloodWait
 
 Telegram bulk message sender · Telegram bulk messaging · Telegram mass message · Telegram mass DM tool · Telegram mass DM software · Telegram group broadcast · Telegram broadcast tool · Telegram multi-account sender · Telegram auto message sender · Telegram message automation · Telegram marketing tool · Telegram bulk sender for Windows · Telegram group messaging software · send bulk messages to Telegram groups · Telegram desktop broadcast app · Telegram session import · Telegram bulk account login · Telegram proxy support · Telegram socks5 proxy · Telegram one proxy per account · Telegram proxy pool

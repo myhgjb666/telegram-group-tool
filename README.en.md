@@ -6,7 +6,7 @@ A multi-account **Telegram bulk message / mass DM** desktop client for Windows. 
 
 **Keywords:** telegram bulk message sender, telegram bulk messaging, telegram mass message tool, telegram mass DM software, telegram group broadcast tool, telegram multi-account sender, telegram auto message sender, telegram message automation, telegram marketing tool, telegram bulk sender for Windows, send bulk messages to telegram groups, telegram group messaging software, telegram broadcast desktop app, telegram session import, telegram bulk account login, telegram .session login, import telegram session file, telegram proxy support, telegram socks5 proxy, telegram one proxy per account, telegram proxy pool, rotate telegram proxies, telegram proxy checker, telegram proxy availability test, telegram keyword listener, telegram listener manual approval, telegram customer phone number import, detect telegram by phone number, bulk delete telegram contacts, TG bulk sender, Telegram 群发 / TG 群发工具 / 电报群发.
 
-> Latest version: **v0.2.37** (Windows)  
+> Latest version: **v0.2.38** (Windows)  
 > This repository hosts the installer and usage documentation for easy download. Source code is not included.
 
 ---
@@ -15,8 +15,8 @@ A multi-account **Telegram bulk message / mass DM** desktop client for Windows. 
 
 | Version | File | Notes |
 |---|---|---|
-| **v0.2.37** (latest) | [tg-broadcast-v0.2.37.exe](https://github.com/myhgjb666/telegram-group-tool/releases/download/v0.2.37/tg-broadcast-v0.2.37.exe) | Windows 64-bit single file, run directly |
-| v0.2.36 | [tg-broadcast-v0.2.36.exe](https://github.com/myhgjb666/telegram-group-tool/releases/download/v0.2.36/tg-broadcast-v0.2.36.exe) | Previous release |
+| **v0.2.38** (latest) | [tg-broadcast-v0.2.38.exe](https://github.com/myhgjb666/telegram-group-tool/releases/download/v0.2.38/tg-broadcast-v0.2.38.exe) | Windows 64-bit single file, run directly |
+| v0.2.37 | [tg-broadcast-v0.2.37.exe](https://github.com/myhgjb666/telegram-group-tool/releases/download/v0.2.37/tg-broadcast-v0.2.37.exe) | Previous release |
 
 Older builds are available on the [Releases](https://github.com/myhgjb666/telegram-group-tool/releases) page.
 
@@ -70,7 +70,7 @@ If your antivirus blocks the first launch, choose "Run anyway" or add an excepti
 
 ## Quick start
 
-1. Download and run `tg-broadcast-v0.2.37.exe`
+1. Download and run `tg-broadcast-v0.2.38.exe`
 2. Sign up / sign in to the app account (new devices usually get a trial period, then a license key is needed)
 3. Open [my.telegram.org/apps](https://my.telegram.org/apps), create an application and copy your `api_id` / `api_hash`
 4. On the **Accounts** page, add a Telegram account (API credentials + phone number, then the login code / 2FA password)
@@ -166,7 +166,14 @@ The most common one you will see is "**the port answers, but the proxy dropped t
 
 ## Changelog
 
-### v0.2.37 (current)
+### v0.2.38 (current)
+
+- **Fixed: detection of large lists (hundreds–thousands of numbers) stalled halfway**. Telegram rate-limits phone-number lookups (importContacts) hard — with a big list (20 chunks fired back to back) a FloodWait is guaranteed mid-run. Previously the app kept hammering the remaining chunks, which only stretched the ban longer, showing up as "detection freezes halfway". The app now **pauses immediately on FloodWait**; already-processed numbers keep their results
+- **Resumable**: paused numbers stay "undetected"; after the cooldown (the status line shows the approximate wait), clicking "Start detection" again resumes from where it stopped — already-detected numbers are not re-detected
+- **No quota wasted**: quota is now charged per actually-processed number; numbers skipped by the pause don't consume today's detection quota
+- Large lists are best split across days and accounts; the per-account daily cap is unchanged
+
+### v0.2.37
 
 - **Fixed: Customer outreach "Start detection" completed but every status stayed "未识别" (undetected)**. Detection itself ran correctly (account selection, quota, rate limiting all fine), but the step that writes results back to the database had an internal error — every result was silently discarded. Detected "has Telegram" customers now appear in the table as expected and can be ticked for sending
 - **Upgrade note**: for numbers detected on v0.2.36 or earlier, run "Start detection" once after upgrading — previously detected numbers are re-checked without extra quota, and failed ones retry automatically
@@ -414,6 +421,9 @@ A: Check the **Status** column of the delivery log (set the filter to "All", not
 **Q: My customer numbers have no +86 prefix — can I import them directly?**  
 A: Yes. Pick the **Country** on the Customer outreach import form (mainland China by default) and bare numbers get that code prepended automatically; numbers that already start with `+` are kept as-is regardless of the country choice. If something goes wrong in the list, hold Ctrl / Shift to multi-select and remove them in bulk, or use "Clear all" to start over (it asks twice; delivery logs are never touched).
 
+**Q: Detection shows "paused: Telegram rate limit" — what should I do?**  
+A: That is Telegram's hard rate limit on phone-number lookups (FloodWait); the bigger the list, the more likely it triggers (a few hundred to a thousand numbers will hit it for sure). Since v0.2.38 the app **pauses immediately** when it hits the limit and shows the approximate wait time; the remaining numbers stay "undetected" — wait a bit, then click "Start detection" again and it resumes where it stopped. Already-detected numbers are never re-detected and don't consume quota twice. Split large lists across days and accounts.
+
 **Q: Some groups can be messaged manually, but the tool never sends to them?**  
 A: Check whether the row is marked blacklisted (column 5 shows "yes", or the top-right counter shows "N blacklisted"). Older versions misread Telegram's temporary restriction as a permanent ban and blacklisted those groups. Right-click the group and choose "Unblacklist", or right-click the account row and choose "Unblacklist all (N groups)" to fix them in bulk, then tick them again. Since v0.2.27 temporary restrictions are no longer blacklisted.
 
@@ -428,4 +438,4 @@ A: No. When a bound proxy is broken or deleted, the account falls back to the gl
 **Q: Sign-in says "cannot securely connect to the licensing service / certificate verification failed"?**  
 A: It means the encrypted connection used for sign-in was replaced in transit — unrelated to your account. Use the issuer shown in the message: ① "certificate issued by XXX but does not match the host / is not a common public CA" → your VPN / proxy / corporate network is intercepting the connection; **switch to another node**, or add a `DIRECT` rule for the licensing host and retry. ② "certificate expired" → update to the latest build. ③ "certificate is valid but local verification failed" → usually a **wrong system clock** (right-click the taskbar clock → sync) or an outdated local root store. Seeing this right after changing VPN is almost always case ①.
 
-For questions or bug reports, please open an [issue](https://github.com/myhgjb666/telegram-group-tool/issues) and include the version number (e.g. v0.2.37).
+For questions or bug reports, please open an [issue](https://github.com/myhgjb666/telegram-group-tool/issues) and include the version number (e.g. v0.2.38).
