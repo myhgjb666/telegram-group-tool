@@ -6,7 +6,7 @@
 
 关键词：Telegram 群发、TG 群发工具、电报群发、Telegram 批量发送、Telegram 群发软件、Telegram 群发助手、多账号群发、Telegram 自动群发、电报批量私信、TG 定时群发、Telegram bulk message sender、Telegram mass message tool、Telegram mass DM software、Telegram group broadcast tool、Telegram multi-account sender、Telegram marketing tool for Windows。
 
-> 当前最新版本：**v0.2.36**（Windows）  
+> 当前最新版本：**v0.2.37**（Windows）  
 > 本仓库仅提供安装包与使用说明，便于下载，不包含源代码。
 
 ---
@@ -15,8 +15,8 @@
 
 | 版本 | 文件 | 说明 |
 |---|---|---|
-| **v0.2.36**（最新） | [tg-broadcast-v0.2.36.exe](https://github.com/myhgjb666/telegram-group-tool/releases/download/v0.2.36/tg-broadcast-v0.2.36.exe) | Windows 64 位单文件，解压即用（直接运行） |
-| v0.2.35 | [tg-broadcast-v0.2.35.exe](https://github.com/myhgjb666/telegram-group-tool/releases/download/v0.2.35/tg-broadcast-v0.2.35.exe) | 上一版本 |
+| **v0.2.37**（最新） | [tg-broadcast-v0.2.37.exe](https://github.com/myhgjb666/telegram-group-tool/releases/download/v0.2.37/tg-broadcast-v0.2.37.exe) | Windows 64 位单文件，解压即用（直接运行） |
+| v0.2.36 | [tg-broadcast-v0.2.36.exe](https://github.com/myhgjb666/telegram-group-tool/releases/download/v0.2.36/tg-broadcast-v0.2.36.exe) | 上一版本 |
 
 历史版本请到 [Releases](https://github.com/myhgjb666/telegram-group-tool/releases) 页面选择对应版本下载。
 
@@ -70,7 +70,7 @@
 
 ## 快速上手
 
-1. 下载并运行 `tg-broadcast-v0.2.36.exe`
+1. 下载并运行 `tg-broadcast-v0.2.37.exe`
 2. 注册 / 登录软件账号（新设备通常有试用时长，到期后需续期）
 3. 打开 [my.telegram.org/apps](https://my.telegram.org/apps) 登录，创建应用并拿到 `api_id` / `api_hash`
 4. 在软件 **账号** 页添加 Telegram 账号（填写 api 凭证 + 手机号，完成验证码 / 二级密码）
@@ -167,7 +167,13 @@
 
 ## 版本说明
 
-### v0.2.36（当前）
+### v0.2.37（当前）
+
+- **修复：客户联系「开始识别」跑完后状态永远停留在「未识别」**。识别本身在正常执行（识别账号的选择、额度、限流都没问题），但结果写回数据库的环节有一个内部错误——识别跑完拿到的结果被丢弃了，一个都没写进去。识别出的「有 TG」客户现在会正常出现在表格里，可以直接勾选发送
+- **升级提示**：v0.2.36 及更早版本识别过的号码，升级后重新点一次「开始识别」即可补上结果（已识别过的不会重复消耗额度判断，失败的也会自动重试）
+- 其余无改动
+
+### v0.2.36
 
 - **修复：导入时选了国别却不生效**。上一版里「11 位、以 1 开头的号码按大陆手机号补 +86」的旧规则优先级过高——选了「美国/加拿大 +1」后，`18607123456`（= 1 + 860 开头的美国号码）这类带国家码的美号写法会被抢改成 `+8618607...`。现在**显式选择的国别永远优先**，选了哪个国家就按哪个补
 - **单位数区号（+1 / +7）智能识别**：`区号 + 10 位` 且以区号开头的输入（如 18607123456）视为已带国家码，不会再补成两个 1；10 位裸号（如 2125551234）正常补成 +12125551234
@@ -427,7 +433,7 @@ A: v0.2.34 起「可用」= 已经和代理握手成功、并让代理把隧道�
 **Q: 登录时提示「无法安全连接授权服务 / 证书校验失败」？**  
 A: 意思是登录请求的加密连接被中途替换了，跟你的账号无关。按提示里的签发者判断：① 提示「证书由 XXX 签发但不匹配地址 / 不是常见公共证书颁发机构」→ 当前 VPN / 代理 / 公司网络对该连接做了拦截，**换一个节点**，或在代理规则里让授权服务地址直连（`DIRECT`）后重试；② 提示「证书已过期」→ 升级到最新版本；③ 提示「证书正常但本机校验失败」→ 多为**系统时间不对**（右键任务栏时间 → 校准）或本机根证书过期。换 VPN 后出现这个提示，基本都属于第 ① 种。
 
-如有问题，请在本仓库 [Issues](https://github.com/myhgjb666/telegram-group-tool/issues) 反馈，并注明版本号（如 v0.2.36）。
+如有问题，请在本仓库 [Issues](https://github.com/myhgjb666/telegram-group-tool/issues) 反馈，并注明版本号（如 v0.2.37）。
 
 ---
 

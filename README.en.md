@@ -6,7 +6,7 @@ A multi-account **Telegram bulk message / mass DM** desktop client for Windows. 
 
 **Keywords:** telegram bulk message sender, telegram bulk messaging, telegram mass message tool, telegram mass DM software, telegram group broadcast tool, telegram multi-account sender, telegram auto message sender, telegram message automation, telegram marketing tool, telegram bulk sender for Windows, send bulk messages to telegram groups, telegram group messaging software, telegram broadcast desktop app, telegram session import, telegram bulk account login, telegram .session login, import telegram session file, telegram proxy support, telegram socks5 proxy, telegram one proxy per account, telegram proxy pool, rotate telegram proxies, telegram proxy checker, telegram proxy availability test, telegram keyword listener, telegram listener manual approval, telegram customer phone number import, detect telegram by phone number, bulk delete telegram contacts, TG bulk sender, Telegram 群发 / TG 群发工具 / 电报群发.
 
-> Latest version: **v0.2.36** (Windows)  
+> Latest version: **v0.2.37** (Windows)  
 > This repository hosts the installer and usage documentation for easy download. Source code is not included.
 
 ---
@@ -15,8 +15,8 @@ A multi-account **Telegram bulk message / mass DM** desktop client for Windows. 
 
 | Version | File | Notes |
 |---|---|---|
-| **v0.2.36** (latest) | [tg-broadcast-v0.2.36.exe](https://github.com/myhgjb666/telegram-group-tool/releases/download/v0.2.36/tg-broadcast-v0.2.36.exe) | Windows 64-bit single file, run directly |
-| v0.2.35 | [tg-broadcast-v0.2.35.exe](https://github.com/myhgjb666/telegram-group-tool/releases/download/v0.2.35/tg-broadcast-v0.2.35.exe) | Previous release |
+| **v0.2.37** (latest) | [tg-broadcast-v0.2.37.exe](https://github.com/myhgjb666/telegram-group-tool/releases/download/v0.2.37/tg-broadcast-v0.2.37.exe) | Windows 64-bit single file, run directly |
+| v0.2.36 | [tg-broadcast-v0.2.36.exe](https://github.com/myhgjb666/telegram-group-tool/releases/download/v0.2.36/tg-broadcast-v0.2.36.exe) | Previous release |
 
 Older builds are available on the [Releases](https://github.com/myhgjb666/telegram-group-tool/releases) page.
 
@@ -70,7 +70,7 @@ If your antivirus blocks the first launch, choose "Run anyway" or add an excepti
 
 ## Quick start
 
-1. Download and run `tg-broadcast-v0.2.36.exe`
+1. Download and run `tg-broadcast-v0.2.37.exe`
 2. Sign up / sign in to the app account (new devices usually get a trial period, then a license key is needed)
 3. Open [my.telegram.org/apps](https://my.telegram.org/apps), create an application and copy your `api_id` / `api_hash`
 4. On the **Accounts** page, add a Telegram account (API credentials + phone number, then the login code / 2FA password)
@@ -166,7 +166,13 @@ The most common one you will see is "**the port answers, but the proxy dropped t
 
 ## Changelog
 
-### v0.2.36 (current)
+### v0.2.37 (current)
+
+- **Fixed: Customer outreach "Start detection" completed but every status stayed "未识别" (undetected)**. Detection itself ran correctly (account selection, quota, rate limiting all fine), but the step that writes results back to the database had an internal error — every result was silently discarded. Detected "has Telegram" customers now appear in the table as expected and can be ticked for sending
+- **Upgrade note**: for numbers detected on v0.2.36 or earlier, run "Start detection" once after upgrading — previously detected numbers are re-checked without extra quota, and failed ones retry automatically
+- No other changes
+
+### v0.2.36
 
 - **Fixed: the country picker was ignored on import**. In the previous release the legacy "11 digits starting with 1 = mainland China mobile" rule outranked the picker — with "USA/Canada +1" selected, `18607123456` (= 1 + 860…, a US number written with its country code) was silently rewritten to `+8618607...`. The **explicit country choice now always wins**
 - **Single-digit codes (+1 / +7) handled properly**: input shaped like `<code><10 digits>` starting with the code (e.g. 18607123456) is treated as already carrying the country code instead of getting a doubled 1; bare 10-digit numbers (e.g. 2125551234) get `+1` prepended as usual
@@ -422,4 +428,4 @@ A: No. When a bound proxy is broken or deleted, the account falls back to the gl
 **Q: Sign-in says "cannot securely connect to the licensing service / certificate verification failed"?**  
 A: It means the encrypted connection used for sign-in was replaced in transit — unrelated to your account. Use the issuer shown in the message: ① "certificate issued by XXX but does not match the host / is not a common public CA" → your VPN / proxy / corporate network is intercepting the connection; **switch to another node**, or add a `DIRECT` rule for the licensing host and retry. ② "certificate expired" → update to the latest build. ③ "certificate is valid but local verification failed" → usually a **wrong system clock** (right-click the taskbar clock → sync) or an outdated local root store. Seeing this right after changing VPN is almost always case ①.
 
-For questions or bug reports, please open an [issue](https://github.com/myhgjb666/telegram-group-tool/issues) and include the version number (e.g. v0.2.36).
+For questions or bug reports, please open an [issue](https://github.com/myhgjb666/telegram-group-tool/issues) and include the version number (e.g. v0.2.37).
