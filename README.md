@@ -4,9 +4,9 @@
 
 多账号 **Telegram 群发** 桌面客户端（Telegram bulk message / bulk messaging sender）。面向你**已经加入**的群组，支持消息模板、定时计划与发送日志，适合个人社群日常公告与提醒。
 
-关键词：Telegram 群发、TG 群发工具、电报群发、Telegram 批量发送、Telegram 群发软件、Telegram 群发助手、多账号群发、Telegram 自动群发、电报批量私信、TG 定时群发、Telegram bulk message sender、Telegram mass message tool、Telegram mass DM software、Telegram group broadcast tool、Telegram multi-account sender、Telegram marketing tool for Windows。
+关键词：Telegram 群发、TG 群发工具、电报群发、Telegram 批量发送、Telegram 群发软件、Telegram 群发助手、多账号群发、Telegram 自动群发、电报批量私信、TG 定时群发、Telegram 批量加群、TG 加群工具、Telegram 批量入群、Telegram bulk message sender、Telegram mass message tool、Telegram mass DM software、Telegram group broadcast tool、Telegram multi-account sender、Telegram marketing tool for Windows。
 
-> 当前最新版本：**v0.2.42**（Windows）  
+> 当前最新版本：**v0.2.43**（Windows）  
 > 本仓库仅提供安装包与使用说明，便于下载，不包含源代码。
 
 ---
@@ -15,9 +15,9 @@
 
 | 版本 | 文件 | 说明 |
 |---|---|---|
-| **v0.2.42**（最新） | [tg-broadcast-v0.2.42.exe](https://github.com/myhgjb666/telegram-group-tool/releases/download/v0.2.42/tg-broadcast-v0.2.42.exe) | Windows 64 位单文件，解压即用（直接运行） |
+| **v0.2.43**（最新） | [tg-broadcast-v0.2.43.exe](https://github.com/myhgjb666/telegram-group-tool/releases/download/v0.2.43/tg-broadcast-v0.2.43.exe) | Windows 64 位单文件，解压即用（直接运行） |
+| v0.2.42 | [tg-broadcast-v0.2.42.exe](https://github.com/myhgjb666/telegram-group-tool/releases/download/v0.2.42/tg-broadcast-v0.2.42.exe) | 上一版本 |
 | v0.2.41 | [tg-broadcast-v0.2.41.exe](https://github.com/myhgjb666/telegram-group-tool/releases/download/v0.2.41/tg-broadcast-v0.2.41.exe) | 上一版本 |
-| v0.2.40 | [tg-broadcast-v0.2.40.exe](https://github.com/myhgjb666/telegram-group-tool/releases/download/v0.2.40/tg-broadcast-v0.2.40.exe) | 上一版本 |
 
 历史版本请到 [Releases](https://github.com/myhgjb666/telegram-group-tool/releases) 页面选择对应版本下载。
 
@@ -33,6 +33,7 @@
 - **代理池（一号一代理 / 共用代理）**：批量导入 http / https / socks5 代理，可一键给每个账号自动分一个，也可以多个账号共用一个；账号列表直接显示每个号当前走哪条线路；「测试」做的是**真实握手**（让代理把隧道建到 Telegram），不是只看端口通不通
 - **协议号批量登录**：直接把已经登录好的 `.session` 文件导进来，**不发验证码、不走二步验证**；支持一次多选文件或选中整个目录批量导入，逐个验证并显示成功 / 跳过 / 失败清单；同目录若有 `16803619008.json` 这类会话信息文件，会自动读取 `api_id` / `api_hash` 与设备信息，不用再手填
 - **群组选择**：同步已加入群组，按任务勾选发送目标
+- **加群任务（批量入群）**：把公开群链接 / 私有邀请链整批粘贴导入，选定一个账号按保守节奏（默认每天每号十几个）逐个加入；每行可带「期望群主」，入群后自动核对实际群主、不一致只标记不拦截；加成功的群自动进「群组」页，可直接设为发送目标
 - **消息模板**：支持多文案轮换与变量（日期、时间、群名等）
 - **定时计划**：Cron 或固定间隔，可立即执行 / 暂停
 - **防封控制**：发送间隔、日配额、白天窗口、抖动等可调
@@ -71,7 +72,7 @@
 
 ## 快速上手
 
-1. 下载并运行 `tg-broadcast-v0.2.42.exe`
+1. 下载并运行 `tg-broadcast-v0.2.43.exe`
 2. 注册 / 登录软件账号（新设备通常有试用时长，到期后需续期）
 3. 打开 [my.telegram.org/apps](https://my.telegram.org/apps) 登录，创建应用并拿到 `api_id` / `api_hash`
 4. 在软件 **账号** 页添加 Telegram 账号（填写 api 凭证 + 手机号，完成验证码 / 二级密码）
@@ -166,9 +167,61 @@
 
 ---
 
+## 加群任务：批量导入链接，按节奏入群
+
+手上有一批群链接（比如向别人买群、接手社群时对方发来的清单）时，以前只能一个一个手动点加入。v0.2.43 起新增 **加群任务** 页：整批粘贴导入，选定一个账号按保守节奏逐个加入，加成功的群自动进「群组」页。
+
+### 步骤
+
+1. **导入链接**：粘贴到文本框，每行一条，支持这些写法（后面可加 `| @期望群主` 记录来源）：
+
+   | 写法 | 类型 |
+   |---|---|
+   | `https://t.me/abcd1234` / `t.me/abcd1234` | 公开群 |
+   | `t.me/+AbCdEf123` / `t.me/joinchat/AbCdEf123` | 私有邀请链 |
+   | `@abcd1234` 或直接 `abcd1234` | 公开群 |
+   | `tg://resolve?domain=abcd1234` / `tg://join?invite=AbCdEf123` | 深链 |
+
+   点「解析并加入列表」先校验，也可以「从文件导入…」；同一批里重复的链接只留第一条。
+2. **选账号**：下拉框选一个已登录的账号。这个号连哪个代理，加群就从哪条出口走（一号一代理照常生效）。
+3. **点「开始加群」**：程序逐条加入，每条之间随机等待几分钟；「停止」会在当前这条处理完后退出，剩余任务保持待处理，下次接着点。
+
+### 期望群主是干什么的
+
+向别人买群 / 接手群时，把对方说的群主用户名写在这一列。入群成功后程序会查实际群主填进「实际群主」列：一致就正常显示，不一致标 **⚠️ 群主不一致**——**只记录、不拦截、不退群**（管理员换人是常有的事），是否退出由你自己判断。群隐藏了成员列表时查不到，会留空。
+
+### 状态说明
+
+| 状态 | 含义 | 会重试吗 |
+|---|---|---|
+| 待处理 | 还没轮到 | 下次「开始加群」处理 |
+| 已加入 / 已在群里 | 完成 | 不重试 |
+| 待管理员批准 | 这类群要先经群主同意，批准后自动成为成员 | 不用再操作 |
+| 链接失效 | 邀请链过期 / 群解散 / 无权进入 | **永不重试**（重试只是白烧当日配额），找发链接的人要新的 |
+| 失败·可重试 | 网络 / 限速等临时错误 | 下一轮自动重试，也可点「重试失败」手动放回待处理 |
+
+### 节奏（默认偏保守，刻意为之）
+
+- **每日上限**：默认 12 个 / 号 / 天，按北京时间 0 点换日；只有「已加入 / 已在群里 / 待管理员批准」消耗当日配额
+- **单条间隔**：默认 5–15 分钟随机，在 **参数设置 → 加群节奏** 里可调（下限 5 秒）
+- **活跃时段**：复用发送引擎那个「白天窗口」
+- **撞上限流立即停批**：遇到 Telegram FloodWait 或账号加入的群数达上限（约 500）会立刻停止，剩余任务保留，不会硬砸
+
+> **使用边界**：只加你自己有真实用途的群（你的社群、客户群、收到邀请的群）。批量加无关联的陌生群是买来的协议号干的事，封号比发消息来得快得多。
+
+---
+
 ## 版本说明
 
-### v0.2.42（当前）
+### v0.2.43（当前）
+
+- **新增「加群任务」**：把群链接（公开群 `t.me/xxx`、私有邀请链 `t.me/+xxx` / `joinchat`、深链）整批粘贴导入，选定一个账号按保守节奏逐个加入；加成功的群自动进「群组」页并勾上发送目标
+- **期望群主核验**：每行可带 `| @群主用户名`，入群后自动查实际群主并比对，不一致只标记 ⚠️ 不拦截
+- **三道节奏闸**：每日上限默认 12 个 / 号 / 天（北京时间换日）、单条间隔默认 5–15 分钟随机、活跃时段复用发送窗口；撞上 Telegram 限速（FloodWait）或账号群数达上限立即停批，剩余任务保留
+- **链接失效不重试**：邀请链过期 / 群解散标「链接失效」，不白烧当日配额；网络类失败自动重试
+- 详细步骤、状态对照与节奏说明见上文 [加群任务：批量导入链接，按节奏入群](#加群任务批量导入链接按节奏入群)
+
+### v0.2.42
 
 - **逐个「先识别再发送」**：发送不再是「先批量识别整份名单、再统一发」——轮到某个号码时才**单独识别它**，识别出 TG 立即发给它，等完发送间隔再处理下一个。两次识别之间天然隔了一整条发送间隔，是 Telegram 限流的最温和节奏，大名单也不容易触发限流
 - **识别被限流自动暂停**：任务转为暂停，剩余号码保持未识别；稍后点「继续发送」会从未识别的号码继续「先识别再发」
@@ -434,6 +487,12 @@ A: 先看 **发送日志** 的「状态」列（筛选切到「全部」，别�
 ④ 「耗时」列（v0.2.25 起只统计这一条发送本身，不含发送间隔）出现几十秒甚至 120 秒以上＝网络 / 代理慢，换更稳定的线路比调参数更有效；软件现在会自动换掉变慢的连接，状态栏会显示「已重建 N 次」。  
 ⑤ 其他跳过原因（群冷却、日上限、非活跃时段）都在日志与账号页可见。默认值偏保守，可按需微调，但不建议拉满。  
 
+**Q: 加群任务里「链接失效」和「失败·可重试」有什么区别？**  
+A: 「链接失效」= 邀请链过期、群已解散或无权进入，重试永远不会成功，软件标死、不再碰它（避免白烧当日加群配额）；找发链接的人要个新的再导入即可。「失败·可重试」= 网络抖动、被限速等临时问题，下一轮点「开始加群」会自动重试，也可以点「重试失败」手动放回待处理。
+
+**Q: 加群任务为什么加几个就停了？**  
+A: 大概率是撞上了四道闸之一，看页面状态栏的提示：① 今日配额用完（默认 12 个 / 号 / 天，北京时间 0 点换日）→ 明天再跑或到「参数设置 → 加群节奏」调大；② 不在活跃时段 → 窗口开了再点；③ Telegram 限速（FloodWait）→ 等倒计时过了再点；④ 账号加入的群数达上限（约 500）→ 先退掉一些群。中途手动点「停止」的也会停在已加完的位置，剩余任务都在列表里。
+
 **Q: 客户号码没有 +86 前缀，能直接导入吗？**  
 A: 能。「客户联系」导入时选好「国别」（默认中国大陆），不带 `+` 区号的号码会按所选国别自动补全；号码自带 `+` 区号的以号码为准，不受国别选择影响。清单里删错了也没关系：可按住 Ctrl / Shift 多选后批量移除，或用「清空全部」重头再来（会弹两次确认，已发送的日志不受影响）。
 
@@ -470,12 +529,12 @@ A: v0.2.34 起「可用」= 已经和代理握手成功、并让代理把隧道�
 **Q: 登录时提示「无法安全连接授权服务 / 证书校验失败」？**  
 A: 意思是登录请求的加密连接被中途替换了，跟你的账号无关。按提示里的签发者判断：① 提示「证书由 XXX 签发但不匹配地址 / 不是常见公共证书颁发机构」→ 当前 VPN / 代理 / 公司网络对该连接做了拦截，**换一个节点**，或在代理规则里让授权服务地址直连（`DIRECT`）后重试；② 提示「证书已过期」→ 升级到最新版本；③ 提示「证书正常但本机校验失败」→ 多为**系统时间不对**（右键任务栏时间 → 校准）或本机根证书过期。换 VPN 后出现这个提示，基本都属于第 ① 种。
 
-如有问题，请在本仓库 [Issues](https://github.com/myhgjb666/telegram-group-tool/issues) 反馈，并注明版本号（如 v0.2.42）。
+如有问题，请在本仓库 [Issues](https://github.com/myhgjb666/telegram-group-tool/issues) 反馈，并注明版本号（如 v0.2.43）。
 
 ---
 
 ## 关键词 / Keywords
 
-Telegram 群发 · TG 群发工具 · 电报群发 · Telegram 批量发送 · Telegram 群发软件 · Telegram 群发助手 · Telegram 多账号群发 · Telegram 自动群发 · 电报批量私信 · TG 定时群发 · TG 群发机器人 · Telegram 社群运营工具 · Telegram 消息群发客户端 · Windows Telegram 群发 · Telegram 协议号登录 · Telegram session 导入 · TG 批量登录 · 电报协议号 · Telegram 代理设置 · Telegram 一号一代理 · TG 多代理轮换 · socks5 代理群发 · Telegram 代理测速 · 代理可用性检测 · Telegram 关键词监听 · 监听命中手动发送 · TG 客户号码导入 · 手机号批量识别 Telegram · 客户私信群发 · 电报号码批量删除 · Telegram 识别限流 · TG 识别暂停续跑 · Telegram FloodWait
+Telegram 群发 · TG 群发工具 · 电报群发 · Telegram 批量发送 · Telegram 群发软件 · Telegram 群发助手 · Telegram 多账号群发 · Telegram 自动群发 · 电报批量私信 · TG 定时群发 · TG 群发机器人 · Telegram 社群运营工具 · Telegram 消息群发客户端 · Windows Telegram 群发 · Telegram 协议号登录 · Telegram session 导入 · TG 批量登录 · 电报协议号 · Telegram 代理设置 · Telegram 一号一代理 · TG 多代理轮换 · socks5 代理群发 · Telegram 代理测速 · 代理可用性检测 · Telegram 关键词监听 · 监听命中手动发送 · TG 客户号码导入 · 手机号批量识别 Telegram · 客户私信群发 · 电报号码批量删除 · Telegram 识别限流 · TG 识别暂停续跑 · Telegram FloodWait · Telegram 批量加群 · TG 批量入群 · Telegram 邀请链接加群
 
 Telegram bulk message sender · Telegram bulk messaging · Telegram mass message · Telegram mass DM tool · Telegram mass DM software · Telegram group broadcast · Telegram broadcast tool · Telegram multi-account sender · Telegram auto message sender · Telegram message automation · Telegram marketing tool · Telegram bulk sender for Windows · Telegram group messaging software · send bulk messages to Telegram groups · Telegram desktop broadcast app · Telegram session import · Telegram bulk account login · Telegram proxy support · Telegram socks5 proxy · Telegram one proxy per account · Telegram proxy pool

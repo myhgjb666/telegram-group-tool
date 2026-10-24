@@ -4,9 +4,9 @@
 
 A multi-account **Telegram bulk message / mass DM** desktop client for Windows. It sends to groups you have **already joined**, with message templates, scheduled plans and delivery logs — built for community announcements and routine reminders.
 
-**Keywords:** telegram bulk message sender, telegram bulk messaging, telegram mass message tool, telegram mass DM software, telegram group broadcast tool, telegram multi-account sender, telegram auto message sender, telegram message automation, telegram marketing tool, telegram bulk sender for Windows, send bulk messages to telegram groups, telegram group messaging software, telegram broadcast desktop app, telegram session import, telegram bulk account login, telegram .session login, import telegram session file, telegram proxy support, telegram socks5 proxy, telegram one proxy per account, telegram proxy pool, rotate telegram proxies, telegram proxy checker, telegram proxy availability test, telegram keyword listener, telegram listener manual approval, telegram customer phone number import, detect telegram by phone number, bulk delete telegram contacts, TG bulk sender, Telegram 群发 / TG 群发工具 / 电报群发.
+**Keywords:** telegram bulk message sender, telegram bulk messaging, telegram mass message tool, telegram mass DM software, telegram group broadcast tool, telegram multi-account sender, telegram auto message sender, telegram message automation, telegram marketing tool, telegram bulk sender for Windows, send bulk messages to telegram groups, telegram group messaging software, telegram broadcast desktop app, telegram session import, telegram bulk account login, telegram .session login, import telegram session file, telegram proxy support, telegram socks5 proxy, telegram one proxy per account, telegram proxy pool, rotate telegram proxies, telegram proxy checker, telegram proxy availability test, telegram keyword listener, telegram listener manual approval, telegram customer phone number import, detect telegram by phone number, telegram batch join groups, telegram auto join group, telegram bulk invite link join, TG bulk sender, Telegram 群发 / TG 群发工具 / 电报群发 / 批量加群.
 
-> Latest version: **v0.2.42** (Windows)  
+> Latest version: **v0.2.43** (Windows)  
 > This repository hosts the installer and usage documentation for easy download. Source code is not included.
 
 ---
@@ -15,9 +15,9 @@ A multi-account **Telegram bulk message / mass DM** desktop client for Windows. 
 
 | Version | File | Notes |
 |---|---|---|
-| **v0.2.42** (latest) | [tg-broadcast-v0.2.42.exe](https://github.com/myhgjb666/telegram-group-tool/releases/download/v0.2.42/tg-broadcast-v0.2.42.exe) | Windows 64-bit single file, run directly |
+| **v0.2.43** (latest) | [tg-broadcast-v0.2.43.exe](https://github.com/myhgjb666/telegram-group-tool/releases/download/v0.2.43/tg-broadcast-v0.2.43.exe) | Windows 64-bit single file, run directly |
+| v0.2.42 | [tg-broadcast-v0.2.42.exe](https://github.com/myhgjb666/telegram-group-tool/releases/download/v0.2.42/tg-broadcast-v0.2.42.exe) | Previous release |
 | v0.2.41 | [tg-broadcast-v0.2.41.exe](https://github.com/myhgjb666/telegram-group-tool/releases/download/v0.2.41/tg-broadcast-v0.2.41.exe) | Previous release |
-| v0.2.40 | [tg-broadcast-v0.2.40.exe](https://github.com/myhgjb666/telegram-group-tool/releases/download/v0.2.40/tg-broadcast-v0.2.40.exe) | Previous release |
 
 Older builds are available on the [Releases](https://github.com/myhgjb666/telegram-group-tool/releases) page.
 
@@ -33,6 +33,7 @@ If your antivirus blocks the first launch, choose "Run anyway" or add an excepti
 - **Proxy pool (one proxy per account / shared proxies)** — import http / https / socks5 proxies in bulk, auto-assign one line per account or let several accounts share one; the account list shows which line each account is on, and the built-in test performs a **real proxy handshake** into Telegram instead of only checking whether the port answers
 - **Bulk `.session` login** — import already-authorized `.session` files directly, with **no login code and no 2FA prompt**; pick several files at once or point it at a whole folder, and it verifies each one and lists success / skipped / failed; if the same folder holds a sidecar json (`16803619008.json` etc.) the `api_id` / `api_hash` and device info are read from it automatically
 - **Group picker** — sync your joined groups and tick the ones you want to send to
+- **Join tasks (bulk group joining)** — paste a batch of public group links / private invite links, pick one account and let it join at a conservative pace (about a dozen per account per day by default); each line can carry an "expected owner" that is cross-checked after joining and only flagged, never enforced; joined groups land on the Groups page ready to be used as send targets
 - **Message templates** — multiple variants with rotation and variables (date, time, group name, random string)
 - **Scheduled plans** — cron or fixed interval, run now / pause anytime
 - **Anti-ban pacing** — configurable cooldown, daily quota, daytime window and jitter
@@ -71,7 +72,7 @@ If your antivirus blocks the first launch, choose "Run anyway" or add an excepti
 
 ## Quick start
 
-1. Download and run `tg-broadcast-v0.2.42.exe`
+1. Download and run `tg-broadcast-v0.2.43.exe`
 2. Sign up / sign in to the app account (new devices usually get a trial period, then a license key is needed)
 3. Open [my.telegram.org/apps](https://my.telegram.org/apps), create an application and copy your `api_id` / `api_hash`
 4. On the **Accounts** page, add a Telegram account (API credentials + phone number, then the login code / 2FA password)
@@ -165,9 +166,61 @@ The most common one you will see is "**the port answers, but the proxy dropped t
 
 ---
 
+## Join tasks — import links in bulk, join at a humane pace
+
+When you have a batch of group links (from buying groups or taking over a community), joining them used to mean clicking through one by one. Since v0.2.43 there is a **Join tasks** page: paste the links in bulk, pick one account, and it joins at a conservative pace; joined groups land on the Groups page automatically.
+
+### Steps
+
+1. **Import links** — paste into the text box, one per line. These forms are accepted (optionally followed by `| @expected_owner` to note the source):
+
+   | Notation | Type |
+   |---|---|
+   | `https://t.me/abcd1234` / `t.me/abcd1234` | Public group |
+   | `t.me/+AbCdEf123` / `t.me/joinchat/AbCdEf123` | Private invite link |
+   | `@abcd1234` or bare `abcd1234` | Public group |
+   | `tg://resolve?domain=abcd1234` / `tg://join?invite=AbCdEf123` | Deep link |
+
+   Click "Parse and add" to validate first, or "Import from file…"; duplicate links within one batch are kept once.
+2. **Pick an account** — choose a signed-in account from the dropdown. Whichever proxy that account is bound to is the exit the joins go through (one-proxy-per-account works as usual).
+3. **Click "Start joining"** — the app joins one link at a time, waiting a few random minutes in between. "Stop" exits after the current link finishes; remaining tasks stay pending for the next run.
+
+### What the expected owner is for
+
+When buying groups or taking one over, put the username the seller gave you in this column. After a successful join the app looks up the actual owner into the "seen owner" column: a match shows normally; a mismatch shows **⚠️ owner mismatch** — **recorded only, never enforced, no auto-leave** (admins change all the time), leaving is your call. If the group hides its member list, the check is left blank.
+
+### Status meanings
+
+| Status | Meaning | Retried? |
+|---|---|---|
+| Pending | Not reached yet | Handled by the next "Start joining" |
+| Joined / already in group | Done | No |
+| Approval pending | Such groups require an admin's approval first; you become a member once approved | Nothing to do |
+| Dead link | Invite expired / group dissolved / no access | **Never retried** (a retry would only burn the daily quota) — ask the seller for a fresh link |
+| Failed (retryable) | Temporary network / rate-limit errors | Retried automatically next run, or use "Retry failed" to requeue manually |
+
+### Pacing (conservative by design)
+
+- **Daily cap**: 12 joins per account per day by default, rolling over at midnight Beijing time; only "joined / already in group / approval pending" consume the quota
+- **Per-link interval**: 5–15 random minutes by default, adjustable in **Settings → Join pacing** (floor 5 seconds)
+- **Active hours**: reuses the same daytime window as the send engine
+- **Stops immediately on limits**: a Telegram FloodWait or hitting the ~500-channels-per-account cap ends the run right away and keeps the remaining tasks, instead of hammering
+
+> **Scope**: join groups you have a genuine reason to be in (your communities, customer groups, invited groups). Mass-joining unrelated stranger groups is what purchased accounts do — bans come faster there than from sending.
+
+---
+
 ## Changelog
 
-### v0.2.42 (current)
+### v0.2.43 (current)
+
+- **New: Join tasks** — paste a batch of group links (public `t.me/xxx`, private invite `t.me/+xxx` / `joinchat`, deep links), pick one account and let it join at a conservative pace; joined groups land on the Groups page with "send target" pre-ticked
+- **Expected-owner verification** — each line may carry `| @owner_username`; after joining the actual owner is looked up and compared, mismatches are flagged ⚠️ only, never enforced
+- **Three pacing gates** — daily cap of 12 per account per day by default (midnight Beijing rollover), 5–15 random minutes between links, active-hours window shared with the send engine; a Telegram FloodWait or the channel cap stops the run immediately, keeping remaining tasks
+- **Dead links are never retried** — expired invites / dissolved groups are marked dead and excluded from retries so they don't burn the daily quota; network failures retry automatically
+- Full steps, status table and pacing notes: see [Join tasks](#join-tasks--import-links-in-bulk-join-at-a-humane-pace)
+
+### v0.2.42
 
 - **One-by-one "detect then send"**: sending no longer batch-detects the whole list first — when the loop reaches a number it **detects that single number**, messages it immediately if found on Telegram, then waits out the send interval before the next one. Two consecutive lookups are naturally a full send interval apart — the gentlest possible pace against Telegram's rate limits
 - **Auto-pause on rate limit**: the task pauses; remaining numbers stay "undetected". Click "Continue sending" later and it resumes with detect-then-send for the undetected ones
@@ -445,6 +498,12 @@ A: Check the **Status** column of the delivery log (set the filter to "All", not
 ④ If **Duration** (since v0.2.25 it measures the send only, excluding pacing) shows tens of seconds or even 120+ seconds, the network / proxy is slow — a more stable route helps more than tuning parameters. The app now rotates degraded connections automatically; the status bar shows "N rebuilds".  
 ⑤ Other skip reasons (group cooldown, daily quota, inactive hours) are visible in the log and on the accounts page. Defaults are conservative; tune them as needed, but do not max everything out.  
 
+**Q: In Join tasks, what is the difference between "dead link" and "failed (retryable)"?**  
+A: "Dead link" = the invite expired, the group was dissolved, or you have no access — a retry can never succeed, so the app marks it dead and skips it forever (so it doesn't burn your daily join quota). Ask the seller for a fresh link and import that. "Failed (retryable)" = temporary trouble such as a network blip or rate limiting; the next "Start joining" retries it automatically, and "Retry failed" requeues it manually.
+
+**Q: Join tasks stopped after just a few joins — why?**  
+A: One of the four gates tripped; the status bar tells you which: ① daily quota used up (12 per account per day by default, midnight Beijing rollover) → run again tomorrow or raise it in **Settings → Join pacing**; ② outside the active hours → wait for the window; ③ Telegram rate limit (FloodWait) → wait out the countdown and click again; ④ the account hit its ~500 channel cap → leave some groups first. Manual "Stop" also halts after the current link, with all remaining tasks kept in the list.
+
 **Q: My customer numbers have no +86 prefix — can I import them directly?**  
 A: Yes. Pick the **Country** on the Customer outreach import form (mainland China by default) and bare numbers get that code prepended automatically; numbers that already start with `+` are kept as-is regardless of the country choice. If something goes wrong in the list, hold Ctrl / Shift to multi-select and remove them in bulk, or use "Clear all" to start over (it asks twice; delivery logs are never touched).
 
@@ -465,4 +524,4 @@ A: No. When a bound proxy is broken or deleted, the account falls back to the gl
 **Q: Sign-in says "cannot securely connect to the licensing service / certificate verification failed"?**  
 A: It means the encrypted connection used for sign-in was replaced in transit — unrelated to your account. Use the issuer shown in the message: ① "certificate issued by XXX but does not match the host / is not a common public CA" → your VPN / proxy / corporate network is intercepting the connection; **switch to another node**, or add a `DIRECT` rule for the licensing host and retry. ② "certificate expired" → update to the latest build. ③ "certificate is valid but local verification failed" → usually a **wrong system clock** (right-click the taskbar clock → sync) or an outdated local root store. Seeing this right after changing VPN is almost always case ①.
 
-For questions or bug reports, please open an [issue](https://github.com/myhgjb666/telegram-group-tool/issues) and include the version number (e.g. v0.2.42).
+For questions or bug reports, please open an [issue](https://github.com/myhgjb666/telegram-group-tool/issues) and include the version number (e.g. v0.2.43).
