@@ -4,9 +4,9 @@
 
 A multi-account **Telegram bulk message / mass DM** desktop client for Windows. It sends to groups you have **already joined**, with message templates, scheduled plans and delivery logs — built for community announcements and routine reminders.
 
-**Keywords:** telegram bulk message sender, telegram bulk messaging, telegram mass message tool, telegram mass DM software, telegram group broadcast tool, telegram multi-account sender, telegram auto message sender, telegram message automation, telegram marketing tool, telegram bulk sender for Windows, send bulk messages to telegram groups, telegram group messaging software, telegram broadcast desktop app, telegram session import, telegram bulk account login, telegram .session login, import telegram session file, telegram proxy support, telegram socks5 proxy, telegram one proxy per account, telegram proxy pool, rotate telegram proxies, telegram proxy checker, telegram proxy availability test, telegram keyword listener, telegram listener manual approval, telegram customer phone number import, detect telegram by phone number, telegram batch join groups, telegram auto join group, telegram bulk invite link join, telegram join groups with multiple accounts, telegram multi account bulk join, TG bulk sender, Telegram 群发 / TG 群发工具 / 电报群发 / 批量加群.
+**Keywords:** telegram bulk message sender, telegram bulk messaging, telegram mass message tool, telegram mass DM software, telegram group broadcast tool, telegram multi-account sender, telegram auto message sender, telegram message automation, telegram marketing tool, telegram bulk sender for Windows, send bulk messages to telegram groups, telegram group messaging software, telegram broadcast desktop app, telegram session import, telegram bulk account login, telegram .session login, import telegram session file, telegram proxy support, telegram socks5 proxy, telegram one proxy per account, telegram proxy pool, rotate telegram proxies, telegram proxy checker, telegram proxy availability test, telegram keyword listener, telegram listener manual approval, telegram customer phone number import, detect telegram by phone number, telegram batch join groups, telegram auto join group, telegram bulk invite link join, telegram channel scheduled posting, telegram bot post to channel, telegram bot API channel broadcast, telegram auto post to channel, telegram join groups with multiple accounts, telegram multi account bulk join, TG bulk sender, Telegram 群发 / TG 群发工具 / 电报群发 / 批量加群.
 
-> Latest version: **v0.2.44** (Windows)  
+> Latest version: **v0.2.45** (Windows)  
 > This repository hosts the installer and usage documentation for easy download. Source code is not included.
 
 ---
@@ -15,9 +15,9 @@ A multi-account **Telegram bulk message / mass DM** desktop client for Windows. 
 
 | Version | File | Notes |
 |---|---|---|
-| **v0.2.44** (latest) | [tg-broadcast-v0.2.44.exe](https://github.com/myhgjb666/telegram-group-tool/releases/download/v0.2.44/tg-broadcast-v0.2.44.exe) | Windows 64-bit single file, run directly |
+| **v0.2.45** (latest) | [tg-broadcast-v0.2.45.exe](https://github.com/myhgjb666/telegram-group-tool/releases/download/v0.2.45/tg-broadcast-v0.2.45.exe) | Windows 64-bit single file, run directly |
+| v0.2.44 | [tg-broadcast-v0.2.44.exe](https://github.com/myhgjb666/telegram-group-tool/releases/download/v0.2.44/tg-broadcast-v0.2.44.exe) | Previous release |
 | v0.2.43 | [tg-broadcast-v0.2.43.exe](https://github.com/myhgjb666/telegram-group-tool/releases/download/v0.2.43/tg-broadcast-v0.2.43.exe) | Previous release |
-| v0.2.42 | [tg-broadcast-v0.2.42.exe](https://github.com/myhgjb666/telegram-group-tool/releases/download/v0.2.42/tg-broadcast-v0.2.42.exe) | Previous release |
 
 Older builds are available on the [Releases](https://github.com/myhgjb666/telegram-group-tool/releases) page.
 
@@ -221,7 +221,15 @@ When buying groups or taking one over, put the username the seller gave you in t
 
 ## Changelog
 
-### v0.2.44 (current)
+### v0.2.45 (current)
+
+- **New "Channel posting" tab** — schedule a bot to post to your channel in three steps: add a bot (the @BotFather token) → pick a message template → set a schedule (daily at one or more HH:MM times, or every N minutes/hours)
+- **Uses zero user-account quota** — posting goes through the Bot API (the bot), fully separate from group-broadcast / DM quotas of user accounts; template variant rotation and `{{random}}` placeholders work as usual
+- **Test connection / send now** — the token is verified on add (shows the bot's @username); any task can be triggered manually with "Send selected now". The bot must first be added as a **channel admin** with the "Post messages" permission
+- **Uses the global proxy** — the global proxy configured in Settings applies to Bot API calls too; direct connection works on overseas machines
+- Template images are not posted to channels yet (text only); the task table's "last status" column shows each run's result
+
+### v0.2.44
 
 - **Join tasks now run on several accounts in parallel** — tick N accounts and all N run at once, each with its own copy of the queue; inside a single account joins stay strictly one-at-a-time (concurrent joins on one session are the clearest bot signature, so that boundary did not move)
 - **Adjustable concurrency** — 3 accounts at a time by default, range 1–10, set in **Settings → Join pacing**; set to 1 for the old single-account behaviour
@@ -508,6 +516,9 @@ A: Since v0.2.34 "available" means the proxy completed a handshake and tunnelled
 **Q: The import says "auth key unregistered / session revoked"?**  
 A: That session is dead — the account was logged out, the password changed, or the same file is in use somewhere else (Telegram invalidates the earlier session). Such a file can only be fixed by signing in with the SMS flow again. Importing the same account twice is unnecessary: the app tells you it is already in the list.
 
+**Q: My "Channel posting" task was created but nothing was sent?**  
+A: Check in order: ① **the bot must be added as an admin of the target channel first** (channel → Manage channel → Administrators → add your bot → tick "Post messages") — Telegram does not let bots subscribe to channels like regular users; ② the channel field takes `@username` (public) or the numeric `-100…` ID (private); ③ hit "Send selected now" for one test — the "last status" column states the exact reason (invalid token / not an admin / channel not found); ④ if the proxy is down, check the global proxy in Settings. Scheduled tasks fire within 20 seconds after the minute (Beijing time).
+
 **Q: Sending is very slow or messages are frequently skipped?**  
 A: Check the **Status** column of the delivery log (set the filter to "All", not just sent), then the **Duration** column:  
 ① Many "duplicate content skipped" entries = the same static copy can only go to one group within the duplicate-content window; lower it on the **Settings** page to speed up.  
@@ -545,4 +556,4 @@ A: No. When a bound proxy is broken or deleted, the account falls back to the gl
 **Q: Sign-in says "cannot securely connect to the licensing service / certificate verification failed"?**  
 A: It means the encrypted connection used for sign-in was replaced in transit — unrelated to your account. Use the issuer shown in the message: ① "certificate issued by XXX but does not match the host / is not a common public CA" → your VPN / proxy / corporate network is intercepting the connection; **switch to another node**, or add a `DIRECT` rule for the licensing host and retry. ② "certificate expired" → update to the latest build. ③ "certificate is valid but local verification failed" → usually a **wrong system clock** (right-click the taskbar clock → sync) or an outdated local root store. Seeing this right after changing VPN is almost always case ①.
 
-For questions or bug reports, please open an [issue](https://github.com/myhgjb666/telegram-group-tool/issues) and include the version number (e.g. v0.2.44).
+For questions or bug reports, please open an [issue](https://github.com/myhgjb666/telegram-group-tool/issues) and include the version number (e.g. v0.2.45).
